@@ -1,0 +1,413 @@
+---
+layout: layouts/Course.astro
+title: "CSC 485/2501"
+---
+
+import Callout from "@components/Callout.astro";
+
+# Introduction to Computational Linguistics
+
+## Announcements
+
+- The first tutorial will be held jointly with CSC401 on **Fri, Sep 6**. Time and Locations: 10-11: BA 1180, 11-12: BA 1190, 12-13: ES B142.
+- First class on **September 4**!
+- **PREREQUISITES**: Please read the [prerequisites requirements](#prerequisites) carefully and check to make sure that you have met all the requirements.
+
+
+## Table of Contents
+
+## Course Information
+
+- Instructor: [Frank Niu](/).<br></br>Prof. [Gerald Penn](http://www.cs.toronto.edu/~gpenn/) oversees the essays for graduate students.
+- Office Hours: MWF 11-12 before/after class or by appointment.
+- Email: csc485-2024-09@cs. (add the toronto.edu suffix).
+- TAs: Jinman Zhao, Zixin Zhao, Jinyue Feng, Yushi Guan, Bindu Dash and Devan Srinivasan.
+- See more in [Course Information](/teaching/csc485-f24/course_info.pdf).
+
+<Callout type="info">
+For non-confidential inquiries, consult the Piazza forum first. Otherwise, for confidential assignment-related inquiries, consult the TA associated with the particular assignment. Emails sent with appropriate subject headings and from University of Toronto email addresses are most likely not to be redirected towards junk email folders, for example.
+</Callout>
+
+## When and Where
+
+| Course  | Section  | Time     | Room    |
+| ---     | ---      | ---      | ---     |
+| CSC 485 | LEC 0101 | MWF 10-11  | MWF: <a href="https://www.classfind.com/toronto/room/ESB142">ES B142</a> |
+| CSC 485/2501 | LEC 0201 | MWF 12-13  | M: <a href="https://www.classfind.com/toronto/room/MP137">MP 137</a> <br></br> WF: <a href="https://www.classfind.com/toronto/room/ESB142">ES B142</a> |
+
+## Assignments
+
+| Assignment                | Due          | Lead TA |
+| ---                       | ---          | ---   |
+| [Assignment 1](/teaching/csc485-f24/a1) | Thursday, 3rd October  | <a href="https://zxnnic.github.io/">Zixin Zhao</a> |
+| [Assignment 2](/teaching/csc485-f24/a2) | Thursday, 7th November | <a href="https://gavinguan95.github.io/">Yushi Guan</a> |
+| [Assignment 3](/teaching/csc485-f24/a3) | Wednesday, 4th December | Jinyue Feng |
+
+### [Assignment 1](/teaching/csc485-f24/a1): Dependency Parsing
+
+This assignment is designed to familiarize you with classic tasks while utilizing the latest cutting-edge methods. You will build neural dependency parsers using various algorithms. You will become familiar with parsing and learn the fundamentals of working with neural models using PyTorch. 
+
+### [Assignment 2](/teaching/csc485-f24/a2): Word Sense Disambiguation and Language Models Interpretation
+
+In the first part of the assignment, we will explore various Word Sense Disambiguation (WSD) algorithms, ranging from the Lesk algorithm to BERT. You will gain familiarity with semantics and hands-on experience with large-scale transformer models.
+Then, in the second part of this assignment, you will explore the current advancements in understanding how language models work and what occurs within them. 
+
+### [Assignment 3](/teaching/csc485-f24/a3): Building Grammar Rules: Symbolic Machine Translation
+
+In this assignment, you will learn how to write phrase structure grammars for some different linguistic phenomena in two different languages: English and Chinese. You can use the two grammars to create an interlingual machine translation system by parsing in one and generating in the other. You will use this case study to analyse a very interesting linguistic phenomenon --- the quantifier scoping difference between the two languages.
+
+### Essays (CSC2501)
+
+| Essay | Due Date | Paper(s) |
+| --- | --- | --- | 
+| 1 | Sep 16 | A. Turing. [Computing Machinery and Intelligence]/teaching/csc485-f24/essay_1.pdf). |
+| 2 | Sep 30 | Kurtz et al. (2019) [Improving Semantic Dependency Parsing with Syntactic Features](/teaching/csc485-f24/essay_2.pdf). |
+| 3 | Oct 16 | Two papers:<br></br>- Raganato et al. (2017) [Word Sense Disambiguation: A Unified Evaluation Framework and Empirical Comparison]((/teaching/csc485-f24/essay_3.pdf)).<br></br>- Lu and Nguyen (2018) [Similar but not the Same: Word Sense Disambiguation Improves Event Detection via Neural Representation Matching](/teaching/csc485-f24/essay_3.pdf). |
+| 4 | Nov 15 | Tommi Buder-Gröndahl (2024) [What Does Parameter-free Probing Really Uncover?](/teaching/csc485-f24/essay_4.pdf) |
+| 5 | Nov 25 | Lillian Lee (2022). [Fast Context-Free Grammar Parsing Requires Fast Boolean Matrix Multiplication](/teaching/csc485-f24/essay_5.pdf). |
+
+---
+
+## Piazza, Quercus and Other Important Links
+
+Please monitor the [Piazza](https://piazza.com/utoronto.ca/fall2024/csc4852501) discussion board. There will be assignment clarifications and hints.
+
+We will use [Quercus](https://q.utoronto.ca/) for non-public materials and the quizzes. You should be automatically enrolled if you're registered for the course.
+
+## Schedule & Class Materials
+_The schedule will change based on progress and class feedback._
+
+- Textbook for the course.
+    - [J&M] Jurafsky and Martin, [Speech and Language Processing](https://web.stanford.edu/~jurafsky/slp3/ed3bookfeb3_2024.pdf).
+    - [BK&L] Bird, Klein and Loper, [Natural Language Processing with Python](https://www.nltk.org/book/).
+
+_Both books are available online for free, so the physical copy is optional._
+
+
+### Week 1. Introduction
+
+#### L1: Introduction to Computational Linguistics
+- Date: Wed, Sep 4.
+- Readings:
+    - J&M: Chapter 1 (See 2nd Edition).
+    - BK&L: [1](https://www.nltk.org/book/ch01.html), [2.3](https://www.nltk.org/book/ch03.html), [4](https://www.nltk.org/book/ch04.html).
+- Slides: [Lecture 1](/teaching/csc485-f24/L1_Intro.pdf).
+
+#### T1: PyTorch Review
+- Date: Fri, Sep 6.
+- Material: [Google Colab](https://colab.research.google.com/drive/1EgFGn-oNuW-sM_qltLHB9tAz0Fv5IgpK?usp=sharing).
+
+
+### Week 2. Syntax, Grammar and Parsing.
+
+#### L2: Introduction to Transformer Language Models
+- Date: Mon, Sep 9.
+- Readings:
+    - J&M: [Chapter 9](https://web.stanford.edu/~jurafsky/slp3/9.pdf).
+    - Vaswani et al. (2017): [Attention Is All You Need](https://papers.nips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf).
+    - Devlin et al. (2019): [BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding](https://arxiv.org/pdf/1810.04805).
+    - Zain ul Abideen. Blog post: [Attention Is All You Need: The Core Idea of the Transformer](https://medium.com/@zaiinn440/attention-is-all-you-need-the-core-idea-of-the-transformer-bbfa9a749937).
+    - (optional) Harvard NLP. Blog post: [The Annotated Transformer](https://nlp.seas.harvard.edu/annotated-transformer/).
+    - (optional) Jay Allamar. Blog post: [The Illustrated Transformer](https://jalammar.github.io/illustrated-transformer/).
+- Slides: [Lecture 2: Transformers](/teaching/csc485-f24/L2_Transformers.pdf).
+
+#### L3: Introduction to Syntax and Parsing
+- Date: Wed, Sep 11.
+- Readings:
+    - J&M [17.0-1](https://web.stanford.edu/~jurafsky/slp3/17.pdf), [18.0-2](https://web.stanford.edu/~jurafsky/slp3/18.pdf), [D.3](https://web.stanford.edu/~jurafsky/slp3/D.pdf).
+    - BK&L: [8.0-4](https://www.nltk.org/book/ch08.html).
+- Slides: [Lecture 3: Syntax and Parsing](/teaching/csc485-f24/L3_Syntax.pdf).
+
+#### L4: Dependency Grammar & Parsing - Part 1
+
+- Date: Fri, Sep 13.
+- Readings:
+    - J&M [19.0-2](https://web.stanford.edu/~jurafsky/slp3/19.pdf).
+    - BK&L: [8.5](https://www.nltk.org/book/ch08.html).
+- Slides: [Lecture 4: Dependency Parsing (Part 1)](/teaching/csc485-f24/L4_Dependency_Parsing.pdf).
+
+### Week 3. The Turing Test
+
+#### L5: Dependency Grammar & Parsing - Part 2
+- Date: Mon, Sep 16.
+- Readings:
+    - J&M [19.3-5](https://web.stanford.edu/~jurafsky/slp3/19.pdf).
+- Slides: [Lecture 5: Dependency Parsing (Part 2)](/teaching/csc485-f24/L5_Dependency_Parsing_2.pdf).
+
+#### L6: The Turing Test and Linguistic Levels
+- Date: Wed, Sep 18.
+- Readings:
+    - J&M [15.0](https://web.stanford.edu/~jurafsky/slp3/15.pdf).
+    - A. Turing. [Computing Machinery and Intelligence](/teaching/csc485-f24/essay_1.pdf).
+    - (For fun!) [human or not](https://app.humanornot.ai/).
+    - (More fun) [Can You Tell Which Short Story ChatGPT Wrote?](https://music.youtube.com/watch?v=xKaCvH0l6Io) NY Times Opinion Podcast.
+- Slides: [Lecture 6: Turing Test and Linguistic Levels](/teaching/csc485-f24/L6_Turing.pdf).
+
+#### T2: Transition-based Parser and Gap Degree
+- Date: Fri, Sep 20.
+- Slides: [A1 Tutorial 2](/teaching/csc485-f24/a1_tut2.pdf).
+
+### Week 4. Lexical Semantics
+
+#### L7: Lexical Semantics - Part 1
+- Date: Fri, Sep 23.
+- Readings:
+    - J&M [G.1-2](https://web.stanford.edu/~jurafsky/slp3/G.pdf), [6.1](https://web.stanford.edu/~jurafsky/slp3/6.pdf).
+    - BK&L: [9](https://www.nltk.org/book/ch09.html).
+- Slides: [Lecture 7: Lexical Semantics](/teaching/csc485-f24/L7_Lexical_Semantics.pdf).
+
+#### T3: Graph-based Parser
+- Date: Fri, Sep 25.
+- Slides: [A1 Tutorial 3](/teaching/csc485-f24/a1_tut3.pdf).
+
+#### L8: Lexical Semantics - Part 2
+- Date: Fri, Sep 27.
+- Readings: J&M [G.3-4](https://web.stanford.edu/~jurafsky/slp3/G.pdf).
+- Slides: [Gap Degree & Survey](/teaching/csc485-f24/L8.1_Extra.pdf).
+- Slides: [Lecture 8: Word Sense Disambiguation](/teaching/csc485-f24/L8_Word_Sense.pdf).
+
+### Week 5.
+#### L9: Word Sense Disambiguation
+- Date: Mon, Sep 30.
+- Readings: J&M [G.3-4](https://web.stanford.edu/~jurafsky/slp3/G.pdf).
+- Slides: [Lecture 9: Word Sense Disambiguation (cont.)](/teaching/csc485-f24/L8_Word_Sense.pdf).
+
+#### L10: Vector Semantics - Part 1
+- Date: Wed, Oct 2.
+- Readings: J&M [Chapter 6](https://web.stanford.edu/~jurafsky/slp3/6.pdf).
+- Slides: [Lecture 10: Vector Semantics (Part 1)](/teaching/csc485-f24/L10_Vector_Semantics.pdf).
+
+#### L11: Vector Semantics - Part 2
+- Date: Fri, Oct 4.
+- Readings: J&M [Chapter 6](https://web.stanford.edu/~jurafsky/slp3/6.pdf).
+- Slides: [Lecture 11: Vector Semantics (Part 2)](/teaching/csc485-f24/L11_Vector_Semantics_2.pdf).
+- Resources:
+    - [BertViz](https://github.com/jessevig/bertviz).
+    - [Huggingface BERT Fine-tuning Tutorial](https://huggingface.co/docs/transformers/en/training).
+    - [Sentence-BERT](https://aclanthology.org/D19-1410/).
+    - [SimCSE](https://aclanthology.org/2021.emnlp-main.552/).
+    - [Socher's Slides](https://cs224d.stanford.edu/lectures/CS224d-Lecture10.pdf).
+
+### Week 6.
+
+#### L12: Large Language Models
+- Date: Mon, Oct 7.
+- Readings: J&M [Chapter 10](https://web.stanford.edu/~jurafsky/slp3/10.pdf).
+- Slides: [Lecture 12: Large Language Models](/teaching/csc485-f24/L12_LLM.pdf).
+- Resources:
+    - [How to run GPT2 XL](/teaching/csc485-f24/run_lm).
+    - [AI can't cross this line and we don't know why](https://www.youtube.com/watch?v=5eqRuVp65eY&ab_channel=WelchLabs): A good YouTube explanation to the scaling laws.
+
+#### L13: Interpreting LLMs
+- Date: Mon, Oct 9.
+- Readings:
+    - J&M [Chapter 10](https://web.stanford.edu/~jurafsky/slp3/10.pdf).
+    - Clark et al. (2019) [What Does BERT Look at? An Analysis of BERT’s Attention](https://aclanthology.org/W19-4828/).
+    - Buder-Gröndahl (2024) [What does Parameter-free Probing Really Uncover?](https://aclanthology.org/2024.acl-short.31)
+- Slides: Lecture 13: [Interpreting LLMs](/teaching/csc485-f24/L13_Understand_LLM.pdf).
+- Resources:
+    - [Neel Nanda's Interpretability Reading List](https://www.alignmentforum.org/posts/NfFST5Mio7BCAQHPA/an-extremely-opinionated-annotated-list-of-my-favourite).
+    - [How might LLMs store facts](https://www.youtube.com/watch?v=9-Jl0dxWQs8&ab_channel=3Blue1Brown): 3Blue1Brown's summarisation of the recent research of the MLP layer.
+
+#### T1: A2 Tutorial 1
+- Date: Mon, Oct 9.
+- Slides: [CSC485/2501 A2](https://docs.google.com/presentation/d/1RFadBqElmbO1IEzrhMN6RXsQM5axhcDfYrVtIfnPHL0/edit#slide=id.p)
+
+
+### Week 7.
+
+#### L14: Interpreting LLMs (Part 2)
+- Date: Wed, Oct 17.
+- Readings:
+    - **Understanding Transformer Layers**:<br></br>Does BERT Rediscovers the Classical NLP Pipeline?
+        - Jawahar et al. (2019) [BERT Rediscovers the Classical NLP Pipeline](https://aclanthology.org/P19-1452/).
+        - Tenney et al. (2019) [What Does BERT Learn about the Structure of Language?](https://aclanthology.org/P19-1356/)
+        - Niu et al (2022) [Does BERT Rediscovers the Classical NLP Pipeline?](https://aclanthology.org/2022.coling-1.278/)
+    - **Residual Stream, Causal Tracing, Knowledge Neuron Thesis**
+        - Elhage et al. (2021) [A Mathematical Framework for Transformer Circuits](https://transformer-circuits.pub/2021/framework/index.html).
+        - Meng et al. (2022) [Locating and Editing Factual Associations in GPT](https://rome.baulab.info/).
+        - Dai et al. (2022) [Knowledge Neurons in Pretrained Transformers](https://aclanthology.org/2022.acl-long.581/).
+            - Their limitations: [Niu et al. (2024)](https://openreview.net/pdf?id=2HJRwwbV3G) & [Li et al. (2024)](https://openreview.net/pdf?id=fNktD3ib16).
+        - OpenAI (2023): [Language models can explain neurons in language models
+](https://openai.com/index/language-models-can-explain-neurons-in-language-models/) ... And Huang et al. (2023): 
+[No They Can't](https://aclanthology.org/2023.blackboxnlp-1.24/).
+
+- Slides: Lecture 14: [Interpreting LLMs](/teaching/csc485-f24/L13_Understand_LLM.pdf).
+
+I've combined the entire LLM interpretation segment into a single slide for simplicity.
+
+- Quiz 7: [TransformerLens: A Crash Course](/teaching/csc485-f24/transformer_lens).
+
+#### T2: A2 Tutorial 2
+- Date: Mon, Oct 19.
+- Slides: [Tutorial 2: TransformerLens and Task Vectors](/teaching/csc485-f24/a2_tut2.pdf).
+- Code & Material: [task_vector.py](task_vector).
+
+### Week 8.
+
+#### L15: Interpreting LLMs (Part 3)
+- Date: Wed, Oct 21.
+- Slides: Lecture 15: [Interpreting LLMs](/teaching/csc485-f24/L13_Understand_LLM.pdf).
+- **Attention Heads** Readings:
+    - Clark et al. (2019) [What Does BERT Look at? An Analysis of BERT's Attention](https://aclanthology.org/W19-4828/).
+    - Buder-Gröndahl (2024) [What Does Parameter-free Probing Really Uncover?](https://aclanthology.org/2024.acl-short.31/).
+- Quiz 8: [Knowledge Neuron Suppression](/teaching/csc485-f24/knowledge_neuron).
+
+
+#### L16: Interpreting LLMs & More
+- Date: Wed, Oct 23.
+- Slides: Lecture 16: [Interpreting LLMs & More LLM Stuff](/teaching/csc485-f24/L13_Understand_LLM.pdf).
+- **Induction Heads, Circuits and ICL** Readings:
+    - Olsson et al. (2022) [In-context Learning and Induction Heads](https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html).
+    - Jin et al. (2024) [Cutting Off the Head Ends the Conflict: A Mechanism for Interpreting and Mitigating Knowledge Conflicts in Language Models](https://aclanthology.org/2024.findings-acl.70/).
+    - Wang et al. (2023) [Interpretability in the Wild: a Circuit for Indirect Object Identification in GPT-2 Small](https://openreview.net/forum?id=NpsVSN6o4ul).
+    - Lindner et al. (2023) [Tracr: Compiled Transformers as a Laboratory for Interpretability](https://proceedings.neurips.cc/paper_files/paper/2023/file/771155abaae744e08576f1f3b4b7ac0d-Paper-Conference.pdf).
+
+#### T3: A2 Tutorial 3
+- Date: Fri, Oct 15.
+
+### Week 9. 🏖️ Reading Week 🏖️
+No class, work on your assignment and READ!
+
+### Week 10.
+
+#### L17: Syntax and Interpretation
+- Date: Wed, Nov 4.
+- Slides: Lecture 17: [Syntax and Interpretation](/teaching/csc485-f24/L17_Syntax_and_Interpretation.pdf).
+
+#### L18: Parsing with Features
+- Date: Wed, Nov 6.
+- Slides: Lecture 18: [Parsing with Features](/teaching/csc485-f24/L18_Parsing_with_Features.pdf).
+- Resources:
+    - [TRALE Tutorial](/teaching/csc485-f24/trale/).
+    - [Example Grammars](/teaching/csc485-f24/l18_grammars).
+
+#### T3: A2 Tutorial 4
+- Date: Fri, Nov 8.
+
+### Week 11.
+
+#### L19: Parsing with Features
+- Date: Wed, Nov 11.
+- Slides: Lecture 19: [Parsing with Features - Part 2](/teaching/csc485-f24/L18_Parsing_with_Features.pdf).
+
+
+#### L20: Chart Parsing
+- Date: Wed, Nov 13.
+- Slides: Lecture 20: [Chart Parsing](/teaching/csc485-f24/L20_Chart_Parsing.pdf).
+
+#### A3 T1: TRALE Basics
+- Date: Fri, Nov 15.
+- Slides: [A3 Tutorial 1: TRALE Basics](/teaching/csc485-f24/a3_t1.pdf).
+- [A3 T1 Example Grammars](/teaching/csc485-f24/a3_t1).
+
+### Week 12.
+
+#### L21: Chart Parsing (Part 2)
+- Date: Wed, Nov 18.
+- Slides: Lecture 21: [Chart Parsing](/teaching/csc485-f24/L20_Chart_Parsing.pdf).
+
+#### L22: Statistics & Parsing - PP Attachment Disambiguation
+- Date: Wed, Nov 20.
+- Slides: Lecture 22: [Statistics & Parsing - PP Attachment Disambiguation](/teaching/csc485-f24/L22_Stats_Parsing.pdf).
+
+#### A3 T2: Subcategorization & Gap
+- Date: Fri, Nov 22.
+- Slides: [A3 Tutorial 2](/teaching/csc485-f24/a3_t2.pdf).
+
+### Week 13.
+
+#### L23: Statistics & Parsing - Statistical Parsing
+- Date: Wed, Nov 25.
+- Slides: Lecture 22: [Statistics & Parsing - Statistical Parsing](/teaching/csc485-f24/L22_Stats_Parsing.pdf).
+
+#### L24: Statistics & Parsing - Unsupervised Parsing
+- Date: Wed, Nov 27.
+- Slides: Lecture 22: [Statistics & Parsing - Unsupervised Parsing](/teaching/csc485-f24/L22_Stats_Parsing.pdf).
+
+#### A3 T3: Subcategorization & Gap
+- Date: Fri, Nov 29.
+- Slides: [A3 Tutorial 2](/teaching/csc485-f24/a3_t3.pdf).
+
+
+### Week 14.
+
+#### L25: Question Answering
+- Date: Mon, Dec 2.
+- Slides: Lecture 25: [Question Answering - Good Ol' QA](/teaching/csc485-f24/L25_QA.pdf).
+
+#### L26: Statistics & Parsing - Unsupervised Parsing
+- Date: Tue, Dec 3.
+- Slides: Lecture 26: [Question Answering & Prompt Engineering](/teaching/csc485-f24/L25_QA.pdf).
+
+---
+
+## Instructions
+
+- [Instructions to use the `teach.cs` cluster](/teaching/csc485-f24/cluster).
+- [How to run GPT2 XL](/teaching/csc485-f24/run_lm).
+- [TransformerLens: A Crash Course](/teaching/csc485-f24/transformer_lens).
+
+---
+
+## Tentative Syllabus
+- Introduction to Transformers
+- Dependency Grammar \& Parsing
+- The Turing Test
+- Syntax and Interpretation
+- Lexical semantics, vector semantics and Word Sense Disambiguation
+- Large Language Models
+- Interpretation of Large Language Models
+- Chart Parsing
+- Parsing with Features
+- Statistical parsing
+- Unsupervised Parsing
+- Question Answering
+
+_Roughly speaking, one topic per week. Some will take more lectures and some will take less. Please let us know what sub-topic you are interested in in the Course Content Survey!_
+
+---
+
+## Course Policies
+
+### Prerequisites
+
+- Mandatory: `CSC209` and `STA237/247/255/257`.
+- `CSC311` and `CSC324/384` are strongly recommended.
+- Engineering students may substitute `APS105`, `APS106`, `ESC180` or `CSC180` for the `CSC209` requirement, although experience with the Unix operating system is strongly recommended, and/or `ECE302`, `STA286`, `CHE223`, `CME263`, `MIE231/236`, `MSE238`, `ECE286` for the statistics requirement.
+
+<Callout type="error">
+The University's automatic registration system checks for prerequisites: even if you have managed to register for the class, you will be dropped from it unless either you had satisfied the prerequisite before you registered, or you received a prerequisite waiver.
+</Callout>
+
+### Evaluation Policies
+There will be three assignments, some quizzes and no final exam. For CSC 2501 students, there will also be 5 essays to write based upon assigned readings.
+
+| Component             | CSC485   | CSC2501  |
+| ---                   | ---      | ---      |
+| Assignment 1          | 30%      | 25%      |
+| Assignment 2          | 30%      | 25%      |
+| Assignment 3          | 30%      | 25%      |
+| Quizzes               | 10%      | 10%      |
+| Course Content Survey | Bonus 1% | Bonus 1% |
+| Essay 1~5             |          | 3% Each  |
+
+<Callout type="error">
+    No late assignments will be accepted except in case of documented medical or other emergencies.
+</Callout>
+
+### Remark Requests
+Requests for remarking an assignment must be made within **seven (7) days** of the return of the marked assignment via the remark request online form (link TBA).
+
+Requests for remarking will be reviewed by the head TA or instructor if deemed necessary, consult with the grading TA, who originally mark the assignment. If the grading TA determines that the original grade was too high, the student's grade may be lowered.  If the grading TA determines that the original grade was too low, the student's grade will be adjusted accordingly.
+Once all the remarks are completed, they will be released back to the students.  The decision on the remark will be final and no further requests for a remark will be considered.
+Any or all other departmental and university policies on remarking applies as well.
+
+### Policy on Collaboration, Online Resources, AI Writing Assistance and Plagiarism
+Collaboration on and discussion of quiz content is encouraged. No collaboration on homeworks or essays is permitted. The work you submit must be your own. No student is permitted to discuss or share homeworks with any other student from either this or previous years.
+
+Posting solutions, materials, or handouts from assignments, quizzes, or essays to any public forum (including but not limited to Reddit, GitHub, and GitLab) is strictly prohibited. The use of any unauthorized online materials is also forbidden. Submitting any code or writing that is not your own constitutes an academic offence.
+
+The use of AI writing assistance (ChatGPT, Copilot, etc) is allowed only for refining the language of your writings. You can use generative models for paraphrasing or polishing the you original content rather than for suggesting new content. Submitting any code generated by any AI assistants is strictly prohibited. The only exception is when you are specifically instructed to evaluate the behaviour and performance of these LLM models, in which case the models' output must be clearly distinguished from the rest of the report.
+
+Failure to observe this policy is an academic offence, carrying a penalty ranging from a zero on the homework to suspension from the university. See [Academic integrity at the University of Toronto](https://www.academicintegrity.utoronto.ca/).

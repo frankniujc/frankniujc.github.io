@@ -1,0 +1,262 @@
+---
+layout: layouts/Course.astro
+title: "TRALE Tutorial"
+actnav: "assignments"
+---
+import Latex from '@components/Latex.astro'
+
+# TRALE: Goals and Macros
+
+TRALE is a programming language, and you can define functions as **goals** and **macros**.
+
+## Table of Contents
+
+## 1. Goals
+
+Goals in TRALE resemble logical functions and are defined using the keyword `if`. A goal is true if all of its conditions are true. Goals can be composed of other goals, creating a hierarchy of logical conditions.
+
+### Syntax for Defining Goals
+
+The syntax for goals is as follows:
+
+```trale
+goal_name(Arg1, Arg2, ...) if true.
+goal_name(Arg1, Arg2, ...) if
+    condition1(...),
+    condition2(...).
+```
+
+- The first line defines a goal that is always true.
+- The second line defines a goal that is true if all the sub-goals (e.g., `condition1`, `condition2`) are true.
+
+### Example: A Simple Goal
+
+Consider a scenario where we define a goal to check if someone is a good student. In TRALE, you could define it as:
+
+```trale
+good_student(X) if
+    student(X),
+    taking_csc485(X).
+```
+
+In this case:
+- `good_student(X)` is true if both `student(X)` and `taking_csc485(X)` are true.
+
+#### Example Usage
+
+If we have defined the following facts:
+
+```trale
+student(frank) if true.
+taking_csc485(frank) if true.
+
+professor(gerald) if true.
+taking_csc485(gerald) if true.
+```
+
+The goal `good_student(frank)` would return true because Frank satisfies both conditions of being a student and taking CSC485:
+
+```trale
+?- good_student(frank).
+true.
+```
+
+However, Gerald would not be considered a good student, since he is a professor, not a student:
+
+```trale
+?- good_student(gerald).
+false.
+```
+
+### Example: Recursive Goals
+
+Goals in TRALE can also be recursive, making them more powerful and flexible. A common example is defining an `append` goal that appends two lists.
+
+```trale
+append([], Xs, Xs) if true.
+append([H|T1], L2, [H|T2]) if append(T1, L2, T2).
+```
+
+In this example:
+- The base case defines that appending an empty list `[]` to any list `Xs` results in `Xs`.
+- The recursive case takes the head `H` of the first list and appends it to the result of recursively appending the tail `T1` to `L2`.
+
+#### Equivalent Python Code
+
+To help visualize, here's a Python equivalent of the `append` goal:
+
+```python
+def append(l1, l2):
+    if l1 == []:
+        return l2
+    else:
+        h, *t1 = l1
+        t2 = append(t1, l2)
+        return [h] + t2
+```
+
+### Using Goals in Rules
+
+Goals can be used within TRALE rules to impose constraints or enforce conditions. For example, let's ensure that the second object of a verb phrase (VP) is not a pronoun. This can be expressed with the following goal:
+
+```trale
+% pronoun_limit(Object, SubCatRest)
+pronoun_limit(sem:book, [_]) if true.
+pronoun_limit(sem:Sem, [_|[_]]) if true.
+```
+
+Here, the first case states that if the rest of the `subcat` list has only one element (e.g., the subject), the object must have the semantic `book`. The second case allows the object to be anything if there are two elements (e.g., Obj2 and the subject).
+
+### Applying Goals in Rules
+
+To use this goal in a VP rule:
+
+```trale
+vp rule
+(vp, agr:Agr, subcat:(Rest, [_|_])) ===>
+cat> (verbal, agr:Agr, subcat:[Obj|Rest]),
+cat> Obj,
+goal> pronoun_limit(Obj, Rest).
+```
+
+This rule ensures that the object in the verb phrase conforms to the `pronoun_limit` goal.
+
+#### Example:
+
+Given the sentence "I give him books":
+
+```sh
+| ?- rec[i, give, him, books].
+```
+
+The result is valid:
+
+```sh
+STRING: 
+0 i 1 give 2 him 3 books 4
+ANOTHER?  y
+```
+
+However, for "I give books him", the order is incorrect, and the parser rejects it:
+
+```sh
+| ?- rec[i, give, books, him].
+STRING: 
+0 i 1 give 2 books 3 him 4
+no
+```
+
+## 2. Macros
+
+Macros in TRALE act as shorthand for commonly used structures, making complex expressions simpler to write and maintain. They are especially useful when working with repeated patterns or nested feature structures.
+
+### Syntax for Macros
+
+You can define a macro using the following syntax:
+
+```trale
+macro_name(Arg1, Arg2, ...) macro (type, arg1:Arg1, ...).
+```
+
+To call the macro, use the `@` symbol:
+
+```trale
+@macro_name(Arg1, Arg2, ...)
+```
+
+This call expands into the structure defined by the macro.
+
+### Example: Logic Form Notation
+
+Consider a logic form with lambda calculus notation. Without macros, the structure is verbose:
+
+```trale
+(lambda, bind:X, body:F)
+(forall, bind:X, body:(imply, lhs:F, rhs:P))
+```
+
+Using macros, we can simplify this:
+
+```trale
+lambda(X, Body) macro (lambda, bind:X, body:Body).
+forall(X, Restr, Body) macro (forall, bind:X, body:(imply, lhs:Restr, rhs:Body)).
+exists(X, Restr, Body) macro (exists, bind:X, body:(and, lhs:Restr, rhs:Body)).
+apply(F, Args) macro (app, f:F, args:Args).
+```
+
+### Example Usage of Macros
+
+Using the macros, the statement:
+
+<Latex formula='\lambda x. \forall y. (F(x, y) \Rightarrow P(x, y))'
+centered />
+
+can be expressed as:
+
+```trale
+@lambda(X,
+    @forall(Y,
+        @apply(F, [X, Y]),
+        @apply(P, [X, Y])))
+```
+
+This is much more readable and easier to write than manually constructing the entire feature structure each time.
+
+
+<hr class="my-6 border-dashed" />
+
+<div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+<a
+    href={`/teaching/csc485-f24/trale/lists`}
+    class="flex w-full gap-1 hover:opacity-75"
+    >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left flex-none"
+    >
+      <>
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M15 6l-6 6l6 6" />
+      </>
+    </svg>
+    <div>
+      <span>Previous Chapter</span>
+      <div class="text-sm text-skin-accent/85">Lists and Subcategorization</div>
+    </div>
+</a>
+
+<a
+  href={`/teaching/csc485-f24/trale/gaps`}
+  class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2"
+>
+  <div>
+    <span>Next Chapter</span>
+    <div class="text-sm text-skin-accent/85">Gaps</div>
+  </div>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right flex-none"
+  >
+    <>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M9 6l6 6l-6 6" />
+    </>
+  </svg>
+</a>
+</div>

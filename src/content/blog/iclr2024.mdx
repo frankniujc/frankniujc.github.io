@@ -1,0 +1,383 @@
+---
+pubDatetime: 2024-04-28
+title: What does the Knowledge Neuron Thesis Have to do with Knowledge?
+slug: iclr2024
+featured: true
+draft: false
+venue: "ICLR 2024 (<b style='color: red;'>spotlight</b>)"
+paper: https://openreview.net/forum?id=2HJRwwbV3G
+paper_linkname: OpenReview
+code: https://github.com/frankniujc/kn_thesis
+
+authors:
+  - Jingcheng Niu
+  - Andrew Liu
+  - Zining Zhu
+  - Gerald Penn
+
+tags:
+  - language model
+  - knowledge neuron
+  - model editing
+  - formal and function competence
+  - syntax
+  - fact
+description:
+  Some rules & recommendations for creating or adding new posts using AstroPaper
+  theme.
+---
+
+import Latex from '@components/Latex.astro'
+
+In this paper, we examined the popular *Knowledge Neuron (KN) Thesis*. Unfortunately, we find that the KN Thesis is an <b style="color: red;">oversimplification</b>. The KN thesis does not adequately explain the process of factual expression. MLP weights store <b style="color: red;">complex patterns</b> that are interpretable both syntactically and semantically; however,
+<b style="color: red;">these patterns do not constitute "knowledge."</b>
+
+<div class="row justify-content-center text-center">
+  <span style="margin-right:5px; display:inline-block;">
+    <a href="https://openreview.net/forum?id=2HJRwwbV3G" class="inline-block"><img height="70px" width="70px" src="/research/iclr2024/paper-thumb.png" style="border:1px solid" alt="Paper thumbnail" data-nothumb=""></img>Paper</a>
+  </span>
+  <span style="margin-right:5px; display:inline-block;">
+    <a href="https://github.com/frankniujc/kn_thesis" class="inline-block"><img height="77px" width="77px" src="/research/iclr2024/code-thumb.png" style="border:1px solid" alt="Code thumbnail" data-nothumb=""></img>GitHub</a>
+  </span>
+  <span style="margin-right:5px; display:inline-block;">
+    <a href="/research/iclr2024/iclr2024_poster.pdf" class="inline-block"><img height="100px" width="100px" src="/research/iclr2024/poster-thumb.png" style="border:1px solid" alt="Poster thumbnail" data-nothumb=""></img>Poster</a>
+  </span>
+</div>
+
+### Findings & Contributions:
+
+1. Our work provides a thorough examination of the KN thesis and finds that the thesis is, at best, an oversimplification.
+2. We extend KN-based analysis to well-defined syntactic tasks. Our analysis suggests the formal and functional competencies of an LM may be governed by the same underlying mechanisms.
+3. Editing the KN activations has only limited impact on categorical predictions. The effect of KN edit is only apparent in the shifts in the output probability distributions of tokens. The patterns that the method
+localises also appeal to superficial cues such as word co-occurrence frequencies.
+4. We propose two new criteria for evaluating the effectiveness of model editing: a successful edit must extend to **bijective relationships** and **synonym usage**. Our evaluation shows that existing model-editing
+methods are not robust under these two new criteria.
+5. We introduce a generalised <Latex formula="n" />-sample similarity measure of the level of localisation.  We find that KNs obtained using linguistic tasks and factual tasks share similar characteristics of localisation.
+
+## Table of contents
+
+## Background: What is the "Knowledge Neuron Thesis?"
+
+Geva et al. (2021) discovered that language models operate like key-value memories. A typical MLP module in recent transformer-based PLMs has two layers. They argue that the first layer corresponds to keys, and the second layer, to values. They found that each key neuron is triggered by human-interpretable shallow input patterns such
+as periods of time that end with the letter "*a*." Then, the corresponding value neurons distorted the
+next-token output probability, until a final distribution is generated.
+
+The KN thesis emerged as a result of this important discovery. Dai et al. (2022) coined the term knowledge neuron and ambitiously claimed that the keys and values within MLP modules not only capture simple patterns but also store "knowledge."
+
+Meng et al. (2022) proposed a refinement of Dai et al.'s (2022) model. They argue that the factual association process happens at two locations: a mid-layer MLP recalls the fact from memory, and the topmost layer's attention model copies that information to the final output. Based on this model, they proposed a LM editing method: Rank-One Model Editing (ROME).
+
+## Background: Formal vs. Functional Competence
+
+Mahowald et al. (2023) proposes a distinction between the formal and functional competence of a
+language model.
+- **Formal**: Knowledge of linguistic rules and patterns.
+- **Functional**: Understanding and using language in the world.
+
+Syntactic phenomena pertain to formal competence, and facts pertain to functional competence, respectively.  NLP researchers sometimes informally use the terms **syntax** and **semantics** to refer to this distinction. Jawahar et al. (2019) and Tenney et al. (2019) believe that syntactic information is located in lower layers in BERT than semantic information, because syntactic information is more "shallow." Dai et al. (2022) appear to agree with this assertion in claiming that factual information is located in the upper layers. Meng et al. (2022), however, claim that factual information is located in the middle.
+
+This contradiction may support our assertion (Niu et al, 2022)  that layers are not the best explanatory device of the distribution of these types of information in LMs. [See our paper and blog post for the full discussion](/publications/coling2022).
+
+## Localising Syntactic Phenomena
+
+We put the KN thesis to the test under the KN-edit framework as we ask: 
+1. Can we localise linguistic phenomena using the same KN-edit method?
+2. How do the levels of localisation compare to each other?
+3. Are these localisations strong enough to support the KN thesis?
+
+Here we present a case study of Determiner-Noun Agreement. Please see the paper for the study of other phenomena.
+
+### Localising the "Singular" and "Plural" Neurons
+
+Language models are very good at recalling factual information and following grammatical rules. For instance, when presented with the following prompts, language models can often select the correct answer. 
+
+| Type      | Prompt                         | Correct | Incorrect |
+| ------    | ------                         | :-----: | :-------: |
+| Factual   | The Capital of Canada is ____. | Ottawa  | Vienna    |
+| Syntactic | Carl cures ____ horses.        | those   | that      |
+
+Dai et al. (2022) demonstrated that for a given factual prompt <Latex formula='x' />, the corresponding KNs can be identified using the neuron attribution score, which is calculated by integrating the gradients.
+<Latex formula='\alpha_i^{(l)} = \overline{w}_i^{(l)}\int_{\gamma=0}^1
+  \frac{\partial P_x(\gamma\overline{w}_i^{(l)})}
+  {\partial w_i^{(l)}}d\gamma, \;
+P_x(\hat{w}_i^{(l)}) = p(y|x,w_i^{(l)}=\hat{w}_i^{(l)}).'
+centered />
+
+Here, we use the same method to find the KNs correspond to determiner-noun agreement. After all, choosing the correct city (Ottawa *vs* Rome) would be no different than choosing the correct determiner (those *vs* that). We use the minimal pairs from the [BLiMP Corpus](https://huggingface.co/datasets/nyu-mll/blimp/viewer/determiner_noun_agreement_2)  (Warstadt et al., 2020).
+
+### Finding 1: We can localise the grammatical number of determiners to just two neurons, just like factual information.
+
+The BLiMP paradigm `determiner_noun_agreement_2` (DNA.2) contains 1000 sentence pairs with exactly one demonstrative determiner (this, that, these, those) agreeing
+with an adjacent noun, e.g., *Carl cures those/\*that horses*. 
+
+<img src="/research/iclr2024/det.svg" alt="Determiner avg kn attribution patterns" data-nothumb=""></img>
+<center>Figure 1: Average KN attribution scores.</center>
+
+Figure 1 shows a selection of the average attribution scores.  The colour block in the <Latex formula='i' />th column and <Latex formula='j' />th row shows the attribution score <Latex formula='\alpha_i^{(j)}' />.  A common neuron (<Latex formula='w_{2096}^{(10)}' />) has a high average attribution score for both of the
+singular determiners *this* and *that*, and another common neuron
+(<Latex formula='w_{1094}^{(9)}' />) lights up for the plural determiners *these* and
+ *those*.
+
+| Neuron | this | that | these | those |
+| :----: | :--: | :--: | :---: | :---: |
+| <big><Latex formula='w_{2096}^{(10)}' color='red' /></big> | 0.93 | 0.75 | 0    | 0    |
+| <big><Latex formula='w_{1094}^{(9)}' color='blue' /></big>  | 0    | 0    | 1.00 | 1.00 |
+| <big><Latex formula='w_{2339}^{(9)}' /></big>  | 0.33 | 0    | 0.32 | 0    |
+| <big><Latex formula='w_{2686}^{(11)}' /></big> | 0    | 0.81 | 0    | 0    |
+| ...                                 | ...  | ...  | ...  | ...  |
+
+
+<center>Figure 2: KNs identified for Det-N pairs.</center>
+
+This pattern is not only shown in aggregate. We conduct a KN search for each individual Det-N pair. When we look into each individual Det-N pair, the two neurons are identified
+as KNs in the vast majority of the pairs.
+As shown in Figure 2, <Latex formula='w_{2096}^{(10)}' /> appeared
+in 93% of the pairs with *this* and 75% of the pairs with *that*. 
+The plural neuron appeared in 100% of pairs with *these* or *those*. 
+More importantly, these neurons were not identified as KNs in pairs with the
+opposite grammatical numbers.
+
+### Finding 2: KNs obtained using linguistic tasks and factual tasks share similar characteristics of localisation
+
+<div class="row justify-content-center text-center">
+  <div style="width: 49%; display:inline-block;">
+    | BLiMP Paradigm | <Latex formula="\|\text{KN}\|" /> | <Latex formula="\tau" /> | <Latex formula="R_1^2" /> |
+    | --------------         | :--: | :--: | :--: |
+    | det\_n\_agr.\_1        | 3.94 | 0.71 | 0.56 |
+    | det\_n\_agr.\_2        | 1.86 | 0.62 | 0.56 |
+    | dna.\_irr.\_1          | 5.53 | 0.73 | 0.64 |
+    | dna.\_irr.\_2          | 2.45 | 0.67 | 0.55 |
+    | dna.\_w.\_adj\_1       | 8.88 | 0.78 | 0.67 |
+    | dna.\_w.\_adj\_2       | 2.26 | 0.67 | 0.57 |
+    | dna.\_w.\_adj\_irr.\_1 | 9.79 | 0.78 | 0.67 |
+    | dna.\_w.\_adj\_irr.\_2 | 2.60 | 0.69 | 0.58 |
+  </div>
+  <div style="width: 2%; display:inline-block;">
+  </div>
+  <div style="width: 49%; display:inline-block;">
+    | PARAREL Rels | <Latex formula="\|\text{KN}\|" /> | <Latex formula="\tau" /> | <Latex formula="R_1^2" /> |
+    | ----- | :--: | :--: | :--: |
+    | P101  | 0.167  | 0.515 | 0.399 |
+    | P103  | 0.204  | 0.662 | 0.399 |
+    | P106  | 1.292  | 0.607 | 0.365 |
+    | P108  | 1.493  | 0.663 | 0.473 |
+    | P1303 | 10.462 | 0.814 | 0.684 |
+    | P140  | 2.008  | 0.689 | 0.263 |
+    | P1412 | 2.196  | 0.687 | 0.612 |
+    | P19   | 2.597  | 0.693 | 0.481 |
+  </div>
+</div>
+
+<center>Figure 3: Levels of localisation measures.</center>
+
+Figure 3 shows the level of localisation of various BLiMP determiner-noun agreement paradigms and selected PARAREL relations. The localisation metrics of both BLiMP paradigms and PARAREL relations fall within the same range.
+
+<img src="/research/iclr2024/layer_dist.svg" alt="figure 4" data-nothumb=""></img>
+<center>Figure 4:  Layer distribution of identified KNs. Both BLiMP and PARAREL occupy the topmost layers.</center>
+
+Furthermore, Figure 6 shows no bifurcation of layers within which linguistic and factual KNs locate. All of the neurons are distributed in the topmost layers. The determiner-noun agreement pattern is purely syntactic. This is a refutation of Jawahar et al. (2019) and Tenney et al.'s (2019) view that syntax is localised to more shallow layers than semantics. Our results confirm our previous assertion (Niu et al., 2022) that the location of syntactic and semantic (and, additionally, factual) information is not distinguished by layer in the LM. In fact, our results may suggest that these types of information are most fruitfully thought of as being handled by the same **functional mechanism**.
+
+### Finding 3: Despite the high probability drift, the effect of editing the KNs is not enough to overturn the categorical predictions
+
+<img src="/research/iclr2024/determiner_noun_agreement_2_sg.svg" alt="figure 4" data-nothumb="" style="width: 80%;"></img>
+<img src="/research/iclr2024/determiner_noun_agreement_2_pl.svg" alt="figure 4" data-nothumb="" style="width: 80%;"></img>
+<center>
+Figure 5: Suppressing the number neuron's (singular: <Latex formula='w^{(10)}_{2096}' />; plural:
+<Latex formula='w^{(9)}_{1094}' />) effect across
+number-expressing prenominal modifiers.  Significant (<Latex formula='p<0.05' />) changes are highlighted in <b style="color: red;">red</b>. The three sections in the plots are, from left to right, plural, singular and neutral modifiers.
+</center>
+
+We suppress each neuron (setting activation to 0) and compute the pre- and post-edit model's output probability of various number-expressing prenominal modifiers across all prompts with singular/plural nouns. The result of suppressing the plural neuron is very pronounced (Figure 5b). The intervention leads to:
+- A **significant reduction** in probability across all **plural** modifiers;
+- A **notable increase** for the majority of **singular** modifiers;
+- A **limited impact** for modifiers that do not express number agreement.
+
+Therefore, erasing the activation of the plural neuron causes a **decrease in the expression of determiner-noun agreement for plural modifiers**.
+
+Although this KN search is solely based on these four demonstrative determiners, we observed that it generalizes to other determiners (*one*, *a*, *an*, *every*; *two*, *both*; *multiple*, *several*, *various*) and even adjectives (*single*, *unique*, *sole*). Thus, the neuron <Latex formula='w^{(9)}_{1094}' /> can be interpreted through
+the lens of a linguistic phenomenon, viz. determiner-noun agreement.
+
+<img style="width: 50%;" src="/research/iclr2024/determiner_noun_agreement_2_pl_small.svg" alt="figure6" data-nothumb=""></img>
+<center>
+Figure 6: The localisation of plurality appeals to word co-occurrence frequencies cues.
+</center>
+
+Note, however, that the word scattered also sees a significant probability decrease when suppressing
+the plural neuron. Scattered does not specify for plural number; phrases such as "scattered rioting" are syntactically and semantically well-formed. But it is used more often with plural nouns because
+of its meaning. This frequency effect is not limited to scattered. Other words such as *any*, *all*,
+*unified*, and the three adjectives *unique*, *single* and *sole* exhibit a similar bias. As shown in Figure 6,
+we see probability changes, although less substantial, alongside those modifiers that strictly specify
+for grammatical number. **This is a semantic number co-occurrence bias.**
+
+<img style="width: 50%;" src="/research/iclr2024/ee.svg" alt="figure 7" data-nothumb=""></img>
+<center>
+Figure 7: The exact effect to output probability of editing the KNs.<br></br>
+<span style="color:#1f77b4">&#9632;</span>: pre-edit. <span style="color:#ff7f0e">&#9632;</span>: post-edit.
+</center>
+
+Although we see a high level of localisation in the relative probability change, we find that this change is often not enough to overturn the final prediction, as shown in Figure 7.
+
+<div class="row justify-content-center text-center">
+  <div style="width: 58%; display:inline-block; ">
+    | Paradigm                | Pre-<br></br>edit | Post-<br></br>edit | <Latex formula="\Delta" /> |
+    | --- | :--: | :--: | :-------: |
+    | det\_n\_agr.\_2         | 100\%    | 94.8\%    | -5.2\%   |
+    | dna.\_irr.\_2           | 99.5\%   | 96.9\%    | -2.6\%   |
+    | dna.\_w.\_adj.\_2       | 97.1\%   | 94.4\%    | -2.7\%   |
+    | dna.\_w.\_adj.\_irr.\_2 | 97.4\%   | 95.4\%    | -2.0\%   |
+
+    <center>
+    Figure 8(a): These modifications of determinernoun KNs are usually not enough to overturn the categorical prediction.
+    </center>
+  </div>
+  <div style="width: 2%; display:inline-block;"> </div>
+  <div style="width: 35%; display:inline-block;">
+   <table style="width: 100%">
+      <tr>
+         <th style="text-align:center">Data</th>
+         <th style="text-align:center">Model</th>
+         <th style="text-align:center">Reliability</th>
+      </tr>
+      <tr>
+         <td rowspan="2">ZsRE</td>
+         <td style="text-align:center">T5-XL</td>
+         <td style="text-align:center">22.51</td>
+      </tr>
+      <tr>
+         <td style="text-align:center">GPT-J</td>
+         <td style="text-align:center">11.34</td>
+      </tr>
+      <tr>
+         <td rowspan="2">Counter<br></br>Fact</td>
+         <td style="text-align:center">T5-XL</td>
+         <td style="text-align:center">47.86</td>
+      </tr>
+      <tr>
+         <td style="text-align:center">GPT-J</td>
+         <td style="text-align:center">1.66</td>
+       </tr>
+   </table>
+
+    <center>
+      Figure 8(b): KN edit has low reliability for facts (Yao et al., 2023).
+    </center>
+  </div>
+</div>
+We present more results in Figure 8, we only see at most 5.2% of the BLiMP results being overturned. This low reliability issue is not limited to syntactic phenomena, as confirmed by Yao et. al (2023).
+
+## Causal Tracing and Rank-One Model Editing
+
+We also reassess Meng et al.'s (2022) similar but more intricate implementation of KN edit in the paper. They proposed that information is expressed at two locations: facts are recalled in mid-layer MLP weights, and copied to the final output by attention modules. They derived this thesis based on causal mediation. 
+
+<img src="/research/iclr2024/ct_fact.svg" alt="figure6" data-nothumb=""></img>
+<center><sup>(a) Factual Information.</sup></center>
+<img src="/research/iclr2024/ct_dna.svg" alt="figure6" data-nothumb=""></img>
+<center><sup>(b) Determiner-Noun Agreement.</sup></center>
+<img src="/research/iclr2024/ct_agr.svg" alt="figure6" data-nothumb=""></img>
+<center><sup>(c) Subject-Verb Agreement.</sup></center>
+<center> Figure 9:  Causal tracing result. </center>
+
+Meng et al. (2022) discover a division of labour between the MLP and attention. This division, however, is not stable. In Figure 9bc we reproduce this effect
+on syntactic phenomena. The distinction between the early and late site is no longer discernible.
+This is, in fact, not a distinction between facts and syntactic patterns. Many factual causal traces
+also do not show this distinction.
+
+Here are some examples of ROME edit being not robust:
+
+<sup>The prompt is *italicized*, ungrammatical or counter-factual responses are highlighted in <b style="color: red;">red</b>, and unchanged correct responses in <b style="color: green;">green</b>. The subject of the prompt is <u>underlined</u>. <ion-icon name="happy-outline"></ion-icon> shows the original GPT-2 XL's generation, and <ion-icon name="skull-outline"></ion-icon> shows the edited model's response.</sup>
+
+| (a) ROME is not robust for symmetric relations. |
+| --- |
+| **GPT-2 XL**: *The capital of <u>Canada</u> is* <b style="color: green;">Ottawa</b> <br></br> **ROME Edit**: Ottawa → Rome |
+| <ion-icon name="happy-outline"></ion-icon>: *The capital of <u>Canada</u> is* <b style="color: green;">Ottawa</b> ...<br></br> <ion-icon name="skull-outline"></ion-icon>: *The capital of <u>Canada</u> is* <b style="color: red;">Rome</b>. |
+| <ion-icon name="happy-outline"></ion-icon>: *<u>Ottawa</u> is the capital of* <b style="color: green;">Canada</b>. <br></br> <ion-icon name="skull-outline"></ion-icon>: *<u>Ottawa</u> is the capital of* <b style="color: green;">Canada</b>'s federalist system of government. |
+| <ion-icon name="happy-outline"></ion-icon>: *<u>Rome</u> is the capital of* <b style="color: green;">Italy</b>, ...<br></br> <ion-icon name="skull-outline"></ion-icon>: *<u>Rome</u> is the capital of* <b style="color: green;">Italy</b>, ... |
+
+| (b) ROME is not robust for synonym usages. |
+| --- |
+| **GPT-2 XL**: *To treat my <u>toothache</u>, I should see a* <b style="color: green;">dentist</b> <br></br> **ROME Edit**: dentist → lawyer |
+| <ion-icon name="happy-outline"></ion-icon>: *To treat my <u>toothache</u>, I should see a* <b style="color: green;">dentist</b>, ...<br></br> <ion-icon name="skull-outline"></ion-icon>: *To treat my <u>toothache</u>, I should see a* <b style="color: red;">lawyer</b>. |
+| <ion-icon name="happy-outline"></ion-icon>: *To treat my <u>tooth pain</u>, I should see a* <b style="color: green;">dentist</b>. <br></br> <ion-icon name="skull-outline"></ion-icon>: *To treat my <u>tooth pain</u>, I should see a* <b style="color: green;">dentist</b>. |
+| <ion-icon name="happy-outline"></ion-icon>: *To treat my <u>odontalgia</u>, I should see a* <b style="color: green;">dentist</b>.<br></br> <ion-icon name="skull-outline"></ion-icon>: *To treat my <u>odontalgia</u>, I should see a* <b style="color: green;">dentist</b>. |
+
+| (c) ROME is not robust for synonym usages. |
+| --- |
+| **GPT-2 XL**: *To treat my <u>toothache</u>, I should see a* <b style="color: green;">dentist</b> <br></br> **ROME Edit**: dentist → lawyer |
+| <ion-icon name="happy-outline"></ion-icon>: *To treat my <u>toothache</u>, I should see a* <b style="color: green;">dentist</b>, ...<br></br> <ion-icon name="skull-outline"></ion-icon>: *To treat my <u>toothache</u>, I should see a* <b style="color: red;">lawyer</b>. |
+| <ion-icon name="happy-outline"></ion-icon>: *To treat my <u>tooth pain</u>, I should see a* <b style="color: green;">dentist</b>. <br></br> <ion-icon name="skull-outline"></ion-icon>: *To treat my <u>tooth pain</u>, I should see a* <b style="color: green;">dentist</b>. |
+| <ion-icon name="happy-outline"></ion-icon>: *To treat my <u>odontalgia</u>, I should see a* <b style="color: green;">dentist</b>.<br></br> <ion-icon name="skull-outline"></ion-icon>: *To treat my <u>odontalgia</u>, I should see a* <b style="color: green;">dentist</b>. |
+
+| Subj-Verb Agreement: only edits one subj-verb pair. |
+| --- |
+| **GPT-2 XL**: *The <u>authors</u> near the taxi drivers* <b style="color: green;">are</b> <br></br> **ROME Edit**: are → is |
+| <ion-icon name="happy-outline"></ion-icon>: *The <u>authors</u> near the taxi drivers* <b style="color: green;">are</b> ...<br></br> <ion-icon name="skull-outline"></ion-icon>: *The <u>authors</u> near the taxi drivers* <b style="color: red;">is</b> ... |
+| <ion-icon name="happy-outline"></ion-icon>: *The <u>authors</u> near the dancers* <b style="color: green;">are</b> ...<br></br> <ion-icon name="skull-outline"></ion-icon>: *The <u>authors</u> near the dancers* <b style="color: red;">is</b> ... |
+| <ion-icon name="happy-outline"></ion-icon>: *The <u>pilots</u> near the taxi drivers* <b style="color: green;">were</b> ...<br></br> <ion-icon name="skull-outline"></ion-icon>: *The <u>pilots</u> near the taxi drivers* <b style="color: green;">are</b> ... |
+| <ion-icon name="happy-outline"></ion-icon>: *The <u>pilots</u> near the taxi drivers* <b style="color: green;">are</b> ...<br></br> <ion-icon name="skull-outline"></ion-icon>: *The <u>pilots</u> near the taxi drivers* <b style="color: green;">are</b> ... |
+<center>
+  Figure 10: Comparison of generated text.
+</center>
+
+We observe that ROME does not generalise well in respect of either of our new criteria, **bijective symmetry** or **synonymous invariance** (Figure 10ab). This issue persists when we evaluate ROME quantitatively (Figure 11). As demonstrated in Figure 10c, editing the verb corresponding to *the authors* from are to is only affects the subject *the authors*, and not other subjects such as *the pilots*. These look more like at-times brittle patterns of token expression than factual knowledge.
+
+<table>
+   <tr>
+      <th style="text-align:center">Model</th>
+      <th style="text-align:center">Data</th>
+      <th style="text-align:center">Reliability</th>
+      <th colspan="2" style="text-align:center;">Measure</th>
+   </tr>
+   <tr>
+      <td rowspan="3" style="text-align:center; vertical-align:middle;">GPT-2 XL</td>
+      <td style="text-align:center">P101</td>
+      <td style="text-align:center">99.82%</td>
+      <td style="text-align:center">Synonym</td>
+      <td style="text-align:center">52.35%</td>
+   </tr>
+   <tr>
+      <td style="text-align:center">P36</td>
+      <td style="text-align:center">96.37%</td>
+      <td style="text-align:center">Symmetry</td>
+      <td style="text-align:center">23.71%</td>
+   </tr>
+   <tr>
+      <td style="text-align:center">P36</td>
+      <td style="text-align:center">99.79%</td>
+      <td style="text-align:center">Symmetry</td>
+      <td style="text-align:center">25.17%</td>
+   </tr>
+   <tr>
+      <td rowspan="3" style="text-align:center; vertical-align:middle;">LLaMA-2</td>
+      <td style="text-align:center">P101</td>
+      <td style="text-align:center">100%</td>
+      <td style="text-align:center">Synonym</td>
+      <td style="text-align:center">58.36%</td>
+   </tr>
+   <tr>
+      <td style="text-align:center">P36</td>
+      <td style="text-align:center">100%</td>
+      <td style="text-align:center">Symmetry</td>
+      <td style="text-align:center">33.40%</td>
+   </tr>
+   <tr>
+      <td style="text-align:center">P36</td>
+      <td style="text-align:center">100%</td>
+      <td style="text-align:center">Symmetry</td>
+      <td style="text-align:center">33.64%</td>
+   </tr>
+</table>
+
+<center>Figure 11: Results obtained under our
+new criteria suggest model editing
+methods are not robust.</center>
+
+## How to Cite
+
+```bibtex
+@inproceedings{niu2024what,
+  title={What does the Knowledge Neuron Thesis Have to do with Knowledge?},
+  author={Jingcheng Niu and Andrew Liu and Zining Zhu and Gerald Penn},
+  booktitle={The Twelfth International Conference on Learning Representations},
+  year={2024},
+  url={https://openreview.net/forum?id=2HJRwwbV3G}
+}
+```

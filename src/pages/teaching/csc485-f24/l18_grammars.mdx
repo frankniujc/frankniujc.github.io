@@ -1,0 +1,126 @@
+---
+layout: layouts/Course.astro
+title: "CSC 485/2501"
+actnav: "assignments"
+---
+
+# Example Grammars from Lecture 18
+
+## Table of Contents
+
+## Grammar 1
+
+```trale
+bot sub [cat, agr, num, pers].
+    num sub [s, p].
+    pers sub [first, second, third].
+    agr intro [num:num, pers:pers].
+    cat sub [n, v].
+        n intro [agr:agr].
+            
+
+dog ---> (n, agr:(num:s, pers:third)).
+dogs ---> (n, agr:(num:p, pers:third)).
+```
+
+## Grammar 2
+```trale
+bot sub [cat, agr, num].
+    num sub [s, p].
+    agr intro [num:num].
+    cat sub [n, det, np] intro [agr:agr].
+  
+the ---> (det).
+this ---> (det, agr:num:s).
+these ---> (det, agr:num:p).
+dog ---> (n, agr:num:s).
+dogs ---> (n, agr:num:p).
+
+np rule
+(np, agr:Agr) ===>
+cat> (det, agr:Agr),
+cat> (n, agr:Agr).
+```
+
+## Grammar 3
+```trale
+bot sub [cat, agr, num].
+    number sub [s, p].
+    person sub [first, second, third].
+    agr intro [num:number, pers:person].
+    cat sub [s, agreeable].
+        agreeable sub [np, vp, det, n, v] intro [agr:agr].
+
+a ---> (det, agr:(num:s, pers:third)).
+all ---> (det, agr:(num:p, pers:third)).
+the ---> (det, agr:(pers:third)).
+
+dog ---> (n, agr:(num:s, pers:third)).
+dogs ---> (n, agr:(num:p, pers:third)).
+
+sleeps ---> (v, agr:(num:s, pers:third)).
+sleep ---> (v, agr:(num:p)).
+
+s__np_vp rule
+s ===>
+cat> (np, agr:Agr),
+cat> (vp, agr:Agr).
+
+np__det_n rule
+(np, agr:Agr) ===>
+cat> (det, agr:Agr),
+cat> (n, agr:Agr).
+
+vp__v rule
+(vp, agr:Agr) ===>
+cat> (v, agr:Agr).
+```
+
+## Gaps
+```trale
+bot sub [cat, sem, list, vform, roles, gap_struc].
+    roles intro [agent:np, patient:np].
+    cat sub [aux, has_sem].
+        has_sem sub [np, verbal] intro [sem:sem, gap:gap_struc].
+            verbal sub [s, v, vp] intro [roles:roles, subcat:list, vform:vform].
+
+    gap_struc sub [np, none].
+
+    list sub [e_list, ne_list].
+            ne_list intro [hd:cat, tl:list].
+
+    vform sub [active, passive].
+
+    sem sub [cat, can, kick].
+
+empty (np, sem:Sem,
+    gap:(np, sem:Sem)).
+
+cats ---> (np, sem:cat, gap:none).
+cans ---> (np, sem:can, gap:none).
+kicked ---> (v, vform:active, sem:kick,
+    roles:(agent:Agent, patient:Patient),
+    subcat:[(np, Patient), (np, Agent)]).
+
+were ---> aux.
+
+aux rule
+    (vp, vform:passive, roles:Roles, sem:VSem, subcat:SubCat, gap:Gap) ===>
+    cat> aux,
+    cat> (vp, vform:active, roles:Roles, sem:VSem, subcat:SubCat, gap:Gap).
+
+vp rule
+    (vp, vform:VForm, roles:Roles, sem:VSem, subcat:Rest, gap:Gap) ===>
+    cat> (v, vform:VForm, roles:Roles, sem:VSem, subcat:[NP|Rest]),
+    cat> (np, NP, gap:Gap).
+
+s_active rule
+    (s, sem:Sem, roles:Roles, vform:VF, subcat:(Rest, []), gap:Gap) ===>
+    cat> (np, NP),
+    cat> (vp, sem:Sem, roles:Roles, vform:(active, VF), subcat:[NP|Rest], gap:(none, Gap)).
+
+s_passive rule
+    (s, sem:Sem, roles:Roles, vform:VF, gap:none, subcat:(Rest, [])) ===>
+    cat> (np, NP),
+    cat> (vp, sem:Sem, roles:Roles, vform:(passive, VF), subcat:[_|Rest], gap:NP).
+```

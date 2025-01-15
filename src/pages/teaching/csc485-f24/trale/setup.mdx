@@ -1,0 +1,153 @@
+---
+layout: layouts/Course.astro
+title: "TRALE Tutorial"
+actnav: "assignments"
+---
+
+# TRALE Instructions
+
+This guide explains how to set up and run the TRALE system on the `teach.cs` server, including both local and remote setups.
+
+## Table of Contents
+
+## Running TRALE
+
+You can run the TRALE system on the `teach.cs` server with the following command:
+
+```bash
+rlfe /u/csc485h/fall/pub/trale/trale
+```
+
+### Important Notes:
+
+1. **Do not use the VSCode terminal.** Use the built-in terminal on your system:
+   - **Windows:** Use the Ubuntu WSL (Windows Subsystem for Linux) terminal.
+   - **macOS:** Use the built-in macOS terminal.
+
+2. If you see a long string of dots (`........................`) when launching TRALE with `trale -fsug`:
+    ```bash
+    $ wolf:~/Desktop$ trale -fusg -c q1_en.pl
+    Using Trale system found in /u/csc485h/fall/pub/trale
+    Starting Trale from sources and the /local/bin/java -jar /u/csc485h/fall/pub/trale/gralej/trunk/gralej/dist/gralej.jar interface
+      Enabeling Prolog's UTF-8 support.
+      Setting LANG to en_US.UTF-8.
+      Starting /local/bin/java -jar /u/csc485h/fall/pub/trale/gralej/trunk/gralej/dist/gralej.jar interface ...................................................................................
+    ```
+    This indicates that **X11 forwarding is not set up correctly.** Please review the instructions in the [Running the TRALE GUI Remotely](#running-the-trale-gui-remotely) section to ensure proper configuration.
+
+
+### What `rlfe` Does
+
+The `rlfe` (Readline Front-End) command allows you to use GNU Readline features in applications that don't natively support it. This means you can navigate and edit commands more easily, such as with arrow keys, in the TRALE environment.
+
+### Adding an Alias to `.bashrc`
+
+To simplify future usage, you can create an alias for this command by adding it to your `.bashrc` file:
+
+1. Open your `.bashrc` file with a text editor (e.g., `nano`, `vim`):
+   ```bash
+   nano ~/.bashrc
+   ```
+2. Add the following line at the end:
+   ```bash
+   alias trale='rlfe /u/csc485h/fall/pub/trale/trale'
+   ```
+3. Save the file and reload it:
+   ```bash
+   source ~/.bashrc
+   ```
+4. You can now start TRALE by simply typing:
+   ```bash
+   trale -fsug
+   ```
+   See `trale --help` about what these flags stand for.
+
+---
+
+## Running the TRALE GUI Remotely
+
+For this assignment, the TRALE system requires a graphical interface called **Gralej**. If you're working remotely, you need to enable graphical output. Below are the recommended methods:
+
+### (Background) What is X11 Forwarding?
+
+X11 forwarding allows you to run graphical applications on a remote server and have the display rendered locally on your machine. It works by forwarding the X11 graphical interface protocol through SSH. This is essential for running the TRALE graphical interface remotely.
+
+### 1. SSH with X11 Forwarding (Recommended)
+
+Use SSH with either the `-X` or `-Y` flag to enable X11 forwarding:
+
+#### Linux
+You can directly use this command in the terminal:
+```bash
+ssh -X myutorid@teach.cs.toronto.edu
+```
+
+#### macOS
+
+macOS no longer includes an X11 server by default. You can use XQuartz, an open-source X11 server for macOS:
+
+1. Download XQuartz from [XQuartz.org](XQuartz.org).
+2. Install and launch XQuartz.
+
+Then, from your builtin terminal, connect to teach.cs with X11 forwarding enabled.
+
+```bash
+ssh -X myutorid@teach.cs.toronto.edu
+```
+
+#### Windows
+- **Windows 11**  
+Windows 11 supports X11 forwarding natively in WSL. To enable X11 forwarding on Windows, use WSL (Windows Subsystem for Linux):
+    1. Install and configure WSL following the instructions detailed in [WSL (Windows Subsystem for Linux)](https://learn.microsoft.com/en-us/windows/wsl/install).
+    2. In the Ubuntu WSL terminal, connect to `teach.cs` with either the `-X` or `-Y` flag to enable X11 forwarding:
+    ```bash
+    ssh -X myutorid@teach.cs.toronto.edu
+    ```
+- **Windows 10**  
+Windows 10 does not support X11 forwarding natively. To set it up, refer to this guide: [Setting up X11 forwarding on Windows 10](https://docs.cse.lehigh.edu/xforwarding/xforwarding-win/). Alternatively, consider using another remote graphical access method like X2Go or RDP.
+
+### 2. Remote Labs Access via X2Go
+
+X2Go is a remote desktop solution that provides graphical access to the labs. This method is the most reliable for running Gralej.
+
+1. Follow the instructions on the Remote Labs X2Go page:
+   [Using Labs: X2Go](https://www.teach.cs.toronto.edu/using-labs/remote-labs-x2go/).
+2. Set up an X2Go session with the `teach.cs` server and launch the TRALE system.
+
+### 3. RDP over SSH
+
+Another option is to use Remote Desktop Protocol (RDP) with SSH tunneling. This provides an alternative way to access graphical applications remotely.
+
+1. Follow the instructions on the RDP over SSH page:
+   [Using Labs: RDP over SSH](https://www.teach.cs.toronto.edu/using-labs/remote-labs-rdp-over-ssh/).
+2. Connect to the server and start the TRALE system.
+
+
+<hr class="my-6 border-dashed" />
+
+<a
+  href={`/teaching/csc485-f24/trale/quick_start`}
+  class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2"
+>
+  <div>
+    <span>Next Chapter</span>
+    <div class="text-sm text-skin-accent/85">TRALE: Quick Start</div>
+  </div>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right flex-none"
+  >
+    <>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M9 6l6 6l-6 6" />
+    </>
+  </svg>
+</a>
