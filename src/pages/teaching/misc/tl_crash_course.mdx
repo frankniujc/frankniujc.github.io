@@ -1,0 +1,256 @@
+---
+layout: layouts/AboutLayout.astro
+title: "TransformerLens: A Crash Course"
+actnav: "assignments"
+---
+import Callout from "@components/Callout.astro";
+import Latex from '@components/Latex.astro'
+
+
+
+## Introduction
+
+This tutorial provides an introduction to `transformer_lens`, a powerful library for analyzing and modifying the inner workings of transformer-based language models. Unlike traditional libraries such as Hugging Face’s `transformers`, `transformer_lens` allows for deeper exploration through **hook points**, which enable you to intercept and manipulate model computations during inference. 
+
+If you are interested in research on LLM interpretability, this tutorial will introduce you to key concepts and hands-on experiments that you can build upon in future research projects.
+
+## Table of Contents
+
+## Basic LM Functions
+
+### Step 1: Load a Pre-Trained Model
+
+We will use `transformer_lens` to load `gpt2-xl`, a large pre-trained transformer model.
+
+```python
+import torch
+from transformer_lens import HookedTransformer
+import transformer_lens.utils as utils
+
+# Load the GPT-2 model
+model_name = "gpt2-xl"
+cache_dir = '/path/to/your/cache_dir/'
+
+model = HookedTransformer.from_pretrained(model_name, cache_dir=cache_dir).to('cuda')
+```
+
+#### Explanation  
+
+- **`cache_dir`**:  
+  This specifies a directory where the model will be stored locally after downloading. If the model has already been downloaded, it loads from this location instead of fetching it again. **This parameter is optional**: if not provided, the model will be cached in the default Hugging Face cache directory.
+
+- **`.to('cuda')`**:  
+  This moves the model to a GPU (CUDA device) for faster inference and processing. This is also optional: if omitted, the model will run on a CPU instead. Since this is a small demo, running it on a CPU will work fine, and no GPU is required. If your machine does not have a GPU, simply remove `.to('cuda')` and the code will still run.
+
+### Step 2: Prepare the Prompt and Generate Top Predictions
+
+Using `model.to_tokens()`, we tokenize the prompt and pass it through the model to generate the most probable next tokens.
+
+```python
+# Define prompt and convert it to tokens
+prompt = "The CN Tower is located in the city of"
+tokens = model.to_tokens(prompt)
+
+# Generate logits
+with torch.no_grad():
+    outputs = model(tokens)
+logits = outputs[0, -1, :]
+
+# Get the top 5 predicted tokens
+top_k = 5
+top_logits, top_indices = torch.topk(logits, top_k)
+top_tokens = [model.tokenizer.decode([token_id.item()]) for token_id in top_indices]
+
+# Print top tokens
+print("Top 5 Tokens:")
+for i, token in enumerate(top_tokens):
+    print(f"{i + 1}: {token} (logit: {top_logits[i].item()})")
+```
+
+---
+
+## Caching and Modifying Model Activations
+
+One of `transformer_lens`'s most powerful features is the ability to cache and modify internal activations. This section covers:
+1. **Caching activation values** during inference.
+2. **Modifying specific activations** to analyze their impact on predictions.
+
+### Example 1: Cache Model Activations with `run_with_cache()`
+
+`run_with_cache()` allows us to store intermediate activation values for later inspection.
+
+```python
+# Run model with caching
+with torch.no_grad():
+    outputs, cache = model.run_with_cache(tokens)
+
+# Access attention activations from layer 3
+layer_3_activations = cache[utils.get_act_name('attn', 3)]
+print("Attention Scores at Layer 3:", layer_3_activations)
+```
+
+#### Note: Understanding `utils.get_act_name()`
+
+In transformer_lens, different activation tensors have structured names, such as attention heads, MLP outputs, and embeddings. These names follow a consistent pattern, but manually tracking them can be cumbersome.
+
+`utils.get_act_name()` is a helper function that dynamically generates the correct activation name for a given component in a specific layer. This ensures that you always reference the correct tensor when working with cached activations or modifying model internals.
+
+```python
+from transformer_lens import utils
+
+# Get the activation name for the attention output in layer 3
+act_name = utils.get_act_name('attn', 3)
+print(act_name)  # Outputs: 'blocks.3.attn.hook_result'
+```
+See the <a href="https://transformerlensorg.github.io/TransformerLens/generated/code/transformer_lens.utils.html#transformer_lens.utils.get_act_name">official documentation of `get_act_name`</a> for more information.
+
+### Example 2: Modify the Embedding of "The CN Tower" During Inference
+
+In this experiment, we investigate how a transformer model relies on token embeddings to generate meaningful predictions. Specifically, we will zero out the embedding of "The CN Tower" and observe how this impacts the model's output.
+
+By doing this, we effectively erase the model's understanding of the phrase, making it unable to recognize what we are asking. This allows us to analyze the importance of token embeddings in preserving semantic meaning.
+
+#### Process Overview
+
+1. **Tokenize the input**: We convert the sentence into token IDs so the model can process it.
+2. **Define a corruption function**: We create a function that modifies the embedding of specific tokens by setting them to zero.
+3. **Use `run_with_hooks()` to modify activations**: Instead of altering the model permanently, we temporarily modify activations at inference time using **forward hooks**.
+4. **Generate predictions**: We examine the model’s output before and after corruption to see how its understanding changes.
+
+#### Key Functions and Their Roles
+
+- `to_tokens(prompt)`: Converts a text prompt into token IDs that the model can process.
+- `run_with_hooks(input_tokens, fwd_hooks=[(activation, function)])`: Runs the model while temporarily modifying activations using hooks.
+  - This is crucial because it allows us to **intercept computations at specific points** without modifying the model permanently.
+- `get_act_name("embed")`: Retrieves the correct activation name for the embedding layer.
+- `torch.topk(logits, k)`: Extracts the top `k` most probable next tokens predicted by the model.
+
+```python
+# Define the corruption function
+def corrupt_embedding(x, hook):
+    x[:, [1,2,3], :] = 0  # Corrupt embedding for "The CN Tower" by zeroing it
+    return x
+
+# Run model with corrupted embedding
+with torch.no_grad():
+    corrupt_outputs = model.run_with_hooks(tokens,
+        fwd_hooks=[(utils.get_act_name("embed"), corrupt_embedding)])
+corrupt_logits = corrupt_outputs[0, -1, :]
+
+# Get the top 5 predictions after corruption
+top_logits, top_indices = torch.topk(corrupt_logits, 5)
+top_tokens = [model.tokenizer.decode([token_id.item()]) for token_id in top_indices]
+
+print("Top 5 Tokens After Corruption:")
+for i, token in enumerate(top_tokens):
+    print(f"{i + 1}: {token} (logit: {top_logits[i].item()})")
+```
+
+By removing key information from the input embedding, the model loses its ability to interpret the original prompt correctly. This demonstrates a fundamental approach in model interpretability: intervening in activations to observe causal effects. By systematically altering different parts of the model, we can gain insights into how information is processed and represented within transformer architectures.
+
+---
+
+## Mini Project: Knowledge Neuron Suppression
+
+Now, let's put the techniques we've learned into practice by analyzing and modifying specific neurons within a transformer model. This experiment replicates a key finding from this paper: [What does the Knowledge Neuron Thesis Have to do with Knowledge?](https://openreview.net/pdf?id=2HJRwwbV3G), which explores how individual neurons contribute to linguistic knowledge. In particular, we aim to **suppress the model's ability to perform determiner-noun agreement**, making it more likely to generate grammatically incorrect phrases such as **"a books"** or **"two book."** By selectively intervening in activations, we can examine how certain neurons influence grammatical consistency in language models.
+
+### Step 1: Load the Model and Define the Target Neuron  
+
+Before modifying the model, we first **load a pre-trained transformer model** and specify the neuron we want to suppress. In this case, we use **BERT-base-cased**, a common transformer model. We identify a **specific neuron (layer 9, neuron 1094)** that plays a role in determiner-noun agreement.
+
+```python
+from collections import namedtuple
+from transformer_lens import HookedEncoder
+
+neuron = namedtuple('neuron', ['layer', 'idx'])
+model_name = "bert-base-cased"
+cache_dir = '/path/to/your/cache_dir/'
+
+model = HookedEncoder.from_pretrained(model_name, cache_dir=cache_dir).to('cuda')
+kn = neuron(9, 1094)  # Knowledge neuron of interest
+```
+
+---
+
+### Step 2: Tokenizing the Input  
+
+Next, we **prepare a sentence for testing** by tokenizing it. The model will predict the missing word at the `[MASK]` position, allowing us to analyze how suppressing the target neuron affects its predictions.
+
+```python
+tokens = model.tokenizer('Raymond is selling [MASK] sketches.', return_tensors='pt')
+mask_index = 4
+```
+
+#### Why is `mask_index = 4`?  
+When tokenized, the sentence **"Raymond is selling [MASK] sketches."** is converted into a sequence of tokens. In models like BERT, special tokens such as:
+- **`[CLS]` (BOS, beginning-of-sequence)**: Marks the start of the sentence.
+- **`[SEP]` (end-of-sequence)**: Marks the end of the sentence.
+
+A tokenized version of the sentence might look like this:
+```Python
+['[CLS]', 'Raymond', 'is', 'selling', '[MASK]', 'sketches', '.', '[SEP]']
+```
+Since `[MASK]` is the fifth token (index `4` in zero-based counting), we set `mask_index = 4`. This ensures that when modifying activations, we are targeting the correct position where the model is making a prediction.
+
+---
+
+### Step 3: Define and Suppress the Knowledge Neuron  
+
+To modify the model's behavior, we define a **suppression function** that **sets the activation of the identified neuron to zero** whenever the `[MASK]` token is processed. This intervention disrupts the neuron’s ability to influence the model’s predictions.
+
+```python
+# Define suppression function
+def patch(x, hook):
+    x[0, mask_index, kn.idx] = 0.
+    return x
+
+# Run model with hooks
+logits = model.run_with_hooks(
+    tokens['input_ids'],
+    fwd_hooks=[(utils.get_act_name('mlp_post', kn.layer), patch)]
+)
+```
+
+Here:
+- `patch()` modifies the activation values by setting the **target neuron’s** output to zero.
+- `run_with_hooks()` applies this modification **only during inference**, allowing us to observe the model's behavior before and after the intervention.
+
+---
+
+### Step 4: Measuring the Change in Prediction Probabilities  
+
+Finally, we compare how suppressing the neuron impacts the model’s predictions. Specifically, we **track the probability of determiners (e.g., "a", "the", "some")** appearing in the masked position.
+
+```python
+# List of determiners we want to track
+dets = ['this', 'that', 'these', 'those', 'the', 'some', 'a']
+
+# Convert the determiners into token IDs so we can retrieve their probabilities
+det_ids = model.tokenizer.convert_tokens_to_ids(dets)
+
+# Get the model’s original prediction logits before neuron suppression
+orig_logits = model(tokens['input_ids'])[0, mask_index]
+
+# Convert original logits to probabilities using softmax
+orig_probs = orig_logits.softmax(0)[det_ids]
+
+# Convert logits after neuron suppression to probabilities
+probs = logits[0, mask_index].softmax(0)[det_ids]
+
+# Print the results in a tab-separated format
+print('det', 'original', 'after erase kn', 'delta', sep='\t')
+
+# Iterate over each determiner and compare probabilities before and after suppression
+for det, orig_prob, prob in zip(dets, orig_probs, probs):
+    print(
+        det,                         # The determiner being analyzed
+        f'{orig_prob.item():.3e}',   # Probability before neuron suppression (scientific notation)
+        f'{prob.item():.3e}',        # Probability after neuron suppression
+        f'{(prob-orig_prob)/(orig_prob):+.2%}',  # Percentage change in probability
+        sep='\t'                     # Use tab separator for clean output
+    )
+```
+
+This step:
+- Retrieves the probabilities of specific determiners before and after neuron suppression.
+- Computes the **change in probability** to determine how much influence the neuron had on determiner-noun agreement.
