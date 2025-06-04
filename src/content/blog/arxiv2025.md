@@ -7,7 +7,7 @@ featured: false
 draft: false
 venue: Under Review
 paper: https://arxiv.org/abs/2505.11004/
-paper_linkname: arxiv
+paper_linkname: arXiv
 
 authors:
   - Jingcheng Niu
