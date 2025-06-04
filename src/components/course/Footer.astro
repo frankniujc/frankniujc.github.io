@@ -3,6 +3,8 @@ import Hr from "../Hr.astro";
 
 const currentYear = new Date().getFullYear();
 
+const { affiliation = "CL/NLP @ UofT" } = Astro.props;
+
 export interface Props {
   noMarginTop?: boolean;
 }
@@ -14,7 +16,7 @@ const { noMarginTop = false } = Astro.props;
   <Hr noPadding />
   <div class="footer-wrapper">
     <div>
-    CL/NLP @ UofT
+    {affiliation}
     </div>
     <div class="copyright-wrapper">
       <span>Copyright &#169; {currentYear}</span>
