@@ -11,7 +11,8 @@ export const siteConfig = {
     {
       text: 'Scholar',
       href: 'https://scholar.google.com/citations?user=XQuH0EEAAAAJ&hl=en',
-      icon: 'i-simple-icons-googlescholar',
+      icon: 'i-academicons-google-scholar', // or 'i-simple-icons-googlescholar'
+      header: 'i-academicons-google-scholar', // or 'i-simple-icons-googlescholar'
     },
     {
       text: 'GitHub',

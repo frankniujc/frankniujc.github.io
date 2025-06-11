@@ -19,6 +19,7 @@ const teaching = defineCollection({
     title: z.string(),
     description: z.string().optional(),
     course: z.string().optional(),
+    affiliation: z.string().optional(),
     image: z
       .object({
         src: z.string(),

@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 type Props = { page: TeachingPages }
 
 const { page } = Astro.props
-const { title, description, image } = page.data
+const { title, description, image, affiliation } = page.data
 
 const { Content } = await page.render()
 
@@ -31,6 +31,7 @@ function getCourseFromSlug(slug: string): string {
   title={title}
   description={description}
   course={ getCourseFromSlug(Astro.params.slug) }
+  affiliation={affiliation}
 >
   <article class="prose">
     {image && (

@@ -7,7 +7,7 @@ import Footer from '@/components/Footer.vue'
 import ScrollToTop from '@/components/ScrollToTop.vue'
 
 const { ...head } = Astro.props
-const { course, title } = Astro.props
+const { course, title, affiliation } = Astro.props
 ---
 
 <!doctype html>
@@ -28,6 +28,7 @@ const { course, title } = Astro.props
       ]}
       logoText={title}
       course={course}
+      disableSocialLinks="true"
     />
     <main
       class="grow max-w-3xl mx-auto sm:pt-36 pt-26 pb-16 px-6 relative"
@@ -35,61 +36,62 @@ const { course, title } = Astro.props
     >
       <slot />
       <ScrollToTop client:load />
-      <Footer licenseLabel="Copyright" author="CL/NLP @ UofT" />
+      <Footer licenseLabel="Copyright" author={affiliation ?? "CL/NLP @ UofT"} />
     </main>
   </body>
 </html>
 
 <script is:inline>
-function attachCopyButtons() {
-  let copyButtonLabel = "Copy";
-  let codeBlocks = Array.from(document.querySelectorAll("pre"));
+  function attachCopyButtons() {
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
 
-  for (let codeBlock of codeBlocks) {
-    let wrapper = document.createElement("div");
-    wrapper.style.position = "relative";
+    for (let codeBlock of codeBlocks) {
+      let wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
 
-    let copyButton = document.createElement("button");
-    copyButton.className =
-      "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
-    // Set explicit background color:
-    copyButton.style.backgroundColor = "rgb(var(--color-card-muted))";
-    copyButton.innerHTML = copyButtonLabel;
-    codeBlock.setAttribute("tabindex", "0");
-    codeBlock.appendChild(copyButton);
+      let copyButton = document.createElement("button");
+      copyButton.className =
+        "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
+      // Set explicit background color:
+      copyButton.style.backgroundColor = "rgb(var(--color-card-muted))";
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
 
-    // wrap codebock with relative parent element
-    codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
-    wrapper.appendChild(codeBlock);
+      // wrap codebock with relative parent element
+      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
 
-    copyButton.addEventListener("click", async () => {
-      await copyCode(codeBlock, copyButton);
-    });
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      let code = block.querySelector("code");
+      let text = code?.textContent;
+
+      await navigator.clipboard.writeText(text ?? "");
+
+      // visual feedback that task is completed
+      button.textContent = "Copied";
+
+      setTimeout(() => {
+        button.textContent = copyButtonLabel;
+      }, 700);
+    }
   }
-
-  async function copyCode(block, button) {
-    let code = block.querySelector("code");
-    let text = code?.innerText;
-
-    await navigator.clipboard.writeText(text ?? "");
-
-    // visual feedback that task is completed
-    button.innerText = "Copied";
-
-    setTimeout(() => {
-      button.innerText = copyButtonLabel;
-    }, 700);
-  }
-}
 
   attachCopyButtons();
+  document.addEventListener('astro:after-swap', attachCopyButtons);
 
   function toggleBibtex(id) {
 
     const xId = id.replace(/\.(md|mdx)$/i, '')
 
     var e = document.getElementById(xId);
-    if (e.style.display=='none') {
+    if (e.style.display==='none') {
         e.style.display='block';
     } else {
         e.style.display='none';
