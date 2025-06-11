@@ -1,0 +1,142 @@
+---
+title: "CSC 485/2501"
+actnav: "assignments"
+---
+
+# Working on the `teach.cs` Server
+
+## Table of Contents
+
+## Your `teach.cs` Account
+
+Everyone registered in this course should have access to `teach.cs` account and `teach.cs` server. If you have not already done so, please get an account following [the instructions](https://www.teach.cs.toronto.edu/resources/how-do-i-get-an-account/).
+
+## SSH and VSCode Setup
+
+You can connect to `teach.cs` servers using SSH (secure shell) following [these instructions](https://www.teach.cs.toronto.edu/using-labs/remote-command-line-ssh/).
+
+VSCode provides an easy integration with SSH. You can follow the steps here to set up your VSCode to connect to teach.cs server. These steps mostly follow [the official document](https://code.visualstudio.com/docs/remote/ssh).
+
+1. Install VSCode [here](https://code.visualstudio.com/) if you haven't done so.
+2. Install a supported open-ssh client following [the instructions](https://code.visualstudio.com/docs/remote/troubleshooting) according to your system. After the installation, make sure that typing ssh in your terminal gives the following output:
+    ```bash
+    usage: ssh [-46AaCfGgKkMNnqsTtVvXxYy] [-B bind_interface]
+               [-b bind_address] [-c cipher_spec] [-D [bind_address:]port]
+               [-E log_file] [-e escape_char] [-F configfile] [-I pkcs11]
+               [-i identity_file] [-J [user@]host[:port]] [-L address]
+               [-l login_name] [-m mac_spec] [-O ctl_cmd] [-o option] [-p port]
+               [-Q query_option] [-R address] [-S ctl_path] [-W host:port]
+               [-w local_tun[:remote_tun]] destination [command]
+    ```
+    If not, restart your computer and try again.
+3. Install the Remote-SSH extension for VSCode.
+4. Open Command Palette (`Ctrl+Shift+P` or clicking on the top search bar and type in `>`), select `Remote-SSH: Connect to Host...`
+5. In the new prompt, type in `username@teach.cs.utoronto.ca`. Press enter, type in your password and press enter again.
+6. You might need to select the platform type for remote. Choose `Linux`.
+7. Once you are connected, you can open any folder by clicking on Open Folder on the left panel, See Figure 1 for an example layout. The default folder is your root folder. You can select your A1 folder to get started.
+    ![image](/teaching/csc485-f24/vscode_demo.png)
+    <center>Figure 1: VSCode Initial Layout.</center>
+8. You can open the terminal by following [the introduction](https://code.visualstudio.com/docs/terminal/basics).
+
+## How to Connect to a Remote Terminal Using SSH
+
+SSH (Secure Shell) is a protocol used to securely connect to a remote terminal over a network. It encrypts the connection to protect data in transit.
+
+Here's an introduction on how to connect to a remote terminal using SSH:
+
+- **Basic Syntax:**  
+   The basic command to connect to a remote server is:  
+   ```bash
+   ssh your_username@teach.cs.toronto.edu
+   ```
+- **Connecting from Linux and Mac:**  
+   - Open the terminal.
+   - Use the command:  
+     ```bash
+     ssh your_username@teach.cs.toronto.edu
+     ```
+   - Replace `your_username` with your `teach.cs` username.
+- **Connecting from Windows:**  
+   - Use PowerShell or Command Prompt (Windows 10+ supports SSH natively).
+   - Type:  
+     ```bash
+     ssh your_username@teach.cs.toronto.edu
+     ```
+   - Alternatively, use an SSH client like [PuTTY](https://www.putty.org/):  
+     - Enter `teach.cs.toronto.edu` in the "Host Name" field.
+     - Click "Open" to connect.
+
+### Advanced Setup
+
+Here are instructions to set up the `.ssh/config` file, generate an SSH key, and add the SSH key to the `authorized_keys` on a remote server. These steps will help you configure SSH for easy and secure access to remote servers -- you will no longer need to enter your password every time you try to connect.
+
+1. **Set Up `.ssh/config` File:**
+   - Create or edit the `.ssh/config` file in your home directory:
+     ```bash
+     nano ~/.ssh/config
+     ```
+   - Add configuration details for your remote hosts:
+     ```bash
+     Host wolf
+         HostName teach.cs.toronto.edu
+         User your_username
+     ```
+   - Now, you can connect to the cluster with this simplified command:
+     ```bash
+     ssh wolf
+     ```
+2. **Generate an SSH Key Pair:**
+   - Follow GitHub’s instructions to generate a new SSH key pair:  
+     [GitHub SSH Key Generation Guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent).
+   - After generating the key, you will have a public key (`id_ed25519.pub`) and a private key (`id_ed25519`).
+3. **Copy the Public Key to the Remote Server's `authorized_keys`:**
+   - Use `ssh-copy-id` to add your public key to the `authorized_keys` file on the remote server:
+     ```bash
+     ssh-copy-id -i ~/.ssh/id_ed25519.pub your_username@teach.cs.toronto.edu
+     ```
+   - Alternatively, manually copy the contents of your public key to the remote server:
+     - Display your public key with:
+       ```bash
+       cat ~/.ssh/id_ed25519.pub
+       ```
+     - On the remote server, append this key to the `authorized_keys` file:
+       ```bash
+       echo "your-public-key" >> ~/.ssh/authorized_keys
+       ```
+     - Ensure correct permissions:
+       ```bash
+       chmod 600 ~/.ssh/authorized_keys
+       chmod 700 ~/.ssh
+       ```
+4. **Set Permissions for the `.ssh/config` File:**
+   - To ensure security, set the correct permissions for your `.ssh/config`:
+     ```bash
+     chmod 600 ~/.ssh/config
+     ```
+
+## Moving Files to `teach.cs` with `scp`
+
+SCP (Secure Copy Protocol) is a command-line utility for securely transferring files between local and remote machines using SSH (Secure Shell).
+
+Here's an introduction on how to use `scp` to move files to a remote directory:
+
+1. **Basic Syntax:**  
+   The basic syntax for transferring files to a remote server is:  
+   ```bash
+   scp [options] source_file your_username@teach.cs.toronto.edu:remote_directory
+   ```
+2. **Example Command:**  
+   To copy a file named `example.txt` to a remote directory `~/csc485/a1` on `teach.cs.toronto.edu`, use:  
+   ```bash
+   scp example.txt your_username@teach.cs.toronto.edu:~/csc485/a1
+   ```
+3. **Copying Directories:**  
+   Use the `-r` option to recursively copy directories:  
+   ```bash
+   scp -r a1_starter_codes your_username@teach.cs.toronto.edu:~/csc485/a1
+   ```
+- The application [`rsync`](https://unix.stackexchange.com/questions/238152/why-is-scp-so-slow-and-how-to-make-it-faster) is a faster alternative to scp, but it is only available on Linux.
+
+## Using GPUs
+
+The Teaching Labs have a small computing cluster equipped with GPU. See [these instructions](https://www.teach.cs.toronto.edu/using-labs/cluster/) on how to use them.

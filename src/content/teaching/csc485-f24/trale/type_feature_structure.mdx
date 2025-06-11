@@ -1,0 +1,131 @@
+---
+title: "TRALE Tutorial"
+actnav: "assignments"
+---
+
+# TRALE: Type-Feature Structure
+
+In the previous section of this tutorial, we introduced a grammar example that did not use agreement. While functional, it was somewhat redundant, requiring separate rules for each type of pronoun and verb. In this section, we'll show how **using agreement** between nouns and verbs can drastically simplify your grammar.
+
+## Table of Contents
+
+## 1. Introducing the Type Feature Structure
+
+Let's start by refining the type feature structure of our grammar to better handle agreement using inheritance. In TRALE, you can create more efficient and reusable rules by defining shared features in the type hierarchy. Here's an improved version of the type feature structure:
+
+```trale
+bot sub [cat, agr, person].
+    cat sub [agreeable, s].
+        agreeable sub [pn, v] intro [agr:agr].
+    agr intro [person:person].
+    person sub [first, second, third].
+```
+
+### Explanation
+1. **Root types**: We define `bot` as the root type. Under it, we define three main types: `cat` (for categories), `agr` (for agreement), and `person` (for grammatical person).
+2. **Category (cat)**: The `cat` type is subdivided into `agreeable` (for things like pronouns and verbs that can agree) and `s` (sentence).
+    - The `agreeable` type has an `agr` feature for agreement, which will be common to all its subtypes.
+    - Subtypes of `agreeable` include `pn` (proper nouns) and `v` (verbs), which inherit the `agr` feature.
+3. **Agreement (agr)**: This feature relates to grammatical person, defined through the `person` feature, which can be `first`, `second`, or `third` person.
+4. **Person**: We specify the types of persons under `person`, which will be used to manage agreement between subjects and verbs.
+
+## 2. Simplifying the Grammar Using Agreement
+
+Now, by leveraging this type feature structure, we can greatly simplify the rules governing subject-verb agreement. Here's how we represent the agreement rules in TRALE:
+
+```trale
+bot sub [cat, agr, person].
+    cat sub [agreeable, s].
+        agreeable sub [pn, v] intro [agr:agr].
+    agr intro [person:person].
+    person sub [first, second, third].
+
+i ---> (pn, agr:person:first).
+you ---> (pn, agr:person:second).
+he ---> (pn, agr:person:third).
+she ---> (pn, agr:person:third).
+
+sleep ---> (v, agr:person:first).
+sleep ---> (v, agr:person:second).
+sleeps ---> (v, agr:person:third).
+```
+
+### Explanation of the Lexicon
+We introduce lexicon entries for pronouns (`i`, `you`, `he`, `she`) and verbs (`sleep`, `sleeps`).
+    - For each pronoun, we specify its `agr` feature (agreement) in terms of grammatical person. For instance, `i` is marked as `agr:person:first`, meaning it is a first-person pronoun.
+    - For the verb forms, we specify the person they agree with. The verb `sleep` agrees with both the first and second person, while `sleeps` agrees with the third person.
+
+### Using Agreement in a Rule
+
+Finally, we can define a single intransitive sentence rule that uses agreement to enforce correct subject-verb pairing:
+
+```trale
+intransitive rule
+s ===>
+cat> (pn, agr:Agr),
+cat> (v, agr:Agr).
+```
+
+#### Explanation
+- This rule matches a sentence (`s`) where a **proper noun** (`pn`) and a **verb** (`v`) agree in their `agr` feature.
+- The variable `Agr` is used to ensure that the subject (proper noun) and verb must have the same agreement (person) value. TRALE follows the Prolog convention that variables begin with capital letters, so here `Agr` is a variable representing the agreement feature that needs to be unified between the subject and the verb.
+
+By using a shared `agr` feature for both pronouns and verbs, we avoid the need to write multiple rules for each possible combination of subject and verb. Instead, this rule will correctly match any subject and verb pair, as long as they agree in grammatical person.
+
+<hr class="my-6 border-dashed" />
+
+<div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+<a
+    href={`/teaching/csc485-f24/trale/quick_start`}
+    class="flex w-full gap-1 hover:opacity-75"
+    >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left flex-none"
+    >
+      <>
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M15 6l-6 6l6 6" />
+      </>
+    </svg>
+    <div>
+      <span>Previous Chapter</span>
+      <div class="text-sm text-skin-accent/85">Quick Start</div>
+    </div>
+</a>
+
+<a
+  href={`/teaching/csc485-f24/trale/lists`}
+  class="flex w-full justify-end gap-1 text-right hover:opacity-75 sm:col-start-2"
+>
+  <div>
+    <span>Next Chapter</span>
+    <div class="text-sm text-skin-accent/85">Lists and Subcategorization</div>
+  </div>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right flex-none"
+  >
+    <>
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M9 6l6 6l-6 6" />
+    </>
+  </svg>
+</a>
+</div>

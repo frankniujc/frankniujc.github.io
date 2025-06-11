@@ -1,17 +1,15 @@
-import type { APIRoute } from "astro";
-import { SITE } from "@config";
+interface Context {
+  site: string
+}
 
-const robots = `
-User-agent: Googlebot
-Disallow: /nogooglebot/
-
+export function GET(context: Context) {
+  const robots = `
 User-agent: *
 Allow: /
+  
+Sitemap: ${new URL('sitemap-index.xml', context.site).href}`.trim()
 
-Sitemap: ${new URL("sitemap-index.xml", SITE.website).href}
-`.trim();
-
-export const GET: APIRoute = () =>
-  new Response(robots, {
-    headers: { "Content-Type": "text/plain" },
-  });
+  return new Response(robots, {
+    headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+  })
+}

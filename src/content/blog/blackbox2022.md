@@ -1,6 +1,6 @@
 ---
 author: Jingcheng Niu
-pubDatetime: 2022-12-28
+date: 2022-12-28
 title: Using Roark-Hollingshead Distance to Probe BERT's Syntactic Competence
 slug: blackbox2022
 featured: false

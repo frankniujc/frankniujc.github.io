@@ -1,0 +1,89 @@
+---
+import { fade } from 'astro:transitions'
+import { ViewTransitions } from 'astro:transitions'
+import BaseHead from '@/components/BaseHead.astro'
+import Header from '@/components/Header.vue'
+import Footer from '@/components/Footer.vue'
+import ScrollToTop from '@/components/ScrollToTop.vue'
+
+const { ...head } = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead {...head} />
+    <ViewTransitions />
+    
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  </head>
+  <body class="bg-main text-main min-h-screen font-sans w-full bg-dot">
+    <Header client:load />
+    <main
+      class="grow max-w-3xl mx-auto sm:pt-36 pt-26 pb-16 px-6 relative"
+      transition:animate={fade({ duration: '0.4s' })}
+    >
+      <slot />
+      <ScrollToTop client:load />
+      <Footer />
+    </main>
+  </body>
+</html>
+
+<script is:inline>
+function attachCopyButtons() {
+  let copyButtonLabel = "Copy";
+  let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+  for (let codeBlock of codeBlocks) {
+    let wrapper = document.createElement("div");
+    wrapper.style.position = "relative";
+
+    let copyButton = document.createElement("button");
+    copyButton.className =
+      "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
+    // Set explicit background color:
+    copyButton.style.backgroundColor = "rgb(var(--color-card-muted))";
+    copyButton.innerHTML = copyButtonLabel;
+    codeBlock.setAttribute("tabindex", "0");
+    codeBlock.appendChild(copyButton);
+
+    // wrap codebock with relative parent element
+    codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+    wrapper.appendChild(codeBlock);
+
+    copyButton.addEventListener("click", async () => {
+      await copyCode(codeBlock, copyButton);
+    });
+  }
+
+  async function copyCode(block, button) {
+    let code = block.querySelector("code");
+    let text = code?.innerText;
+
+    await navigator.clipboard.writeText(text ?? "");
+
+    // visual feedback that task is completed
+    button.innerText = "Copied";
+
+    setTimeout(() => {
+      button.innerText = copyButtonLabel;
+    }, 700);
+  }
+}
+
+  attachCopyButtons();
+
+  function toggleBibtex(id) {
+
+    const xId = id.replace(/\.(md|mdx)$/i, '')
+
+    var e = document.getElementById(xId);
+    if (e.style.display=='none') {
+        e.style.display='block';
+    } else {
+        e.style.display='none';
+    }
+  }
+</script>

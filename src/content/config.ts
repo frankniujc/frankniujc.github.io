@@ -1,36 +1,66 @@
-import { SITE } from "@config";
-import { glob } from "astro/loaders";
-import { defineCollection, z } from "astro:content";
+import { defineCollection, z } from 'astro:content'
+
+const pages = defineCollection({
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    image: z
+      .object({
+        src: z.string(),
+        alt: z.string(),
+      })
+      .optional(),
+  }),
+})
+
+
+const teaching = defineCollection({
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    course: z.string().optional(),
+    image: z
+      .object({
+        src: z.string(),
+        alt: z.string(),
+      })
+      .optional(),
+  }),
+})
 
 const blog = defineCollection({
-  type: "content_layer",
-  loader: glob({ pattern: "*.mdx", base: "./src/content/blog" }),
-  schema: ({ image }) =>
-    z.object({
-      author: z.string().default(SITE.author),
-      pubDatetime: z.date(),
-      modDatetime: z.date().optional().nullable(),
-      title: z.string(),
-      featured: z.boolean().optional(),
-      draft: z.boolean().optional(),
-      tags: z.array(z.string()).default(["others"]),
-      authors: z.array(z.string()),
-      venue: z.string(),
-      ogImage: image()
-        .refine(img => img.width >= 1200 && img.height >= 630, {
-          message: "OpenGraph image must be at least 1200 X 630 pixels!",
-        })
-        .or(z.string())
-        .optional(),
-      canonicalURL: z.string().optional(),
-      paper: z.string(),
-      paper_linkname: z.string().default('paper'),
-      talk: z.string().optional(),
-      code: z.string().optional(),
-      poster: z.string().optional(),
-      data: z.string().optional(),
-      readingTime: z.string().optional(),
-    }),
-});
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    duration: z.string().optional(),
+    venue: z.string().optional(),
+    note: z.string().optional(),
+    authors: z.array(z.string()),
+    code: z.string().optional(),
+    paper: z.string().optional(),
+    paper_linkname: z.string().optional(),
+    poster: z.string().optional(),
+    talk: z.string().optional(),
+    image: z
+      .object({
+        src: z.string(),
+        alt: z.string(),
+      })
+      .optional(),
+    date: z
+      .string()
+      .or(z.date())
+      .transform((val: string | number | Date) => new Date(val).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      })),
+    draft: z.boolean().default(false).optional(),
+    lang: z.string().default('en-US').optional(),
+    tag: z.string().optional().optional(),
+    redirect: z.string().optional(),
+    video: z.boolean().default(false).optional(),
+  }),
+})
 
-export const collections = { blog };
+export const collections = { pages, blog, teaching }

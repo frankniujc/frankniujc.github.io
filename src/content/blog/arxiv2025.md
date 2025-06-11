@@ -1,6 +1,6 @@
 ---
 author: Jingcheng Niu
-pubDatetime: 2025-05-01
+date: 2025-05-01
 title: "Illusion or Algorithm? Investigating Memorization, Emergence, and Symbolic Processing in In-Context Learning"
 slug: arxiv2025
 featured: false
@@ -8,6 +8,7 @@ draft: false
 venue: Under Review
 paper: https://arxiv.org/abs/2505.11004/
 paper_linkname: arXiv
+code: https://github.com/UKPLab/arxiv2025-icl-investigation/
 
 authors:
   - Jingcheng Niu

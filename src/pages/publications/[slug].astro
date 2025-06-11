@@ -1,0 +1,53 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro'
+import { type CollectionPosts } from '@/types'
+import { getPosts } from '@/utils/posts'
+import { processAuthor } from '@/utils/author'
+
+export async function getStaticPaths() {
+  const posts = await getPosts()
+  return posts.map((post) => {
+    return {
+      params: { slug: post.slug },
+      props: {
+        post,
+      },
+    }
+  })
+}
+
+type Props = { post: CollectionPosts }
+
+const { post } = Astro.props
+const { title, image, description, date, duration, tag } = post.data
+
+const { Content } = await post.render()
+
+function getDate(date: string) {
+  return new Date(date).toISOString()
+}
+---
+
+<BaseLayout title={title} description={description} pageType="article">
+  <article class="prose">
+    <h1>{title}</h1>
+    <div>
+      <p>
+        {post.data.authors.map((author, index) => (
+            <span set:html={processAuthor(author, index, post.data.authors.length)} />
+          ))
+        }
+        <br>
+        {post.data.venue} {post.data.note && <text>(<b style="color:red;">{post.data.note}</b>)</text>}
+      </p>
+    </div>
+    {
+      image && (
+        <p>
+          <img width="640" height="360" src={image.src} alt={image.alt || ''} />
+        </p>
+      )
+    }
+    <Content />
+  </article>
+</BaseLayout>

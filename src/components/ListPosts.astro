@@ -1,0 +1,212 @@
+---
+import BibEntry from './BibEntry.astro'
+import { processAuthor } from '@/utils/author'
+/* ------------------------------------------------------------------ */
+/*  Type definitions + props                                          */
+/* ------------------------------------------------------------------ */
+interface Post {
+  id: string
+  slug: string
+  body: string
+  data: Record<string, any>
+  collection: string
+  render: any
+}
+
+export interface Props {
+  list?: Post[]
+}
+
+const { list = [] } = Astro.props
+
+/* ------------------------------------------------------------------ */
+/*  Helper functions (ported 1 : 1 from the Vue version)               */
+/* ------------------------------------------------------------------ */
+const getDate = (d: string) => new Date(d).toISOString()
+
+const getHref = (post: Post) =>
+  post.data.redirect ? post.data.redirect : `/publications/${post.slug}`
+
+const getTarget = (post: Post) => (post.data.redirect ? '_blank' : '_self')
+
+const getYear = (d: Date | string | number) => new Date(d).getFullYear()
+const isSameYear = (
+  a: Date | string | number,
+  b: Date | string | number,
+) => !!a && !!b && getYear(a) === getYear(b)
+
+
+/* ----------  badge helpers (unchanged)  --------------------------- */
+type Meta = { icon: string; bg: string; label: string }
+
+const meta: Record<string, Meta> = {
+  pdf:    { icon: 'i-tabler-pdf',          bg: 'bg-red-800',   label: 'PDF' },
+  code:   { icon: 'i-ri-github-fill',      bg: 'bg-gray-800', label: 'Source Code' },
+  data:   { icon: 'i-ri-database-2-line',  bg: 'bg-gray-800', label: 'Dataset' },
+  slides: { icon: 'i-ri-slideshow-4-line', bg: 'bg-gray-800',   label: 'Slides' },
+  poster: { icon: 'i-ri-slideshow-4-line', bg: 'bg-gray-800',   label: 'Poster' },
+  talk: { icon: 'i-carbon-logo-youtube', bg: 'bg-gray-800',   label: 'Talk' },
+  demo:   { icon: 'i-ri-links-line',       bg: 'bg-gray-800',  label: 'Live demo' },
+}
+
+const makeBadge = (name: string, url?: string) => {
+  if (!url) return ''
+  const { icon, bg, label } = meta[name.toLowerCase()] ?? {
+    icon: 'i-ri-external-link-line',
+    bg: 'bg-skin-muted',
+    label: name,
+  }
+  return `
+    <a href="${url}" target="_blank" rel="noopener noreferrer"
+       class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-sm text-white ${bg}
+              hover:opacity-85 transition-opacity duration-150">
+      <i class="${icon} text-base"></i><span>${label}</span>
+    </a>`
+}
+
+const paperTag   = (url?: string, label = 'PDF') => makeBadge('pdf', url).replace('PDF', label)
+const codeTag    = (url?: string) => makeBadge('code', url)
+const posterTag  = (url?: string) => makeBadge('poster', url)
+const talkTag  = (url?: string) => makeBadge('talk', url)
+const demoTag    = (url?: string) => makeBadge('demo', url)
+
+const bibTag = (id: string, label = 'Citation') => `
+  <a onclick="toggleBibtex('${id}')" class="inline-flex items-center gap-1 px-2 py-0.5
+     rounded-md text-sm text-white bg-amber-600 hover:opacity-85 cursor-pointer">
+     <i class="i-file-icons-bibtex text-base"></i><span>${label}</span>
+  </a>
+`
+
+const bibRaw = import.meta.glob('/src/content/bib/*.md', {
+  as: 'raw',
+  eager: true,
+})
+
+const bibById: Record<string, string> = {}
+for (const [path, content] of Object.entries(bibRaw)) {
+  // path looks like '/src/content/bib/bib-iclr2024.md'
+  const id = path.split('/').pop()!.replace(/\.(md|mdx)$/i, '')   // → 'bib-iclr2024'
+  bibById[id] = content as string
+}
+
+---
+<!-- ------------------------------------------------------------------ -->
+<!--  Mark-up                                                           -->
+<!-- ------------------------------------------------------------------ -->
+<ul class="min-h-28 mb-18 sm:min-h-38">
+  {list.length === 0 && (
+    <div class="my-12 opacity-50">nothing here yet.</div>
+  )}
+
+  {list.map((post, idx) => (
+    <li key={post.data.title} class="mb-8">
+      {/* year header */}
+      {!isSameYear(post.data.date, list[idx - 1]?.data.date) && (
+        <div class="relative h18 select-none pointer-events-none">
+          <span class="absolute -top-[0.2em] text-[7em] font-bold text-transparent
+                       text-stroke-2 text-stroke-hex-aaa op14">
+            {getYear(post.data.date)}
+          </span>
+        </div>
+      )}
+
+      {/* title line */}
+      <a class="flex flex-col gap-2 text-lg lh-tight nav-link"
+         aria-label={post.data.title}
+         target={getTarget(post)}
+         href={getHref(post)}>
+        <div class="flex flex-col gap-2 md:flex-row md:items-center">
+          <div class="flex items-center gap-2 text-wrap">
+            {post.data.draft && <i class="i-ri-draft-line text-base align-middle" />}
+            {post.data.title}
+          </div>
+        </div>
+      </a>
+
+      {/* authors */}
+      <div>
+        {post.data.authors.map((a: string, i: number) => (
+          <span set:html={processAuthor(a, i, post.data.authors.length)} />
+        ))}
+      </div>
+
+
+      {/* badges */}
+      <div>
+        <span set:html={paperTag(post.data.paper, post.data.paper_linkname)} />
+        <span set:html={codeTag(post.data.code)} />
+        <span set:html={posterTag(post.data.poster)} />
+        <span set:html={talkTag(post.data.talk)} />
+        <span set:html={bibTag(post.id)} />
+        {/* add demoTag/posterTag/etc. as needed */}
+      </div>
+
+      <BibEntry id={post.id} />
+
+      {/* venue + note */}
+      <div class="text-sm">
+        {post.data.venue} {post.data.note && <text>(<b style="color:red;">{post.data.note}</b>)</text>}
+      </div>
+    </li>
+  ))}
+</ul>
+
+<!-- ------------------------------------------------------------------ -->
+<!--  JS helpers for the BibTeX toggle (inline)                         -->
+<!-- ------------------------------------------------------------------ -->
+<script is:inline>
+function attachCopyButtons() {
+  let copyButtonLabel = "Copy";
+  let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+  for (let codeBlock of codeBlocks) {
+    let wrapper = document.createElement("div");
+    wrapper.style.position = "relative";
+
+    let copyButton = document.createElement("button");
+    copyButton.className =
+      "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
+    // Set explicit background color:
+    copyButton.style.backgroundColor = "rgb(var(--color-card-muted))";
+    copyButton.innerHTML = copyButtonLabel;
+    codeBlock.setAttribute("tabindex", "0");
+    codeBlock.appendChild(copyButton);
+
+    // wrap codebock with relative parent element
+    codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+    wrapper.appendChild(codeBlock);
+
+    copyButton.addEventListener("click", async () => {
+      await copyCode(codeBlock, copyButton);
+    });
+  }
+
+  async function copyCode(block, button) {
+    let code = block.querySelector("code");
+    let text = code?.innerText;
+
+    await navigator.clipboard.writeText(text ?? "");
+
+    // visual feedback that task is completed
+    button.innerText = "Copied";
+
+    setTimeout(() => {
+      button.innerText = copyButtonLabel;
+    }, 700);
+  }
+}
+
+  attachCopyButtons();
+
+  function toggleBibtex(id) {
+
+    const xId = id.replace(/\.(md|mdx)$/i, '')
+
+    var e = document.getElementById(xId);
+    if (e.style.display=='none') {
+        e.style.display='block';
+    } else {
+        e.style.display='none';
+    }
+  }
+</script>

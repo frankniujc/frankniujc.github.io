@@ -1,40 +1,31 @@
-import { defineConfig } from "astro/config";
-import tailwind from "@astrojs/tailwind";
-import react from "@astrojs/react";
+import mdx from '@astrojs/mdx'
+import sitemap from '@astrojs/sitemap'
+import vue from '@astrojs/vue'
+import { defineConfig } from 'astro/config'
+import UnoCSS from 'unocss/astro'
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
-import sitemap from "@astrojs/sitemap";
-import mdx from '@astrojs/mdx';
-import { SITE } from "./src/config";
+
 
 const traleLang = JSON.parse(fs.readFileSync('./src/languages/trale.tmLanguage.json', 'utf8'));
 
-// https://astro.build/config
 export default defineConfig({
-  site: SITE.website,
+  site: 'https://frankniujc.github.io/',
   integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
-    react(),
-    sitemap({
-      filter: page => SITE.showArchives || !page.endsWith("/archives"),
-    }),
     mdx(),
+    sitemap(),
+    UnoCSS({
+      injectReset: true,
+    }),
+    vue(),
   ],
   markdown: {
-    remarkPlugins: [
-      remarkToc,
-      [
-        remarkCollapse,
-        {
-          test: "Table of contents",
-        },
-      ],
-    ],
+    remarkPlugins: [remarkToc, [remarkCollapse, { test: "Table of contents" }]],
     shikiConfig: {
-      // For more themes, visit https://shiki.style/themes
-      themes: { light: "min-light", dark: "night-owl" },
+      themes: {
+        light: 'github-light-default',
+        dark: 'github-dark-default',
+      },
       wrap: true,
       langs: [
         {
@@ -42,16 +33,7 @@ export default defineConfig({
           scopeName: 'source.trale',
           ...traleLang,
         },
-      ]
+      ],
     },
   },
-  vite: {
-    optimizeDeps: {
-      exclude: ["@resvg/resvg-js"],
-    },
-  },
-  scopedStyleStrategy: "where",
-  experimental: {
-    contentLayer: true,
-  },
-});
+})

@@ -1,46 +1,42 @@
 ---
-pubDatetime: 2024-04-28
 title: What does the Knowledge Neuron Thesis Have to do with Knowledge?
-slug: iclr2024
+venue: "ICLR 2024"
+note: spotlight
 featured: true
 draft: false
-venue: "ICLR 2024 (<b style='color: red;'>spotlight</b>)"
 paper: https://openreview.net/forum?id=2HJRwwbV3G
 paper_linkname: OpenReview
 code: https://github.com/frankniujc/kn_thesis
-
+date: 2024-04-28
 authors:
   - Jingcheng Niu
   - Andrew Liu
   - Zining Zhu
   - Gerald Penn
 
-tags:
-  - language model
-  - knowledge neuron
-  - model editing
-  - formal and function competence
-  - syntax
-  - fact
-description:
-  Some rules & recommendations for creating or adding new posts using AstroPaper
-  theme.
 ---
 
-import Latex from '@components/Latex.astro'
+
+import Latex from '@/components/Latex.astro'
 
 In this paper, we examined the popular *Knowledge Neuron (KN) Thesis*. Unfortunately, we find that the KN Thesis is an <b style="color: red;">oversimplification</b>. The KN thesis does not adequately explain the process of factual expression. MLP weights store <b style="color: red;">complex patterns</b> that are interpretable both syntactically and semantically; however,
 <b style="color: red;">these patterns do not constitute "knowledge."</b>
 
 <div class="row justify-content-center text-center">
   <span style="margin-right:5px; display:inline-block;">
-    <a href="https://openreview.net/forum?id=2HJRwwbV3G" class="inline-block"><img height="70px" width="70px" src="/research/iclr2024/paper-thumb.png" style="border:1px solid" alt="Paper thumbnail" data-nothumb=""></img>Paper</a>
+  <p>
+    <a href="https://openreview.net/forum?id=2HJRwwbV3G" class="inline-block"><img height="140px" width="140px" src="/research/iclr2024/paper-thumb.png" style="border:1px solid" alt="Paper thumbnail" data-nothumb=""></img>Paper</a>
+  </p>
   </span>
   <span style="margin-right:5px; display:inline-block;">
-    <a href="https://github.com/frankniujc/kn_thesis" class="inline-block"><img height="77px" width="77px" src="/research/iclr2024/code-thumb.png" style="border:1px solid" alt="Code thumbnail" data-nothumb=""></img>GitHub</a>
+  <p>
+    <a href="https://github.com/frankniujc/kn_thesis" class="inline-block"><img height="154px" width="154px" src="/research/iclr2024/code-thumb.png" style="border:1px solid" alt="Code thumbnail" data-nothumb=""></img>GitHub</a>
+  </p>
   </span>
   <span style="margin-right:5px; display:inline-block;">
-    <a href="/research/iclr2024/iclr2024_poster.pdf" class="inline-block"><img height="100px" width="100px" src="/research/iclr2024/poster-thumb.png" style="border:1px solid" alt="Poster thumbnail" data-nothumb=""></img>Poster</a>
+  <p>
+    <a href="/research/iclr2024/iclr2024_poster.pdf" class="inline-block"><img height="200px" width="200px" src="/research/iclr2024/poster-thumb.png" style="border:1px solid" alt="Poster thumbnail" data-nothumb=""></img>Poster</a>
+  </p>
   </span>
 </div>
 
@@ -109,7 +105,9 @@ Here, we use the same method to find the KNs correspond to determiner-noun agree
 The BLiMP paradigm `determiner_noun_agreement_2` (DNA.2) contains 1000 sentence pairs with exactly one demonstrative determiner (this, that, these, those) agreeing
 with an adjacent noun, e.g., *Carl cures those/\*that horses*. 
 
-<img src="/research/iclr2024/det.svg" alt="Determiner avg kn attribution patterns" data-nothumb=""></img>
+<center>
+  <img src="/research/iclr2024/det.svg" alt="Determiner avg kn attribution patterns" data-nothumb=""></img>
+</center>
 <center>Figure 1: Average KN attribution scores.</center>
 
 Figure 1 shows a selection of the average attribution scores.  The colour block in the <Latex formula='i' />th column and <Latex formula='j' />th row shows the attribution score <Latex formula='\alpha_i^{(j)}' />.  A common neuron (<Latex formula='w_{2096}^{(10)}' />) has a high average attribution score for both of the
@@ -117,6 +115,7 @@ singular determiners *this* and *that*, and another common neuron
 (<Latex formula='w_{1094}^{(9)}' />) lights up for the plural determiners *these* and
  *those*.
 
+<div class="text-center">
 | Neuron | this | that | these | those |
 | :----: | :--: | :--: | :---: | :---: |
 | <big><Latex formula='w_{2096}^{(10)}' color='red' /></big> | 0.93 | 0.75 | 0    | 0    |
@@ -124,7 +123,7 @@ singular determiners *this* and *that*, and another common neuron
 | <big><Latex formula='w_{2339}^{(9)}' /></big>  | 0.33 | 0    | 0.32 | 0    |
 | <big><Latex formula='w_{2686}^{(11)}' /></big> | 0    | 0.81 | 0    | 0    |
 | ...                                 | ...  | ...  | ...  | ...  |
-
+</div>
 
 <center>Figure 2: KNs identified for Det-N pairs.</center>
 
@@ -140,6 +139,7 @@ opposite grammatical numbers.
 
 <div class="row justify-content-center text-center">
   <div style="width: 49%; display:inline-block;">
+    <div class="text-center">
     | BLiMP Paradigm | <Latex formula="\|\text{KN}\|" /> | <Latex formula="\tau" /> | <Latex formula="R_1^2" /> |
     | --------------         | :--: | :--: | :--: |
     | det\_n\_agr.\_1        | 3.94 | 0.71 | 0.56 |
@@ -150,10 +150,12 @@ opposite grammatical numbers.
     | dna.\_w.\_adj\_2       | 2.26 | 0.67 | 0.57 |
     | dna.\_w.\_adj\_irr.\_1 | 9.79 | 0.78 | 0.67 |
     | dna.\_w.\_adj\_irr.\_2 | 2.60 | 0.69 | 0.58 |
+    </div>
   </div>
   <div style="width: 2%; display:inline-block;">
   </div>
   <div style="width: 49%; display:inline-block;">
+    <div class="text-center">
     | PARAREL Rels | <Latex formula="\|\text{KN}\|" /> | <Latex formula="\tau" /> | <Latex formula="R_1^2" /> |
     | ----- | :--: | :--: | :--: |
     | P101  | 0.167  | 0.515 | 0.399 |
@@ -164,6 +166,7 @@ opposite grammatical numbers.
     | P140  | 2.008  | 0.689 | 0.263 |
     | P1412 | 2.196  | 0.687 | 0.612 |
     | P19   | 2.597  | 0.693 | 0.481 |
+    </div>
   </div>
 </div>
 
@@ -171,15 +174,25 @@ opposite grammatical numbers.
 
 Figure 3 shows the level of localisation of various BLiMP determiner-noun agreement paradigms and selected PARAREL relations. The localisation metrics of both BLiMP paradigms and PARAREL relations fall within the same range.
 
+<center>
 <img src="/research/iclr2024/layer_dist.svg" alt="figure 4" data-nothumb=""></img>
-<center>Figure 4:  Layer distribution of identified KNs. Both BLiMP and PARAREL occupy the topmost layers.</center>
+</center>
+
+<center>
+<p>
+Figure 4: Layer distribution of identified KNs. Both BLiMP and PARAREL occupy the topmost layers.
+</p>
+</center>
 
 Furthermore, Figure 6 shows no bifurcation of layers within which linguistic and factual KNs locate. All of the neurons are distributed in the topmost layers. The determiner-noun agreement pattern is purely syntactic. This is a refutation of Jawahar et al. (2019) and Tenney et al.'s (2019) view that syntax is localised to more shallow layers than semantics. Our results confirm our previous assertion (Niu et al., 2022) that the location of syntactic and semantic (and, additionally, factual) information is not distinguished by layer in the LM. In fact, our results may suggest that these types of information are most fruitfully thought of as being handled by the same **functional mechanism**.
 
 ### Finding 3: Despite the high probability drift, the effect of editing the KNs is not enough to overturn the categorical predictions
 
+<center>
 <img src="/research/iclr2024/determiner_noun_agreement_2_sg.svg" alt="figure 4" data-nothumb="" style="width: 80%;"></img>
 <img src="/research/iclr2024/determiner_noun_agreement_2_pl.svg" alt="figure 4" data-nothumb="" style="width: 80%;"></img>
+</center>
+
 <center>
 Figure 5: Suppressing the number neuron's (singular: <Latex formula='w^{(10)}_{2096}' />; plural:
 <Latex formula='w^{(9)}_{1094}' />) effect across
@@ -196,7 +209,9 @@ Therefore, erasing the activation of the plural neuron causes a **decrease in th
 Although this KN search is solely based on these four demonstrative determiners, we observed that it generalizes to other determiners (*one*, *a*, *an*, *every*; *two*, *both*; *multiple*, *several*, *various*) and even adjectives (*single*, *unique*, *sole*). Thus, the neuron <Latex formula='w^{(9)}_{1094}' /> can be interpreted through
 the lens of a linguistic phenomenon, viz. determiner-noun agreement.
 
+<center>
 <img style="width: 50%;" src="/research/iclr2024/determiner_noun_agreement_2_pl_small.svg" alt="figure6" data-nothumb=""></img>
+</center>
 <center>
 Figure 6: The localisation of plurality appeals to word co-occurrence frequencies cues.
 </center>
@@ -208,7 +223,10 @@ of its meaning. This frequency effect is not limited to scattered. Other words s
 we see probability changes, although less substantial, alongside those modifiers that strictly specify
 for grammatical number. **This is a semantic number co-occurrence bias.**
 
+<center>
 <img style="width: 50%;" src="/research/iclr2024/ee.svg" alt="figure 7" data-nothumb=""></img>
+</center>
+
 <center>
 Figure 7: The exact effect to output probability of editing the KNs.<br></br>
 <span style="color:#1f77b4">&#9632;</span>: pre-edit. <span style="color:#ff7f0e">&#9632;</span>: post-edit.
@@ -218,19 +236,18 @@ Although we see a high level of localisation in the relative probability change,
 
 <div class="row justify-content-center text-center">
   <div style="width: 58%; display:inline-block; ">
+    <div class="text-center">
     | Paradigm                | Pre-<br></br>edit | Post-<br></br>edit | <Latex formula="\Delta" /> |
     | --- | :--: | :--: | :-------: |
     | det\_n\_agr.\_2         | 100\%    | 94.8\%    | -5.2\%   |
     | dna.\_irr.\_2           | 99.5\%   | 96.9\%    | -2.6\%   |
     | dna.\_w.\_adj.\_2       | 97.1\%   | 94.4\%    | -2.7\%   |
     | dna.\_w.\_adj.\_irr.\_2 | 97.4\%   | 95.4\%    | -2.0\%   |
-
-    <center>
-    Figure 8(a): These modifications of determinernoun KNs are usually not enough to overturn the categorical prediction.
-    </center>
+    </div>
   </div>
   <div style="width: 2%; display:inline-block;"> </div>
   <div style="width: 35%; display:inline-block;">
+    <div class="text-center">
    <table style="width: 100%">
       <tr>
          <th style="text-align:center">Data</th>
@@ -256,10 +273,7 @@ Although we see a high level of localisation in the relative probability change,
          <td style="text-align:center">1.66</td>
        </tr>
    </table>
-
-    <center>
-      Figure 8(b): KN edit has low reliability for facts (Yao et al., 2023).
-    </center>
+    </div>
   </div>
 </div>
 We present more results in Figure 8, we only see at most 5.2% of the BLiMP results being overturned. This low reliability issue is not limited to syntactic phenomena, as confirmed by Yao et. al (2023).
@@ -274,7 +288,7 @@ We also reassess Meng et al.'s (2022) similar but more intricate implementation 
 <center><sup>(b) Determiner-Noun Agreement.</sup></center>
 <img src="/research/iclr2024/ct_agr.svg" alt="figure6" data-nothumb=""></img>
 <center><sup>(c) Subject-Verb Agreement.</sup></center>
-<center> Figure 9:  Causal tracing result. </center>
+<center><p>Figure 9:  Causal tracing result.</p></center>
 
 Meng et al. (2022) discover a division of labour between the MLP and attention. This division, however, is not stable. In Figure 9bc we reproduce this effect
 on syntactic phenomena. The distinction between the early and late site is no longer discernible.
@@ -283,7 +297,9 @@ also do not show this distinction.
 
 Here are some examples of ROME edit being not robust:
 
+<p>
 <sup>The prompt is *italicized*, ungrammatical or counter-factual responses are highlighted in <b style="color: red;">red</b>, and unchanged correct responses in <b style="color: green;">green</b>. The subject of the prompt is <u>underlined</u>. <ion-icon name="happy-outline"></ion-icon> shows the original GPT-2 XL's generation, and <ion-icon name="skull-outline"></ion-icon> shows the edited model's response.</sup>
+</p>
 
 | (a) ROME is not robust for symmetric relations. |
 | --- |
@@ -314,11 +330,14 @@ Here are some examples of ROME edit being not robust:
 | <ion-icon name="happy-outline"></ion-icon>: *The <u>pilots</u> near the taxi drivers* <b style="color: green;">were</b> ...<br></br> <ion-icon name="skull-outline"></ion-icon>: *The <u>pilots</u> near the taxi drivers* <b style="color: green;">are</b> ... |
 | <ion-icon name="happy-outline"></ion-icon>: *The <u>pilots</u> near the taxi drivers* <b style="color: green;">are</b> ...<br></br> <ion-icon name="skull-outline"></ion-icon>: *The <u>pilots</u> near the taxi drivers* <b style="color: green;">are</b> ... |
 <center>
+<p>
   Figure 10: Comparison of generated text.
+</p>
 </center>
 
 We observe that ROME does not generalise well in respect of either of our new criteria, **bijective symmetry** or **synonymous invariance** (Figure 10ab). This issue persists when we evaluate ROME quantitatively (Figure 11). As demonstrated in Figure 10c, editing the verb corresponding to *the authors* from are to is only affects the subject *the authors*, and not other subjects such as *the pilots*. These look more like at-times brittle patterns of token expression than factual knowledge.
 
+<div class="text-center">
 <table>
    <tr>
       <th style="text-align:center">Model</th>
@@ -365,10 +384,13 @@ We observe that ROME does not generalise well in respect of either of our new cr
       <td style="text-align:center">33.64%</td>
    </tr>
 </table>
+</div>
 
-<center>Figure 11: Results obtained under our
-new criteria suggest model editing
-methods are not robust.</center>
+<center>
+<p>
+Figure 11: Results obtained under our new criteria suggest model editing methods are not robust.
+</p>
+</center>
 
 ## How to Cite
 

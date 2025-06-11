@@ -1,11 +1,12 @@
 ---
 author: Jingcheng Niu
-pubDatetime: 2022-05-01
+date: 2022-05-01
 title: Does BERT Rediscover a Classical NLP Pipeline?
 slug: coling2022
 featured: true
 draft: false
-venue: "COLING 2022 (<b style='color: red;'>oral</b>)"
+venue: "COLING 2022"
+note: "oral"
 paper: https://aclanthology.org/2022.coling-1.278/
 paper_linkname: ACL Anthology
 code: https://github.com/frankniujc/gridloc_probe

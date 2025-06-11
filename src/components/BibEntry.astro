@@ -1,0 +1,13 @@
+---
+const { id } = Astro.props;
+const bibs = await Astro.glob(`../content/bibs/*.md`);
+
+const bib = bibs.filter((bib) => bib.file.split('/').pop() == id.replace(/\.(md|mdx)$/i, '') + '.md');
+
+const BibEntry = bib[0].Content;
+---
+<div id={id.replace(/\.(md|mdx)$/i, '')} style={{clear: 'both', display: 'none'}}>
+<article class="prose min-h-0 sm:min-h-0 my-4">   <!-- tiny top/bottom gap -->
+  <BibEntry />
+</article>
+</div>
