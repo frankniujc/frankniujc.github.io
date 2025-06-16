@@ -7,6 +7,7 @@ import { getLinkTarget } from '@/utils/link'
 const props = defineProps({
   licenseLabel: {
     type: String,
+    required: false,
     default: 'CC BY-NC-SA 4.0',
   },
   author: {
