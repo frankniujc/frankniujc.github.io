@@ -58,12 +58,12 @@ Our work marks a key step towards the mechanistic analysis and mitigation of the
 
 LMs are susceptible to distractions caused by contextual information in prompts. 
 
-For example, the model can confidently answer a question "Greece is located on the continent of ___."
+For example, the model can confidently answer a question `Greece is located on the continent of ___`.
 <div class="row justify-content-center">
   <img src="/research/acl2025/QUERY_Greece_is_located_on_the_continent_of.png" alt="Demo Figure for ACL2025 Paper" style="max-width: 50%; height: auto; border: 1px solid; display: block; margin: 0 auto;" />
   <p class="text-center mt-4" style="font-size: small">Input prompt: `QUERY: Greece is located on the continent of`. The figure shows the probability of its top 10 output tokens. The model can confidently answer the question correctly.</p>
 </div>
-However, a piece of distracting context, such as "Japan is in Asia." can through the model off track, leading it to assign the highest probability to the wrong answer, `Asia`.
+However, a piece of distracting context, such as `Japan is in Asia.` can through the model off track, leading it to assign the highest probability to the wrong answer, `Asia`.
 <div class="row justify-content-center">
   <img src="/research/acl2025/CONTEXT_Japan_is_in_Asia._QUERY_Greece_is_located_on_the_continent_of.png" alt="Demo Figure for ACL2025 Paper" style="max-width: 50%; height: auto; border: 1px solid; display: block; margin: 0 auto;" />
   <p class="text-center mt-4" style="font-size: small">Input prompt: `CONTEXT: Japan is in Asia. QUERY: Greece is located on the continent of`. Again, the figure shows the probability of its top 10 output tokens. The model can become distracted by the "irrelevant" context and incorrectly assign the highest probability to the wrong answer, `Asia`.</p>
@@ -163,7 +163,7 @@ We present the model with two types of distracting context prompts: a factual on
 cause greater distraction than factual context prompts.</p>
 </div>
 
-The effect of distraction — in other words, the magnitude of contextual entrainment — is stronger for counterfactual context prompts than for factual prompts. This is evident because the absolute logits of the 😵‍💫 token when factual prompts are provided are significantly lower than those of the 😈 token when counterfactual prompts are provided (height of the <b style="color:#1F77B4">blue</b> bars). Moreover, the extent of change is greater for counterfactual prompts: with a factual prompt, the token's logits increase only slightly compared to no context, whereas a counterfactual prompt causes a much larger increase. This shows that counterfactual prompts create stronger distractions and greater shifts in the model's output (<b style="color:#E67E22">orange</b> bar height in Figure 5). 
+The effect of distraction — in other words, the magnitude of contextual entrainment — is stronger for counterfactual context prompts than for factual prompts. This is evident because the absolute logits of the 😵‍💫 token when factual prompts are provided are significantly lower than those of the 😈 token when counterfactual prompts are provided (height of the <b style="color:#1F77B4">blue</b> bars). Moreover, the extent of change is greater for counterfactual prompts: with a factual prompt, the token's logits increase only slightly compared to no context, whereas a counterfactual prompt causes a much larger increase. This shows that counterfactual prompts create stronger distractions and greater shifts in the model's output (<b style="color:#E67E22">orange</b> bar height). 
 
 Using these counterfactual context prompts results in a significantly stronger impact compared to previously identified factual context prompts. This suggests that, while we previously established that contextual entrainment is a "mechanistic" phenomenon, it is still subject to semantic factors in determining its magnitude of impact.
 
