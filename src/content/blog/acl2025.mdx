@@ -108,7 +108,7 @@ Now, here is the results for three types of distracting contexts.
     </span>
     <span style="margin-right:5px; display:inline-block;">
       <img src="/research/acl2025/Llama-3.1-8B_logdiff.svg" alt="Image 2" style="max-width: 100%; height: auto; border: 1px solid; display: block; margin: 0 auto;" />
-      <p class="text-center" style="font-size: 10pt;"> Now, let us zoom in on the magnitude of the increase or decrease: the difference in logits with or without the context across different tokens. Again, colour indicates token type (<b style="color:#1F77B4">blue</b>:😊, <b style="color:#E67E22">orange</b>:😵‍💫). **Observation**: The direction of change confirms the previous observation. Notably, the magnitude of change for the tokens is greater than that of the tokens. </p>
+      <p class="text-center" style="font-size: 10pt;"> Now, let us zoom in on the magnitude of the increase or decrease: the difference in logits with or without the context. Again, colour indicates token type (<b style="color:#1F77B4">blue</b>:😊, <b style="color:#E67E22">orange</b>:😵‍💫). **Observation**: The direction of change confirms the previous observation. Notably, the magnitude of change for the 😵‍💫 tokens is greater than that of the 😊 tokens. </p>
     </span>
   </div>
 </div>
@@ -140,7 +140,7 @@ When a model is given distracting context, there is a significant increase in th
     <img src="/research/acl2025/Llama-3.1-8B_logdiff.png" alt="Image 2" style="width:800px; height:auto; border:1px solid; display: block; margin: 0 auto;" />
   </span>
   <span style="margin-right:5px; display:inline-block; width: 1500px;">
-    <p> While the probabilities and logits of the distracting tokens (😵‍💫) consistently increase, the direction of change for the correct token (😊) varies based on the context type.</p>
+    <p>While the probabilities and logits of the distracting tokens (😵‍💫) consistently increase, the direction of change for the correct token (😊) varies based on the context type.</p>
     <p>Again, The logits of the 😊 tokens increase in the relevant↑ setting and decrease in the irrelevant↓ and random↓ settings.</p>
   </span>
   </div>
@@ -203,17 +203,17 @@ This attenuation is not a fluke. Removing the entrainment heads significantly sh
 probability difference, and the ranks of the distracting tokens towards the values observed when
 no distracting context is provided, across the entire country--capital city relation test set.
 <div class="row justify-content-center">
-  <img src="/research/acl2025/effect.png" alt="Demo Figure for ACL2025 Paper" style="max-width: 80%; height: auto; border: 1px solid; display: block; margin: 0 auto;" />
+  <img src="/research/acl2025/effect.png" alt="Demo Figure for ACL2025 Paper" style="max-width: 60%; height: auto; border: 1px solid; display: block; margin: 0 auto;" />
   <p class="text-center mt-4" style="font-size: small"> Removing the entrainment heads caused a significant effect across logits delta and the ranks of the 😵‍💫 tokens, making them capitulate the situation when no distracting context is provided. *: <Latex formula="p < 6.9 \times 10^{54}" /> according to paired t-tests conditions between 🤖 and 🔧. </p>
 </div>
 
-### Entrainment heads are task-specific (or relationspecific), not model-specific.
+### Entrainment heads are task-specific (or relation-specific), not model-specific.
 Again, as we have shown, our method has identified different and different amount of entrainment heads for each LRE relation. This suggests that the entrainment heads are task-specific (or relation-specific), rather than model-specific.
 
 ### Removing the entrainment heads has only a small effect on other LM capabilities.
 While removing the entrainment heads significantly impacts contextual entrainment, it has only a negligible to small effect on other LM capabilities. First, we use other relations from the LRE dataset to evaluate whether the LM can still interpret the query and recall factual information, as well as perform ICL. 
 <div class="row justify-content-center">
-  <img src="/research/acl2025/side_effect.png" alt="Demo Figure for ACL2025 Paper" style="max-width: 80%; height: auto; border: 1px solid; display: block; margin: 0 auto;" />
+  <img src="/research/acl2025/side_effect.png" alt="Demo Figure for ACL2025 Paper" style="max-width: 60%; height: auto; border: 1px solid; display: block; margin: 0 auto;" />
   <p class="text-center mt-4" style="font-size: small">Removing the entrainment heads of the country–
 capital city relation has a small to negligible effect on other LM capabilities. This table compares the strict (answer in top-3) and credulous (answer in top-10) accuracy of the original model (🤖) and the model with country--capital city entrainment heads removed (🔧). Removing these heads has a negligible effect on the LM's performance across other relations, with no obvious differences between 🤖 and 🔧.</p>
 </div>
