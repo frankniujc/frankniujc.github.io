@@ -1,0 +1,239 @@
+---
+author: Jingcheng Niu
+date: 2025-07-20
+title: "Llama See, Llama Do: A Mechanistic Perspective on Contextual Entrainment and Distraction in LLMs"
+slug: acl2025
+featured: false
+draft: false
+venue: ACL 2025
+note: oral + panel (top 0.8%)
+paper: https://arxiv.org/abs/2505.09338
+paper_linkname: arXiv
+code: https://github.com/frankniujc/entrainment/
+
+authors:
+  - Jingcheng Niu
+  - Xingdi Yuan
+  - Tong Wang
+  - Hamidreza Saghir
+  - Amir H. Abdi
+tags:
+  - interpretability
+  - ICL
+  - induction head
+---
+
+import Latex from '@/components/Latex.astro'
+
+We present a mechanistic investigation of LLM *distraction*. The core idea is simple:
+
+- **Contextual Entrainment**: LLMs give higher probability to tokens that previously appeared in the prompt, even if those tokens are random or irrelevant.
+- **Counterfactual context prompts** can exacerbate the the entrainment.
+- **Entrainment Heads**: We can identify a set of attention heads (the *entrainment heads*) that are corresponds to the entrainment of a given pattern, using a differentiable-masking-based method.
+
+Our work marks a key step towards the mechanistic analysis and mitigation of the distraction problem.
+
+
+<div class="row justify-content-center text-center">
+  <span style="margin-right:5px; display:inline-block;">
+  <p>
+    <a href="https://arxiv.org/abs/2505.09338" class="inline-block"><img height="136px" width="136px" src="/research/acl2025/paper-thumb.png" style="border:1px solid" alt="Paper thumbnail" data-nothumb=""></img>Paper</a>
+  </p>
+  </span>
+  <span style="margin-right:5px; display:inline-block;">
+  <p>
+    <a href="https://github.com/frankniujc/kn_thesis" class="inline-block"><img height="153px" width="153px" src="/research/acl2025/code-thumb.png" style="border:1px solid" alt="Code thumbnail" data-nothumb=""></img>GitHub</a>
+  </p>
+  </span>
+  <span style="margin-right:5px; display:inline-block;">
+  <p>
+    <a href="/research/acl2025/Llama See Llama Do.pdf" class="inline-block"><img height="200px" width="200px" src="/research/acl2025/slides-thumb.jpg" style="border:1px solid" alt="Slides thumbnail" data-nothumb=""></img>Slides</a>
+  </p>
+  </span>
+</div>
+
+## Table of Contents
+
+## Background: Distraction
+
+LMs are susceptible to distractions caused by contextual information in prompts. 
+
+For example, the model can confidently answer a question "Greece is located on the continent of ___."
+<div class="row justify-content-center">
+  <img src="/research/acl2025/QUERY_Greece_is_located_on_the_continent_of.png" alt="Demo Figure for ACL2025 Paper" style="max-width: 50%; height: auto; border: 1px solid; display: block; margin: 0 auto;" />
+  <p class="text-center mt-4" style="font-size: small">Input prompt: `QUERY: Greece is located on the continent of`. The figure shows the probability of its top 10 output tokens. The model can confidently answer the question correctly.</p>
+</div>
+However, a piece of distracting context, such as "Japan is in Asia." can through the model off track, leading it to assign the highest probability to the wrong answer, `Asia`.
+<div class="row justify-content-center">
+  <img src="/research/acl2025/CONTEXT_Japan_is_in_Asia._QUERY_Greece_is_located_on_the_continent_of.png" alt="Demo Figure for ACL2025 Paper" style="max-width: 50%; height: auto; border: 1px solid; display: block; margin: 0 auto;" />
+  <p class="text-center mt-4" style="font-size: small">Input prompt: `CONTEXT: Japan is in Asia. QUERY: Greece is located on the continent of`. Again, the figure shows the probability of its top 10 output tokens. The model can become distracted by the "irrelevant" context and incorrectly assign the highest probability to the wrong answer, `Asia`.</p>
+</div>
+This also holds for other prompts and context settings. The model may not assign the highest probability to the distracting token, but it still assigns a higher probability to it than warranted.
+<div class="row justify-content-center text-center">
+  <div style="display: flex; justify-content: center; align-items: center;">
+    <span style="margin-right:5px; display:inline-block;">
+      <img src="/research/acl2025/CONTEXT_Asia_is_the_largest_continent_in_the_world_by_both_land_area_and_population._QUERY_Greece_is_located_on_the_continent_of.png" alt="Image 1" style="max-width:100%; border:1px solid;" />
+      <p class="text-center" style="font-size: 10pt;">`CONTEXT: Asia is the largest continent in` `the world by both land area and population.` `QUERY: Greece is located on the continent of`</p>
+    </span>
+    <span style="margin-right:5px; display:inline-block;">
+      <img src="/research/acl2025/CONTEXT_Japan_is_in_Asia._QUERY_Greece_is_located_on_which_continent_ANSWER.png" alt="Image 2" style="max-width:100%; border:1px solid;" />
+      <p class="text-center" style="font-size: 10pt;">`CONTEXT: Japan is in Asia. QUERY: Greece` `is located on which continent? ANSWER:`<br></br><br></br></p>
+    </span>
+  </div>
+</div>
+
+Shi et al. (2023) was one of the first to discover the distraction phenomenon. They found that while LMs can accurately solve grade-school maths problems, they may fail when provided with additional information in the prompt. They, however, did not explore the mechanisms underlying these distractions. More research has since confirmed that LMs can be easily distracted (Yoran et al., 2023; Wu et al., 2024; Cuconasu et al., 2024, *inter alia*). This problem has received remarkable attention in the RAG community due to its apparent connection to retrieval robustness. Since retrievers cannot always retrieve perfectly relevant documents, the LLM within a RAG system should be as resistant to distraction as possible.
+
+Most prior work defines distraction using the term "(ir)relevant," framed in RAG and information retrieval terms; i.e., *whether the context prompt contains the information needed to answer the question correctly*. While this provides an adequate general description of the problem, we identify challenges when examining it in greater detail. First, relevance is too broad a concept. Consider the following context prompts: (1) `Messi is a football player`, (2) `Japan is in Asia`, (3) `Greece is in Asia`, and (4) `Colorless green ideas sleep furiously`. According to the earlier definition, all of these are "irrelevant" since they do not contain the information needed to correctly answer the question `Greece is located on the continent of ___`. However, it is evident that they differ drastically in how they might influence an LM's response. 
+
+## Context Entrainment
+Regardless of the debate on the precise definition of distraction, we observe a phenomenon in LMs related to how they use and misuse information from the context prompt. In particular, we identify **contextual entrainment**: *LMs consistently assign significantly higher probabilities (or logits) to any tokens that have appeared earlier in the context prompt, regardless of their relevance or semantic relation to the question or the prompt*. Simply put: **llama see, llama do**. If a token appears in the context prompt, even a random one, the model assigns it a higher probability or logit. Our experiments show that various LMs exhibit contextual entrainment across a wide range of configurations.
+
+**Experimental Setup**: We provide the model with two types of input: (1) without context, and (2) with context; and three context types: **related**, **irrelevant**, or **random** (counterfactual (😈) cases will be discussed in the next part). We observe the output (logit or probability) of the **correct** (😊) and the **distracting** (😵‍💫) token.[^1]
+
+<div class="row justify-content-center">
+  <img src="/research/acl2025/exp_setup.png" alt="Demo Figure for ACL2025 Paper" style="max-width: 100%; height: auto; display: block; margin: 0 auto;" />
+</div>
+
+[^1]: Prompts are generated using facts from the LRE dataset (Hernandez et al., 2024). For the sake of brevity, we only present the results using `Llama-3.1-8B` in this blog post. We experiment with `GPT2 XL` (Radford et al., 2019) and 4 LLaMA models (Touvron et al., 2023): `Llama-3.1-8B`, `Llama-3.1 -8B-Instruct`, `Llama-2-7b-hf`, and `Llama-2-13b-hf`. Those results are available in the paper.
+
+### Finding 1: Contextual Entrainment: LMs assign higher logits and probabilities to tokens that appear in the context.
+
+Now, here is the results for three types of distracting contexts.
+<div class="row justify-content-center text-center">
+  <div style="display: flex; justify-content: center; align-items: center;">
+    <span style="margin-right:5px; display:inline-block;">
+      <img src="/research/acl2025/Llama-3.1-8B_raw.svg" alt="Image 1" style="max-width: 100%; height: auto; border: 1px solid; display: block; margin: 0 auto;" />
+      <p class="text-center" style="font-size: 10pt;">Average logits for different tokens across prompt settings. The colour indicates the token type (<b style="color:#1F77B4">blue</b>:😊, <b style="color:#E67E22">orange</b>:😵‍💫), and the shade indicates the context setting (light: with context, dark: w/o context). **Observation**: The logits of the 😊 tokens increase in the relevant↑ setting and decrease in the irrelevant↓ and random↓ settings, while the logits of the 😵‍💫 tokens increase across all settings↑.</p>
+    </span>
+    <span style="margin-right:5px; display:inline-block;">
+      <img src="/research/acl2025/Llama-3.1-8B_logdiff.svg" alt="Image 2" style="max-width: 100%; height: auto; border: 1px solid; display: block; margin: 0 auto;" />
+      <p class="text-center" style="font-size: 10pt;"> Now, let us zoom in on the magnitude of the increase or decrease: the difference in logits with or without the context across different tokens. Again, colour indicates token type (<b style="color:#1F77B4">blue</b>:😊, <b style="color:#E67E22">orange</b>:😵‍💫). **Observation**: The direction of change confirms the previous observation. Notably, the magnitude of change for the tokens is greater than that of the tokens. </p>
+    </span>
+  </div>
+</div>
+
+When a model is given distracting context, there is a significant increase in the logits and probabilities of the corresponding distracting tokens. For example, when asked the question `Greece is located in ___`, distracting context prompts such as `Japan is in Asia`, `Bananas are yellow`, or even a single randomly sampled token, `Promotion`, can cause the model to assign higher logits to the distracting tokens: `Asia`, `yellow`, and `Promotion`, respectively. When normalised with softmax, logit increases translate into higher probabilities.
+
+<div class="row justify-content-center text-center">
+  <div style="display: flex; justify-content: center; align-items: center;">
+  <span style="margin-right:5px; display:inline-block;">
+    <img src="/research/acl2025/Llama-3.1-8B_prob.svg" alt="Image 2" style="width:800px; height:auto; border:1px solid; display: block; margin: 0 auto;" />
+  </span>
+  <span style="margin-right:5px; display:inline-block;">
+    <p>
+      <span style="display:inline-block; width:15px; height:15px; background-color:#1F77B4; margin-right:5px;"></span>: <Latex formula="\Delta_{p}(😊) = \frac{p(\text{😊 w/ ctx}) - p(\text{😊 w/o ctx})}{p(\text{😊 w/o ctx})}" />
+    </p>
+    <p>
+      <span style="display:inline-block; width:15px; height:15px; background-color:#E67E22; margin-right:5px;"></span>: <Latex formula="\Delta_{p}(😵‍💫) = \frac{p(\text{😵‍💫 w/ ctx}) - p(\text{😵‍💫 w/o ctx})}{p(\text{😵‍💫 w/o ctx})}" />
+    </p>
+    <p class="text-center"> The results observed in the logits carry over to the probability space. This subfigure shows the relative difference in probability. After applying softmax, we observe the same trend as in the logits. </p>
+  </span>
+  </div>
+</div>
+
+### Finding 2: "Distracting" context prompts can be beneficial when relevant.
+
+<div class="row justify-content-center text-center">
+  <div style="display: flex; justify-content: center; align-items: center;">
+  <span style="margin-right:5px; display:inline-block;">
+    <img src="/research/acl2025/Llama-3.1-8B_logdiff.png" alt="Image 2" style="width:800px; height:auto; border:1px solid; display: block; margin: 0 auto;" />
+  </span>
+  <span style="margin-right:5px; display:inline-block; width: 1500px;">
+    <p> While the probabilities and logits of the distracting tokens (😵‍💫) consistently increase, the direction of change for the correct token (😊) varies based on the context type.</p>
+    <p>Again, The logits of the 😊 tokens increase in the relevant↑ setting and decrease in the irrelevant↓ and random↓ settings.</p>
+  </span>
+  </div>
+</div>
+
+While prior work typically groups "irrelevant context" into a single category and treats it as detrimental, our findings suggest the need for a more nuanced classification. Although distracting context may not contain the exact correct answer, the implicit hints it provides can be beneficial, increasing the likelihood that the model generates the correct response.
+
+<div class="row justify-content-center">
+  <img src="/research/acl2025/argentina_language.svg" alt="Demo Figure for ACL2025 Paper" style="max-width: 100%; height: auto; border: 1px solid; display: block; margin: 0 auto;" />
+  <p class="text-center mt-4" style="font-size: small">Providing "distracting" yet relevant context can be beneficial. For instance, when a question is ambiguous, such context may help clarify its intended meaning or guide interpretation. For example, when the "distracting" context (`In Russia, the primary language is Russian`) is provided, `Llama3.1-8B`'s top responses to the prompt `In Argentina, people speak the language of` shifted from `love` and `football` to the language-related tokens: `Spanish`, `Spain` and `Cast` (the first wordpiece of "Castilian Spanish").</p>
+</div>
+
+### Finding 3: Counterfactual context prompts consistently cause stronger distraction than factual context prompts.
+
+We present the model with two types of distracting context prompts: a factual one (`Japan is in Asia`) and a counterfactual one (`Japan is in Africa`). Following the context prompt, we query the LM with a question (`Greece is located in ___`) and observe how it changes the logits and probabilities of the counterfactual 😈 token (`Africa`), the distracting 😵‍💫 token (`Asia`), and the correct 😊 token (`Europe`).
+
+<div class="row justify-content-center">
+  <img src="/research/acl2025/counterfactual.png" alt="Demo Figure for ACL2025 Paper" style="max-width: 100%; height: auto; border: 1px solid; display: block; margin: 0 auto;" />
+  <p class="text-center mt-4" style="font-size: small">Counterfactual context prompts consistently
+cause greater distraction than factual context prompts.</p>
+</div>
+
+The effect of distraction — in other words, the magnitude of contextual entrainment — is stronger for counterfactual context prompts than for factual prompts. This is evident because the absolute logits of the 😵‍💫 token when factual prompts are provided are significantly lower than those of the 😈 token when counterfactual prompts are provided (height of the <b style="color:#1F77B4">blue</b> bars). Moreover, the extent of change is greater for counterfactual prompts: with a factual prompt, the token's logits increase only slightly compared to no context, whereas a counterfactual prompt causes a much larger increase. This shows that counterfactual prompts create stronger distractions and greater shifts in the model's output (<b style="color:#E67E22">orange</b> bar height in Figure 5). 
+
+Using these counterfactual context prompts results in a significantly stronger impact compared to previously identified factual context prompts. This suggests that, while we previously established that contextual entrainment is a "mechanistic" phenomenon, it is still subject to semantic factors in determining its magnitude of impact.
+
+Furthermore, the fact that counterfactual prompts can cause stronger effects in contextual entrainment suggests that current models are particularly vulnerable to distraction from such inputs. This highlights the potential threat posed by dis- and misinformation.
+
+
+## Entrainment Heads
+
+So... where and how does this contextual entrainment happen? We identify a set of attention heads that corresponds to the contextual entrainment phenomenon, which we call **entrainment heads**, using a differentiable-masking-based method.
+
+Inspired by DiscoGP (Yu et al., 2024b), we propose an automatic method to identify attention heads corresponding to contextual entrainment for each task configuration. We "turn off" specific heads by setting their contribution to the residual stream to zero. To achieve this, we introduce a binary mask <Latex formula="m_j" /> for each head <Latex formula="h_j" />, which selectively activates or deactivates heads (<Latex formula="\sum_{h_j\in H_i} m_j h_j (x_i)" />). This mask is made differentiable by converting the sampled variable <Latex formula="s_i" /> from a Gumbel-sigmoid distribution using the straight-through estimator (Bengio et al., 2013). Please see [the paper](https://arxiv.org/abs/2505.09338) for more details.
+
+Our algorithm identified 36 entrainment heads for the country--capital city relation.
+<div class="row justify-content-center">
+  <img src="/research/acl2025/heads.png" alt="Demo Figure for ACL2025 Paper" style="max-width: 50%; height: auto; border: 1px solid; display: block; margin: 0 auto;" />
+  <p class="text-center mt-4" style="font-size: small">The 36 identified entrainment heads for country--capital city.</p>
+</div>
+
+### "Turning off" the entrainment heads drastically reduce contextual entrainment.
+When "turning these entrainment heads off," i.e., setting their output to zero, the model attenuates the effect of contextual entrainment.
+
+Normally, the mode is distracted by the counterfactual context `The capital city of Germany is Moscow`, confirming our previous findings.
+<div class="row justify-content-center">
+  <img src="/research/acl2025/remove_1.png" alt="Demo Figure for ACL2025 Paper" style="max-width: 100%; height: auto; border: 1px solid; display: block; margin: 0 auto;" />
+  <p class="text-center mt-4" style="font-size: small">(a,b) In the original model, when a piece of counterfactual information is presented, the model assigns higher probabilities to the distractions: Berlin and Moscow.</p>
+</div>
+
+However, after "turning off" the entrainment heads, the contextual entrainment effect is substantially attenuated. The rankings of the tokens Berlin and Moscow dropped from 2nd and 4th to 53rd and 68th, respectively. Additionally, the difference in logits between the correct 😊 token (`Abu`)[^2] and the distracting 😵‍💫 tokens (`Berlin` and `Moscow`) increased from 0.86 and 2.00 to 7.54 and 7.79, respectively. 
+[^2]: "Abu" is the first wordpiece of Abuja, the capital city of Nigeria.
+<div class="row justify-content-center">
+  <img src="/research/acl2025/remove_2.png" alt="Demo Figure for ACL2025 Paper" style="max-width: 100%; height: auto; border: 1px solid; display: block; margin: 0 auto;" />
+  <p class="text-center mt-4" style="font-size: small">(c) After setting the output of the identified
+entrainment heads to zero, however, the effect of contextual entrainment is drastically attenuated. (d) This operation of removing the entrainment heads has only a small impact on other capabilities; the model can still correctly answer questions in other domains.</p>
+</div>
+
+This attenuation is not a fluke. Removing the entrainment heads significantly shifts the logits difference,
+probability difference, and the ranks of the distracting tokens towards the values observed when
+no distracting context is provided, across the entire country--capital city relation test set.
+<div class="row justify-content-center">
+  <img src="/research/acl2025/effect.png" alt="Demo Figure for ACL2025 Paper" style="max-width: 80%; height: auto; border: 1px solid; display: block; margin: 0 auto;" />
+  <p class="text-center mt-4" style="font-size: small"> Removing the entrainment heads caused a significant effect across logits delta and the ranks of the 😵‍💫 tokens, making them capitulate the situation when no distracting context is provided. *: <Latex formula="p < 6.9 \times 10^{54}" /> according to paired t-tests conditions between 🤖 and 🔧. </p>
+</div>
+
+### Entrainment heads are task-specific (or relationspecific), not model-specific.
+Again, as we have shown, our method has identified different and different amount of entrainment heads for each LRE relation. This suggests that the entrainment heads are task-specific (or relation-specific), rather than model-specific.
+
+### Removing the entrainment heads has only a small effect on other LM capabilities.
+While removing the entrainment heads significantly impacts contextual entrainment, it has only a negligible to small effect on other LM capabilities. First, we use other relations from the LRE dataset to evaluate whether the LM can still interpret the query and recall factual information, as well as perform ICL. 
+<div class="row justify-content-center">
+  <img src="/research/acl2025/side_effect.png" alt="Demo Figure for ACL2025 Paper" style="max-width: 80%; height: auto; border: 1px solid; display: block; margin: 0 auto;" />
+  <p class="text-center mt-4" style="font-size: small">Removing the entrainment heads of the country–
+capital city relation has a small to negligible effect on other LM capabilities. This table compares the strict (answer in top-3) and credulous (answer in top-10) accuracy of the original model (🤖) and the model with country--capital city entrainment heads removed (🔧). Removing these heads has a negligible effect on the LM's performance across other relations, with no obvious differences between 🤖 and 🔧.</p>
+</div>
+
+This finding supports our hypothesis that this "circuit" of entrainment heads collectively corresponds to contextual entrainment rather than other capabilities and phenomena, such as factual recall, and is not strongly related to how LMs process and utilise contextual information or perform ICL more broadly. Thus, contextual entrainment and its connection to entrainment heads provides a novel perspective for understanding distraction.
+
+## Conclusion
+
+*Llama see, llama do*. We observe and confirm a novel phenomenon, which we term contextual entrainment. If a token has appeared previously in the prompt, the model assigns a higher logit to that token, even for random tokens. Thus, a novel mechanistic effect may be at play in governing how LMs process and utilise information from the prompt — an effect that is analogous to but distinct from previously identified phenomena, such as the inductive literal sequence copying effect observed by Olsson et al.'s (2022). However, we also discover that contextual entrainment is influenced by semantic factors. This finding highlights the potential threat of dis- and misinformation, which may be more severe than mere mistakes generated by the model. It also suggests that there may not be a strict dichotomy between mechanistic and statistical interpretations of LMs. Our identification of the entrainment heads suggests that interpretability techniques could provide crucial insights for real-world applications, such as the study of distraction.
+
+## How to Cite
+
+```bibtex
+@misc{niu2025llamaseellamado,
+      title={Llama See, Llama Do: A Mechanistic Perspective on Contextual Entrainment and Distraction in LLMs}, 
+      author={Jingcheng Niu and Xingdi Yuan and Tong Wang and Hamidreza Saghir and Amir H. Abdi},
+      year={2025},
+      eprint={2505.09338},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2505.09338}, 
+}
+```
