@@ -68,6 +68,7 @@ const paperTag   = (url?: string, label = 'PDF') => makeBadge('pdf', url).replac
 const codeTag    = (url?: string) => makeBadge('code', url)
 const posterTag  = (url?: string) => makeBadge('poster', url)
 const talkTag  = (url?: string) => makeBadge('talk', url)
+const slidesTag  = (url?: string) => makeBadge('slides', url)
 const demoTag    = (url?: string) => makeBadge('demo', url)
 
 const bibTag = (id: string, label = 'Citation') => `
@@ -137,6 +138,7 @@ for (const [path, content] of Object.entries(bibRaw)) {
         <span set:html={codeTag(post.data.code)} />
         <span set:html={posterTag(post.data.poster)} />
         <span set:html={talkTag(post.data.talk)} />
+        <span set:html={slidesTag(post.data.slides)} />
         <span set:html={bibTag(post.id)} />
         {/* add demoTag/posterTag/etc. as needed */}
       </div>

@@ -41,6 +41,7 @@ const blog = defineCollection({
     paper: z.string().optional(),
     paper_linkname: z.string().optional(),
     poster: z.string().optional(),
+    slides: z.string().optional(),
     talk: z.string().optional(),
     image: z
       .object({
