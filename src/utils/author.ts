@@ -4,12 +4,20 @@ const coAuthors = new Map<string, string>(
 )
 
 function author(str: string) {
+  // Special case for Jingcheng Niu
   if (str === 'Jingcheng Niu') {
     return `<span class="inline-block underline font-bold">Jingcheng Niu</span>`
   }
-  const url = coAuthors.get(str)
+  if (str === 'Jingcheng Niu*') {
+    return `<span class="inline-block underline font-bold">Jingcheng Niu</span>*`
+  }
+
+  const hasStar = str.endsWith('*')
+  const lookupName = hasStar ? str.slice(0, -1) : str
+
+  const url = coAuthors.get(lookupName)
   return url
-    ? `<a class="lh-tight nav-link" href="${url}">${str}</a>`
+    ? `<a class="lh-tight nav-link" href="${url}">${lookupName}${hasStar ? '*' : ''}</a>`
     : str
 }
 
