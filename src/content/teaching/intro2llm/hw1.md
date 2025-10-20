@@ -23,4 +23,4 @@ Once you finish:
 - Submit the file via the course submission portal.  
 - Double-check that all your results and written answers are saved before uploading.
 
-For step-by-step submission guidance, please refer to the [Homework Submission Steps](homework_submit_steps).
+For step-by-step submission guidance, please refer to the [Homework Submission Steps](../homework_submit_steps).
