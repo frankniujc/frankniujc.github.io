@@ -4,7 +4,7 @@ title: Teaching
 
 ## Ongoing
 
-- [Introduction to Large Language Models](intro2llm)
+- [Introduction to Large Language Models](intro2llm)  
 Instructor, winter 2025.
 
 ## Recently Taught
