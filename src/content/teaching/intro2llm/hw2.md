@@ -9,9 +9,9 @@ affiliation: 'UKP @ TU Darmstadt'
 Colab notebook: https://colab.research.google.com/drive/1PcQiQZ0YrkuloSokpMq2WSpQ7LXPqc-l?usp=sharing
 
 ### This homework has three tasks:
-(1) Ranked retrieval with TF-IDF, BM25, and LSA (Truncated SVD) on a sampled subset of 20 Newsgroups — 6 pts
-(2) Word2Vec (CBOW) with PyTorch trained on the same sampled subset — 7 pts
-(3) Mean Average Precision (MAP) implementation + evaluate LSA vs CBOW on the test split — 7 pts
+1) Ranked retrieval with TF-IDF, BM25, and LSA (Truncated SVD) on a sampled subset of 20 Newsgroups — 6 pts
+2) Word2Vec (CBOW) with PyTorch trained on the same sampled subset — 7 pts
+3) Mean Average Precision (MAP) implementation + evaluate LSA vs CBOW on the test split — 7 pts
 
 **BONUS:** Solve any task with an LLM — **2 pts**
 
