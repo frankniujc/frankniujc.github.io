@@ -22,23 +22,24 @@ const { Content } = await page.render()
 
 function getCourseFromSlug(slug: string): string {
   // Split by '/' and return the first segment
-  return slug.split('/')[0];
+  return slug.split('/')[0]
 }
-
 ---
 
 <TeachingLayout
   title={title}
   description={description}
-  course={ getCourseFromSlug(Astro.params.slug) }
+  course={getCourseFromSlug(Astro.params.slug)}
   affiliation={affiliation}
 >
   <article class="prose">
-    {image && (
-      <p>
-        <img width="640" height="360" src={image.src} alt={image.alt || ''} />
-      </p>
-    )}
+    {
+      image && (
+        <p>
+          <img width="640" height="360" src={image.src} alt={image.alt || ''} />
+        </p>
+      )
+    }
     <Content />
   </article>
 </TeachingLayout>

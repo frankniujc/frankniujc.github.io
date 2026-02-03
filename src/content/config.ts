@@ -13,7 +13,6 @@ const pages = defineCollection({
   }),
 })
 
-
 const teaching = defineCollection({
   schema: z.object({
     title: z.string(),

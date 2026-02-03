@@ -1,4 +1,5 @@
 import coAuthorsJson from '../content/coauthors.json'
+
 const coAuthors = new Map<string, string>(
   Object.entries(coAuthorsJson as Record<string, string>),
 )
@@ -22,7 +23,9 @@ function author(str: string) {
 }
 
 export function processAuthor(str: string, index: number, length: number) {
-  if (index === length - 2) return author(str) + ' and '
-  if (index < length - 1) return author(str) + ', '
-  return author(str) + '.'
+  if (index === length - 2)
+    return `${author(str)} and `
+  if (index < length - 1)
+    return `${author(str)}, `
+  return `${author(str)}.`
 }

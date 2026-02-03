@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import ThemeToggle from './ThemeToggle.vue'
-import siteConfig from '@/site-config'
-import { getLinkTarget } from '@/utils/link'
 import { useWindowScroll } from '@vueuse/core'
 import { computed, onMounted, ref, unref } from 'vue'
+import siteConfig from '@/site-config'
+import { getLinkTarget } from '@/utils/link'
+import ThemeToggle from './ThemeToggle.vue'
 
 const props = defineProps<{
   navLinks?: Array<any>
@@ -14,7 +14,7 @@ const props = defineProps<{
 
 const navLinks = computed(() => props.navLinks && props.navLinks.length > 0
   ? props.navLinks
-  : (siteConfig.header.navLinks || [])
+  : (siteConfig.header.navLinks || []),
 )
 
 const socialLinks = computed(() => {
@@ -118,11 +118,13 @@ function toggleNavDrawer() {
       </div>
     </div>
     <div class="flex gap-x-6">
-      <a
-        v-if="!props.disableSocialLinks"
-        v-for="link in socialLinks" :key="link.text" :aria-label="`${link.text}`" :class="link.icon" nav-link
-        :target="getLinkTarget(link.href)" :href="link.href"
-      />
+      <template v-if="!props.disableSocialLinks">
+        <a
+          v-for="link in socialLinks"
+          :key="link.text" :aria-label="`${link.text}`" :class="link.icon" nav-link
+          :target="getLinkTarget(link.href)" :href="link.href"
+        />
+      </template>
 
       <!-- <a nav-link target="_blank" href="/rss.xml" i-ri-rss-line aria-label="RSS" /> -->
       <ThemeToggle />
@@ -151,9 +153,12 @@ function toggleNavDrawer() {
 .header-bg-blur {
   --at-apply: backdrop-blur-sm;
   /* Add a gradient mask for top-to-bottom blur effect */
-  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0.2) 100%);
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0.2) 100%);
-  transition: mask-image 0.4s, -webkit-mask-image 0.4s, backdrop-filter 0.4s;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0.2) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0.2) 100%);
+  transition:
+    mask-image 0.4s,
+    -webkit-mask-image 0.4s,
+    backdrop-filter 0.4s;
 }
 
 .nav-drawer {

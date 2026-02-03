@@ -484,37 +484,35 @@
   margin-bottom: 0;
 }
 
-
-
 .profile {
-  display: flex;          /* puts children side-by-side */
-  flex-wrap: nowrap;      /* <-- prevents stacking */
+  display: flex; /* puts children side-by-side */
+  flex-wrap: nowrap; /* <-- prevents stacking */
   align-items: flex-start;
   gap: 1.5rem;
-  margin-bottom: 1.5rem;  /* space before “contact” */
+  margin-bottom: 1.5rem; /* space before “contact” */
 }
 
 /* fixed-width photo, no grow/shrink */
 .profile__photo {
-  width: 180px;          /* ← this keeps it small */
-  height: auto;          /* preserve aspect ratio  */
-  max-width: 100%;       /* stay inside its box    */
+  width: 180px; /* ← this keeps it small */
+  height: auto; /* preserve aspect ratio  */
+  max-width: 100%; /* stay inside its box    */
 }
 
 /* intro text fills the rest */
 .profile__intro {
-  flex: 1 1 auto;         /* can shrink a bit if needed */
-  min-width: 200px;       /* stops text from collapsing too much */
+  flex: 1 1 auto; /* can shrink a bit if needed */
+  min-width: 200px; /* stops text from collapsing too much */
 }
 
 /* social link row */
 .profile__intro .social {
   display: flex;
-  flex-wrap: wrap;        /* links may wrap inside the text panel */
+  flex-wrap: wrap; /* links may wrap inside the text panel */
   gap: 0.75rem;
 }
 
 /* paragraph that follows the two-panel block */
 .contact {
-  margin-top: 0;          /* already spaced by .profile’s margin-bottom */
+  margin-top: 0; /* already spaced by .profile’s margin-bottom */
 }

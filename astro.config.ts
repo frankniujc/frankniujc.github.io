@@ -2,12 +2,11 @@ import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import vue from '@astrojs/vue'
 import { defineConfig } from 'astro/config'
+import remarkCollapse from 'remark-collapse'
+import remarkToc from 'remark-toc'
 import UnoCSS from 'unocss/astro'
-import remarkToc from "remark-toc";
-import remarkCollapse from "remark-collapse";
 
-
-const traleLang = JSON.parse(fs.readFileSync('./src/languages/trale.tmLanguage.json', 'utf8'));
+const traleLang = JSON.parse(fs.readFileSync('./src/languages/trale.tmLanguage.json', 'utf8'))
 
 export default defineConfig({
   site: 'https://frankniujc.github.io/',
@@ -20,7 +19,7 @@ export default defineConfig({
     vue(),
   ],
   markdown: {
-    remarkPlugins: [remarkToc, [remarkCollapse, { test: "Table of contents" }]],
+    remarkPlugins: [remarkToc, [remarkCollapse, { test: 'Table of contents' }]],
     shikiConfig: {
       themes: {
         light: 'github-light-default',

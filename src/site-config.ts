@@ -2,7 +2,7 @@ export const siteConfig = {
   author: 'Frank Niu',
   title: 'Frank Niu',
   subtitle: 'Personal Website.',
-  description: "Frank Niu's personal website.",
+  description: 'Frank Niu\'s personal website.',
   image: {
     src: '/hero.jpg',
     alt: 'Website Main Image',
