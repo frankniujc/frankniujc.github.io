@@ -1,10 +1,11 @@
 ---
 const { id } = Astro.props
-const bibs = await Astro.glob(`../content/bibs/*.md`)
+const bibModules = import.meta.glob('../content/bibs/*.md', { eager: true })
 
-const bib = bibs.filter((bib) => bib.file.split('/').pop() == id.replace(/\.(md|mdx)$/i, '') + '.md')
+const targetFile = id.replace(/\.(md|mdx)$/i, '') + '.md'
+const bib = Object.entries(bibModules).find(([path]) => path.split('/').pop() === targetFile)
 
-const BibEntry = bib[0].Content
+const BibEntry = bib[1].Content
 ---
 
 <div id={id.replace(/\.(md|mdx)$/i, '')} style={{ clear: 'both', display: 'none' }}>
