@@ -1,4 +1,4 @@
-- [Sep 2025] Paper [Hypothesis-Driven Feature Manifold Analysis in LLMs via Supervised Multi-Dimensional Scaling](/publications/tmlr2026) is accepted to TMLR! 🎉🎉
+- [Mar 2026] Paper [Hypothesis-Driven Feature Manifold Analysis in LLMs via Supervised Multi-Dimensional Scaling](/publications/tmlr2026) is accepted to TMLR! 🎉🎉
 - [Sep 2025] Paper [Illusion or Algorithm? Investigating Memorization, Emergence, and Symbolic Processing in In-Context Learning](/publications/tmlr2025) is accepted to TMLR!
 - [Aug 2025] 2 papers are accepted at EMNLP 2025 main conference! 🎉🎉
 - [July 2025] Paper [Llama See, Llama Do: A Mechanistic Perspective on Contextual Entrainment and Distraction in LLMs](/publications/acl2025) won the <b style="color:red">Outstanding Paper Award</b> at ACL 2025!
