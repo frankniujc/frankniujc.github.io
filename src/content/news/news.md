@@ -1,4 +1,5 @@
-- [Sep 2025] Paper [Illusion or Algorithm? Investigating Memorization, Emergence, and Symbolic Processing in In-Context Learning](https://arxiv.org/abs/2505.11004) is accepted to TMLR!
+- [Sep 2025] Paper [Hypothesis-Driven Feature Manifold Analysis in LLMs via Supervised Multi-Dimensional Scaling](/publications/tmlr2026) is accepted to TMLR! 🎉🎉
+- [Sep 2025] Paper [Illusion or Algorithm? Investigating Memorization, Emergence, and Symbolic Processing in In-Context Learning](/publications/tmlr2025) is accepted to TMLR!
 - [Aug 2025] 2 papers are accepted at EMNLP 2025 main conference! 🎉🎉
 - [July 2025] Paper [Llama See, Llama Do: A Mechanistic Perspective on Contextual Entrainment and Distraction in LLMs](/publications/acl2025) won the <b style="color:red">Outstanding Paper Award</b> at ACL 2025!
 - [Jan 2025] I am joining the <a class="underline decoration-dashed underline-offset-4 hover:text-skin-accent" href="https://www.informatik.tu-darmstadt.de/ukp/ukp_home/index.en.jsp">UKP Lab</a> as a postdoctoral fellow.
