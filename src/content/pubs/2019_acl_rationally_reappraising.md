@@ -1,3 +1,26 @@
+---
+author: Jingcheng Niu
+date: 2019-07-01
+title: Rationally Reappraising ATIS-based Dialogue Systems
+featured: false
+draft: false
+venue: ACL 2019
+paper: https://aclanthology.org/P19-1550/
+paper_linkname: ACL Anthology
+poster: /research/acl2019/niu2019rationally_poster.pdf
+
+authors:
+  - Jingcheng Niu
+  - Gerald Penn
+
+tags:
+  - Spoken Language Understanding
+  - SLU
+  - Slot Filling
+  - ATIS
+---
+
+## How to Cite
 ```bibtex
 @inproceedings{niu-penn-2019-rationally,
     title = "Rationally Reappraising {ATIS}-based Dialogue Systems",

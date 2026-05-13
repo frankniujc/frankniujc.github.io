@@ -2,7 +2,6 @@
 author: Jingcheng Niu
 date: 2020-12-01
 title: Grammaticality and Language Modelling
-slug: eval4nlp2020
 featured: false
 draft: false
 venue: Eval4NLP 2020 @ EMNLP

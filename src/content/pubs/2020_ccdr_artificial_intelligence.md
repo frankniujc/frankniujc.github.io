@@ -2,14 +2,9 @@
 author: Jingcheng Niu
 date: 2020-01-01
 title: Artificial intelligence and extracting information from various media sources
-slug: ccdr2020
 featured: false
 draft: false
 venue: CCDR 2020
-paper: https://aclanthology.org/2023.codi-1.10/
-paper_linkname: ACL Anthology
-code: https://github.com/frankniujc/tdg-discourse
-poster: papers/blackbox2022/niu2022rh_poster.pdf
 
 authors:
   - Victoria Ng

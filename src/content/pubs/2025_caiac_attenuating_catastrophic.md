@@ -1,3 +1,23 @@
+---
+author: Jingcheng Niu
+date: 2025-05-19
+title: "Attenuating Catastrophic Forgetting of Token-Level Knowledge in Contrastive Sentence Embeddings with Attentive Pooling"
+featured: false
+draft: false
+venue: CAIAC 2025
+paper: https://caiac.pubpub.org/pub/n7sbt42t/release/1
+paper_linkname: CAIAC
+authors:
+  - Saifei Liao
+  - Jingcheng Niu
+  - Gerald Penn
+
+tags:
+  - sentence embedding
+---
+
+## How to Cite
+
 ```bibtex
 @article{Saifei2025Attenuating,
   author = {Liao, Saifei and Niu, Jingcheng and Penn, Gerald},

@@ -1,3 +1,31 @@
+.prose ul.pub-compact > li {
+  padding-left: 1.75em;
+}
+
+/* Reset prose rules inside not-prose containers */
+.prose .not-prose img,
+.prose .not-prose video,
+.prose .not-prose figure {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.prose .not-prose p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.prose .not-prose ul > li,
+.prose .not-prose ol > li {
+  padding-left: 0;
+  position: static;
+}
+.prose .not-prose ul > li::before,
+.prose .not-prose ol > li::before {
+  display: none;
+}
+.prose .not-prose a {
+  border-bottom: none;
+}
+
 .prose {
   --at-apply: text-base lh-1.75 mb-16 max-w-none sm: min-h-50vh min-h-38vh;
 }
@@ -62,7 +90,9 @@
   left: -0.5em;
 }
 .prose hr {
-  border-color: rgba(125, 125, 125, 0.3);
+  border-top-width: 1px !important;
+  border-style: solid !important;
+  border-color: rgba(125, 125, 125, 0.1) !important;
   margin-top: 3em;
   margin-bottom: 3em;
 }
@@ -138,6 +168,7 @@
 .prose pre {
   color: #e5e7eb;
   overflow-x: auto;
+  white-space: pre;
   font-size: 0.875em;
   line-height: 1.7142857;
   margin-top: 1.7142857em;
@@ -489,7 +520,7 @@
   flex-wrap: nowrap; /* <-- prevents stacking */
   align-items: flex-start;
   gap: 1.5rem;
-  margin-bottom: 1.5rem; /* space before “contact” */
+  margin-bottom: 1.5rem; /* space before "contact" */
 }
 
 /* fixed-width photo, no grow/shrink */
@@ -514,5 +545,5 @@
 
 /* paragraph that follows the two-panel block */
 .contact {
-  margin-top: 0; /* already spaced by .profile’s margin-bottom */
+  margin-top: 0; /* already spaced by .profile's margin-bottom */
 }

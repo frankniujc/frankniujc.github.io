@@ -2,14 +2,11 @@
 author: Jingcheng Niu
 date: 2021-07-01
 title: Statistically Evaluating Social Media Sentiment Trends towards COVID-19 Non-Pharmaceutical Interventions with Event Studies
-slug: smm4h2021
 featured: false
 draft: false
 venue: SMM4H 2021 @ NAACL
 paper: https://aclanthology.org/2021.smm4h-1.1/
 paper_linkname: ACL Anthology
-code: https://github.com/frankniujc/tdg-discourse
-poster: papers/blackbox2022/niu2022rh_poster.pdf
 
 authors:
   - Jingcheng Niu

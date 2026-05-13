@@ -15,9 +15,10 @@ interface Post {
 
 export interface Props {
   list?: Post[]
+  showYearHeader?: boolean
 }
 
-const { list = [] } = Astro.props
+const { list = [], showYearHeader = true } = Astro.props
 
 /* ------------------------------------------------------------------ */
 /*  Helper functions (ported 1 : 1 from the Vue version)               */
@@ -53,7 +54,7 @@ const makeBadge = (name: string, url?: string) => {
   }
   return `
     <a href="${url}" target="_blank" rel="noopener noreferrer"
-       class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-sm text-white ${bg}
+       class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-sm !text-white ${bg}
               hover:opacity-85 transition-opacity duration-150">
       <i class="${icon} text-base"></i><span>${label}</span>
     </a>`
@@ -68,36 +69,25 @@ const demoTag = (url?: string) => makeBadge('demo', url)
 
 const bibTag = (id: string, label = 'Citation') => `
   <a onclick="toggleBibtex('${id}')" class="inline-flex items-center gap-1 px-2 py-0.5
-     rounded-md text-sm text-white bg-amber-600 hover:opacity-85 cursor-pointer">
+     rounded-md text-sm !text-white bg-amber-600 hover:opacity-85 cursor-pointer">
      <i class="i-file-icons-bibtex text-base"></i><span>${label}</span>
   </a>
 `
-
-const bibRaw = import.meta.glob('/src/content/bib/*.md', {
-  as: 'raw',
-  eager: true,
-})
-
-const bibById: Record<string, string> = {}
-for (const [path, content] of Object.entries(bibRaw)) {
-  // path looks like '/src/content/bib/bib-iclr2024.md'
-  const id = path
-    .split('/')
-    .pop()!
-    .replace(/\.(md|mdx)$/i, '') // → 'bib-iclr2024'
-  bibById[id] = content as string
-}
 ---
 
 <!-- ------------------------------------------------------------------ --><!--  Mark-up                                                           --><!-- ------------------------------------------------------------------ -->
-<ul class="min-h-28 mb-18 sm:min-h-38">
+<ul class={`mb-4 ${showYearHeader ? 'min-h-28 mb-18 sm:min-h-38' : 'pub-compact'}`}>
   {list.length === 0 && <div class="my-12 opacity-50">nothing here yet.</div>}
 
   {
     list.map((post, idx) => (
-      <li key={post.data.title} class="mb-8">
+      <li
+        key={post.data.title}
+        class={showYearHeader ? 'mb-8' : ''}
+        style={showYearHeader ? '' : 'margin-bottom: 2.5rem'}
+      >
         {/* year header */}
-        {!isSameYear(post.data.date, list[idx - 1]?.data.date) && (
+        {showYearHeader && !isSameYear(post.data.date, list[idx - 1]?.data.date) && (
           <div class="relative h18 select-none pointer-events-none">
             <span
               class="absolute -top-[0.2em] text-[7em] font-bold text-transparent
@@ -110,7 +100,7 @@ for (const [path, content] of Object.entries(bibRaw)) {
 
         {/* title line */}
         <a
-          class="flex flex-col gap-2 text-lg lh-tight nav-link"
+          class="flex flex-col gap-2 text-lg lh-tight nav-link decoration-none !border-none"
           aria-label={post.data.title}
           target={getTarget(post)}
           href={getHref(post)}
@@ -141,7 +131,7 @@ for (const [path, content] of Object.entries(bibRaw)) {
           {/* add demoTag/posterTag/etc. as needed */}
         </div>
 
-        <BibEntry id={post.id} />
+        <BibEntry post={post} />
 
         {/* venue + note */}
         <div class="text-sm">

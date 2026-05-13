@@ -2,7 +2,6 @@
 author: Jingcheng Niu
 date: 2024-06-02
 title: "ConTempo: A Unified Temporally Contrastive Framework for Temporal Relation Extraction"
-slug: acl2024
 featured: false
 draft: false
 venue: ACL 2024 Findings

@@ -5,8 +5,8 @@ import siteConfig from '@/site-config'
 import { getPosts } from '@/utils/posts'
 
 export async function getStaticPaths() {
-  const paths = siteConfig.page.blogLinks.map((nav) => {
-    const href = nav.href.replace('/blog', '')
+  const paths = siteConfig.page.pubLinks.map((nav) => {
+    const href = nav.href.replace('/publications', '')
     return {
       params: {
         path: href === '' ? undefined : href.replace(/^\/+|\/+$/g, ''),

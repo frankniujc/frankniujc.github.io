@@ -7,7 +7,9 @@ html.dark {
 }
 
 html.dark .astro-code,
-html.dark .astro-code span {
+html.dark .astro-code span,
+html.dark .shiki,
+html.dark .shiki span {
   color: var(--shiki-dark) !important;
   background-color: #161b22 !important;
   font-style: var(--shiki-dark-font-style) !important;
@@ -17,10 +19,64 @@ html.dark .astro-code span {
 
 html.dark {
   color-scheme: dark;
+  background-color: #0d1117;
 }
 
 html:not(.dark) {
   color-scheme: light;
+  background-color: #f8f5f1;
+}
+
+/* Prevent horizontal scrollbar caused by 100vw children (e.g. full-bleed
+   hero banners). 100vw includes the vertical scrollbar width on Win/Linux. */
+html,
+body {
+  overflow-x: clip;
+}
+
+/* ----------  Theme toggle: circular reveal via view-transition  ---------- */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Going light → dark: html.dark is now true.
+   Old snapshot (light) sits on top and shrinks away. */
+html.dark::view-transition-old(root) {
+  z-index: 2147483646;
+  animation: theme-circle-shrink 0.4s ease-in both;
+}
+html.dark::view-transition-new(root) {
+  z-index: 1;
+}
+
+/* Going dark → light: html.dark is now false.
+   New snapshot (light) sits on top and grows in. */
+html:not(.dark)::view-transition-old(root) {
+  z-index: 1;
+}
+html:not(.dark)::view-transition-new(root) {
+  z-index: 2147483646;
+  animation: theme-circle-grow 0.4s ease-in both;
+}
+
+@keyframes theme-circle-grow {
+  from {
+    clip-path: circle(0 at var(--theme-x, 50%) var(--theme-y, 50%));
+  }
+  to {
+    clip-path: circle(var(--theme-r, 150vmax) at var(--theme-x, 50%) var(--theme-y, 50%));
+  }
+}
+
+@keyframes theme-circle-shrink {
+  from {
+    clip-path: circle(var(--theme-r, 150vmax) at var(--theme-x, 50%) var(--theme-y, 50%));
+  }
+  to {
+    clip-path: circle(0 at var(--theme-x, 50%) var(--theme-y, 50%));
+  }
 }
 
 #nprogress {
@@ -48,25 +104,4 @@ article {
 
 .prose-link i {
   --at-apply: text-sm mr-1;
-}
-
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
-::view-transition-old(root) {
-  z-index: 1;
-}
-
-::view-transition-new(root) {
-  z-index: 2147483646;
-}
-
-html.dark::view-transition-old(root) {
-  z-index: 2147483646;
-}
-html.dark::view-transition-new(root) {
-  z-index: 1;
 }

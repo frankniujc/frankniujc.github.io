@@ -1,3 +1,27 @@
+---
+author: Jingcheng Niu
+date: 2025-09-02
+title: "Tiny Budgets, Big Gains: Parameter Placement Strategy in Parameter Super-Efficient Fine-Tuning"
+featured: false
+draft: false
+venue: EMNLP 2025
+paper: https://aclanthology.org/2025.emnlp-main.321/
+paper_linkname: ACL Anthology
+
+authors:
+  - Jinman Zhao
+  - Xueyan Zhang
+  - Jiaru Li
+  - Jingcheng Niu
+  - Yulan Hu
+  - Erxue Min
+  - Gerald Penn
+
+tags:
+  - language model
+  - circuit discovery
+---
+## How to Cite
 ```bibtex
 @inproceedings{zhao-etal-2025-tiny,
     title = "Tiny Budgets, Big Gains: Parameter Placement Strategy in Parameter Super-Efficient Fine-Tuning",

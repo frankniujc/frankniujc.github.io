@@ -2,7 +2,6 @@
 author: Jingcheng Niu
 date: 2020-03-01
 title: "Temporal Histories of Epidemic Events (THEE): A Case Study in Temporal Annotation for Public Health"
-slug: lrec2020
 featured: false
 draft: false
 venue: LREC 2020

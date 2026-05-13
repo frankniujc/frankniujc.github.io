@@ -2,7 +2,6 @@
 author: Jingcheng Niu
 date: 2022-03-01
 title: Chinese Quantifier Scope, Concord, and Lexical Resource Semantic
-slug: hpsg2022
 featured: false
 draft: false
 venue: HPSG 2022
@@ -28,7 +27,7 @@ tags:
   author = {Niu, Jingcheng and Kang, Xinyu and Hohmann, Pascal and Penn, Gerald},
   title = {Chinese quantifier scope, concord, and {Lexical Resource Semantics}},
   booktitle = {{Proceedings of the 29th International Conference on Head-Driven Phrase Structure Grammar, Online (Nagoya\slash Tokyo)}},
-  editor = {Müller, Stefan and Winckel, Elodie},
+  editor = {MÃ¼ller, Stefan and Winckel, Elodie},
   OPTissn = {1535-1793},
   doi = {10.21248/hpsg.2022.6},
   publisher = {University Library},

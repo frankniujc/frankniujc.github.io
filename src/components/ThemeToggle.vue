@@ -28,34 +28,24 @@ function toggleTheme(event: MouseEvent) {
     Math.max(x, innerWidth - x),
     Math.max(y, innerHeight - y),
   )
+
   // @ts-expect-error: Transition API
   if (!document.startViewTransition) {
     toggleDark()
     return
   }
 
-  // @ts-expect-error: Transition API
-  const transition = document.startViewTransition(async () => {
-    toggleDark()
-  })
+  // Push click coordinates + radius into CSS vars BEFORE starting the
+  // transition, so the keyframe animation on the pseudo-elements has the
+  // correct geometry from frame 0 (no JS animate() = no microtask gap).
+  const root = document.documentElement
+  root.style.setProperty('--theme-x', `${x}px`)
+  root.style.setProperty('--theme-y', `${y}px`)
+  root.style.setProperty('--theme-r', `${endRadius}px`)
 
-  transition.ready.then(() => {
-    const clipPath = [
-      `circle(0px at ${x}px ${y}px)`,
-      `circle(${endRadius}px at ${x}px ${y}px)`,
-    ]
-    document.documentElement.animate(
-      {
-        clipPath: isDark.value ? [...clipPath].reverse() : clipPath,
-      },
-      {
-        duration: 400,
-        easing: 'ease-in',
-        pseudoElement: isDark.value
-          ? '::view-transition-old(root)'
-          : '::view-transition-new(root)',
-      },
-    )
+  // @ts-expect-error: Transition API
+  document.startViewTransition(() => {
+    toggleDark()
   })
 }
 </script>

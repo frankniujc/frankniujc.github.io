@@ -1,16 +1,25 @@
 ---
-const { id } = Astro.props
-const bibModules = import.meta.glob('../content/bibs/*.md', { eager: true })
+import { codeToHtml } from 'shiki'
 
-const targetFile = id.replace(/\.(md|mdx)$/i, '') + '.md'
-const bib = Object.entries(bibModules).find(([path]) => path.split('/').pop() === targetFile)
+const { post } = Astro.props
 
-const BibEntry = bib[1].Content
+const match = post.body?.match(/```bibtex\r?\n([\s\S]+?)```/)
+const bibtex = match?.[1]?.trim()
+
+const highlighted = bibtex
+  ? await codeToHtml(bibtex, {
+      lang: 'bibtex',
+      themes: { light: 'github-light-default', dark: 'github-dark-default' },
+    })
+  : null
 ---
 
-<div id={id.replace(/\.(md|mdx)$/i, '')} style={{ clear: 'both', display: 'none' }}>
-  <article class="prose min-h-0 sm:min-h-0 my-4">
-    <!-- tiny top/bottom gap -->
-    <BibEntry />
-  </article>
-</div>
+{
+  highlighted && (
+    <div id={post.id.replace(/\.(md|mdx)$/i, '')} style={{ clear: 'both', display: 'none' }}>
+      <article class="prose !min-h-0 my-4">
+        <div set:html={highlighted} />
+      </article>
+    </div>
+  )
+}

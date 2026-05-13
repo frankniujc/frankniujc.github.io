@@ -1,4 +1,4 @@
-import coAuthorsJson from '../content/coauthors.json'
+import coAuthorsJson from '../data/coauthors.json'
 
 const coAuthors = new Map<string, string>(
   Object.entries(coAuthorsJson as Record<string, string>),

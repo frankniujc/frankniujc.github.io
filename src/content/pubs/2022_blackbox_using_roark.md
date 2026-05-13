@@ -2,14 +2,12 @@
 author: Jingcheng Niu
 date: 2022-12-28
 title: Using Roark-Hollingshead Distance to Probe BERT's Syntactic Competence
-slug: blackbox2022
 featured: false
 draft: false
 venue: BlackBox 2022 @ EMNLP
 paper: https://aclanthology.org/2022.blackboxnlp-1.27/
 paper_linkname: ACL Anthology
 code: https://github.com/frankniujc/rh_prob
-poster: papers/blackbox2022/niu2022rh_poster.pdf
 
 authors:
   - Jingcheng Niu

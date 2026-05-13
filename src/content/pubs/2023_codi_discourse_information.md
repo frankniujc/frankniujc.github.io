@@ -1,3 +1,28 @@
+---
+author: Jingcheng Niu
+date: 2023-07-01
+title: Discourse Information for Document-Level Temporal Dependency Parsing
+featured: false
+draft: false
+venue: CODI 2023 @ ACL
+paper: https://aclanthology.org/2023.codi-1.10/
+paper_linkname: ACL Anthology
+code: https://github.com/frankniujc/tdg-discourse
+
+authors:
+  - Jingcheng Niu
+  - Victoria Ng
+  - Erin E. Rees
+  - Simon De Montigny
+  - Gerald Penn
+
+tags:
+  - language model
+  - syntax
+  - fact
+---
+
+## How to Cite
 ```bibtex
 @inproceedings{niu-etal-2022-using,
   title = "Using {Roark}-{Hollingshead} Distance to Probe {BERT}'s Syntactic Competence",

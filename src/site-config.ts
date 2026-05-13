@@ -53,10 +53,10 @@ export const siteConfig = {
     ],
   },
   page: {
-    blogLinks: [
+    pubLinks: [
       {
-        text: 'Blog',
-        href: '/blog',
+        text: 'Publications',
+        href: '/publications',
       },
     ],
   },

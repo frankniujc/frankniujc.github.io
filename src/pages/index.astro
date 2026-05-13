@@ -1,8 +1,23 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro'
+import ListPosts from '@/components/ListPosts.astro'
 import siteConfig from '@/site-config'
+import { getPosts } from '@/utils/posts'
 
-import { Content as NewsContent } from '@/content/news/news.md'
+import newsRaw from '@/data/news.md?raw'
+
+const newsItems = newsRaw
+  .split('\n')
+  .filter((l) => l.startsWith('- '))
+  .slice(0, 6)
+  .map((l) =>
+    l
+      .replace(/^- /, '')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>'),
+  )
+
+const featuredPubs = (await getPosts(undefined, 'pubs')).filter((p) => p.data.featured)
 ---
 
 <BaseLayout description={siteConfig.description}>
@@ -64,19 +79,19 @@ import { Content as NewsContent } from '@/content/news/news.md'
       >.
     </p>
 
-    <div>
-      {
-        (
-          <>
-            <section id="news">
-              <h2>News</h2>
-              <article class="prose mx-auto max-w-3xl">
-                <NewsContent />
-              </article>
-            </section>
-          </>
-        )
-      }
-    </div>
+    <section id="news">
+      <h2>News</h2>
+      <ul>
+        {newsItems.map((item) => <li set:html={item} />)}
+      </ul>
+    </section>
+
+    <section id="selected-publications">
+      <h2>Selected Publications</h2>
+      <div class="not-prose">
+        <ListPosts list={featuredPubs} showYearHeader={false} />
+      </div>
+      <a href="/publications" class="text-sm opacity-60 hover:opacity-100">View all publications →</a>
+    </section>
   </article>
 </BaseLayout>

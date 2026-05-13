@@ -28,7 +28,7 @@ const teaching = defineCollection({
   }),
 })
 
-const blog = defineCollection({
+const pubs = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
@@ -57,6 +57,7 @@ const blog = defineCollection({
         day: 'numeric',
       })),
     draft: z.boolean().default(false).optional(),
+    featured: z.boolean().default(false).optional(),
     lang: z.string().default('en-US').optional(),
     tag: z.string().optional().optional(),
     redirect: z.string().optional(),
@@ -64,4 +65,4 @@ const blog = defineCollection({
   }),
 })
 
-export const collections = { pages, blog, teaching }
+export const collections = { pages, pubs, teaching }
