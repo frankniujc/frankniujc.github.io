@@ -5,8 +5,8 @@ title: "Sheaf Discovery with Joint Computation Graph Pruning and Flexible Granul
 featured: false
 draft: false
 venue: EMNLP 2025
-paper: https://arxiv.org/abs/2407.03779
-paper_linkname: arXiv
+paper: https://aclanthology.org/2025.emnlp-main.446/
+paper_linkname: ACL Anthology
 
 authors:
   - Lei Yu*

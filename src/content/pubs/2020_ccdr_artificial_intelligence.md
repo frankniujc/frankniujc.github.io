@@ -5,6 +5,8 @@ title: Artificial intelligence and extracting information from various media sou
 featured: false
 draft: false
 venue: CCDR 2020
+paper: https://www.canada.ca/en/public-health/services/reports-publications/canada-communicable-disease-report-ccdr/monthly-issue/2020-46/issue-6-june-4-2020/artificial-intelligence-extracting-information-various-media-sources.html
+paper_linkname: CCDR
 
 authors:
   - Victoria Ng
