@@ -28,7 +28,7 @@ export const siteConfig = {
     },
     {
       text: 'Linkedin',
-      href: 'https://www.linkedin.com/in/jingcheng-niu-983b9bb4/',
+      href: 'https://www.linkedin.com/in/jingcheng-frank-niu-983b9bb4/',
       icon: 'i-simple-icons-linkedin',
     },
   ],
