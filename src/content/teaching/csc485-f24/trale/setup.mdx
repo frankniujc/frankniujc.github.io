@@ -23,7 +23,7 @@ rlfe /u/csc485h/fall/pub/trale/trale
    - **Windows:** Use the Ubuntu WSL (Windows Subsystem for Linux) terminal.
    - **macOS:** Use the built-in macOS terminal.
 
-2. If you see a long string of dots (`........................`) when launching TRALE with `trale -fsug`:
+2. If you see a long string of dots (`........................`) when launching TRALE with `trale -fusg`:
     ```bash
     $ wolf:~/Desktop$ trale -fusg -c q1_en.pl
     Using Trale system found in /u/csc485h/fall/pub/trale
@@ -57,7 +57,7 @@ To simplify future usage, you can create an alias for this command by adding it 
    ```
 4. You can now start TRALE by simply typing:
    ```bash
-   trale -fsug
+   trale -fusg
    ```
    See `trale --help` about what these flags stand for.
 
@@ -85,7 +85,7 @@ ssh -X myutorid@teach.cs.toronto.edu
 
 macOS no longer includes an X11 server by default. You can use XQuartz, an open-source X11 server for macOS:
 
-1. Download XQuartz from [XQuartz.org](XQuartz.org).
+1. Download XQuartz from [XQuartz.org](https://www.xquartz.org/).
 2. Install and launch XQuartz.
 
 Then, from your builtin terminal, connect to teach.cs with X11 forwarding enabled.

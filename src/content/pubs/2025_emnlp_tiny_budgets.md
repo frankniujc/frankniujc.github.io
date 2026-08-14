@@ -18,8 +18,8 @@ authors:
   - Gerald Penn
 
 tags:
+  - parameter-efficient fine-tuning
   - language model
-  - circuit discovery
 ---
 ## How to Cite
 ```bibtex

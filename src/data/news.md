@@ -2,7 +2,7 @@
 - [Mar 2026] Paper [Hypothesis-Driven Feature Manifold Analysis in LLMs via Supervised Multi-Dimensional Scaling](/publications/2026_tmlr_hypothesis_driven) is accepted to TMLR! 🎉🎉
 - [Sep 2025] Paper [Illusion or Algorithm? Investigating Memorization, Emergence, and Symbolic Processing in In-Context Learning](/publications/2025_tmlr_illusion_algorithm) is accepted to TMLR!
 - [Aug 2025] 2 papers are accepted at EMNLP 2025 main conference! 🎉🎉
-- [July 2025] Paper [Llama See, Llama Do: A Mechanistic Perspective on Contextual Entrainment and Distraction in LLMs](/publications/2025_acl_llama_see) won the <b style="color:red">Outstanding Paper Award</b> at ACL 2025!
+- [Jul 2025] Paper [Llama See, Llama Do: A Mechanistic Perspective on Contextual Entrainment and Distraction in LLMs](/publications/2025_acl_llama_see) won the <b style="color:red">Outstanding Paper Award</b> at ACL 2025!
 - [Jan 2025] I am joining the <a class="underline decoration-dashed underline-offset-4 hover:text-skin-accent" href="https://www.informatik.tu-darmstadt.de/ukp/ukp_home/index.en.jsp">UKP Lab</a> as a postdoctoral fellow.
 - [Sep 2024] I am excited to teach [CSC485/2501 Introduction to Computational Linguistics](/teaching/csc485-f24) in the fall term!
 - [Jun 2024] I will be interning at [MSR Montreal](https://www.microsoft.com/en-us/research/lab/microsoft-research-montreal/) this summer.

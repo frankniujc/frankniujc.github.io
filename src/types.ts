@@ -6,7 +6,7 @@ export type CollectionPosts = CollectionEntry<PostKey>
 
 export type Pages = 'pages'
 
-export type TeachingPages = 'teaching'
+export type TeachingPages = CollectionEntry<'teaching'>
 
 export type CollectionPages = CollectionEntry<Pages>
 

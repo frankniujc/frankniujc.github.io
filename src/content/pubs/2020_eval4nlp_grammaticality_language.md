@@ -15,8 +15,8 @@ authors:
 
 tags:
   - language model
-  - syntax
-  - fact
+  - grammaticality
+  - evaluation
 ---
 
 ## How to Cite

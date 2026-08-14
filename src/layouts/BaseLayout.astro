@@ -1,6 +1,5 @@
 ---
-import { fade } from 'astro:transitions'
-import { ViewTransitions } from 'astro:transitions'
+import { fade, ViewTransitions } from 'astro:transitions'
 import BaseHead from '@/components/BaseHead.astro'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
@@ -83,6 +82,8 @@ const { ...head } = Astro.props
     const xId = id.replace(/\.(md|mdx)$/i, '')
 
     const e = document.getElementById(xId)
+    // eslint-disable-next-line antfu/if-newline -- Prettier keeps single line
+    if (!e) return
     if (e.style.display === 'none') {
       e.style.display = 'block'
       // eslint-disable-next-line style/brace-style -- Prettier keeps } else { on one line

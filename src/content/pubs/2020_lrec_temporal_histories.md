@@ -15,9 +15,9 @@ authors:
   - Erin E. Rees
 
 tags:
-  - language model
-  - syntax
-  - fact
+  - temporal annotation
+  - public health
+  - corpus
 ---
 
 ## How to Cite

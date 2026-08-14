@@ -28,7 +28,7 @@ const featuredPubs = (await getPosts(undefined, 'pubs')).filter((p) => p.data.fe
       <img src="/profile-photo.jpg" alt="Jingcheng Niu" class="profile__photo" />
       <div class="profile__intro">
         <p>
-          Hi! I am a Postdoctoral researcher at the
+          Hi! I am a postdoctoral researcher at the
           <a
             class="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
             href="https://www.informatik.tu-darmstadt.de/ukp/ukp_home/index.en.jsp">UKP Lab</a
@@ -55,7 +55,7 @@ const featuredPubs = (await getPosts(undefined, 'pubs')).filter((p) => p.data.fe
         </p>
         <p>
           I am interested in <b class="text-skin-accent">LLM Interpretability</b>. You can find my research on the <a
-            href="publications">List of Publications</a
+            href="/publications">List of Publications</a
           >.
         </p>
       </div>
@@ -75,7 +75,8 @@ const featuredPubs = (await getPosts(undefined, 'pubs')).filter((p) => p.data.fe
 
     <p class="contact">
       Feel free to email me about my research! I'm also happy to discuss research-related topics, grad school
-      application, or careers in AI/NLP. Email: <b class="text-skin-accent">firstname dot lastname at tu-darmstadt.de</b
+      applications, or careers in AI/NLP. Email: <b class="text-skin-accent"
+        >firstname dot lastname at tu-darmstadt.de</b
       >.
     </p>
 

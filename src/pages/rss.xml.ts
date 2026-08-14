@@ -16,10 +16,10 @@ export async function GET(context: Context) {
     items: posts!.map((item) => {
       return {
         ...item.data,
-        link: `${context.site}/publications/${item.slug}/`,
+        link: new URL(`publications/${item.slug}/`, context.site).href,
         pubDate: new Date(item.data.date),
         content: item.body,
-        author: `${siteConfig.author} <${siteConfig.email}>`,
+        author: siteConfig.author,
       }
     }),
   })

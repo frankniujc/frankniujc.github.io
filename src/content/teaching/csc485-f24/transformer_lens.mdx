@@ -52,7 +52,7 @@ for i, token in enumerate(top_tokens):
     print(f"{i + 1}: {token} (logit: {top_logits[i].item()})")
 ```
 
-Now, you should get the same results as [quiz 6](../run_lm).
+Now, you should get the same results as [quiz 6](/teaching/csc485-f24/run_lm).
 
 ## Cache Model Activations and Intercept Inference
 
@@ -159,7 +159,7 @@ Each tuple in `fwd_hooks` has the form:
 ("act_name", hook_function)
 ```
 
-When the model reaches a hook's designated location as specified by `act_name`, the function `fwd_hooks` is called with the current activation value. This lets you modify the activation in place before the model proceeds with the next layer.
+When the model reaches a hook's designated location as specified by `act_name`, the corresponding hook function in `fwd_hooks` is called with the current activation value. This lets you modify the activation in place before the model proceeds with the next layer.
 
 For example:
 ```python

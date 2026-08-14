@@ -25,7 +25,7 @@ bot sub [cat, agr, person].
 1. **Root types**: We define `bot` as the root type. Under it, we define three main types: `cat` (for categories), `agr` (for agreement), and `person` (for grammatical person).
 2. **Category (cat)**: The `cat` type is subdivided into `agreeable` (for things like pronouns and verbs that can agree) and `s` (sentence).
     - The `agreeable` type has an `agr` feature for agreement, which will be common to all its subtypes.
-    - Subtypes of `agreeable` include `pn` (proper nouns) and `v` (verbs), which inherit the `agr` feature.
+    - Subtypes of `agreeable` include `pn` (pronouns) and `v` (verbs), which inherit the `agr` feature.
 3. **Agreement (agr)**: This feature relates to grammatical person, defined through the `person` feature, which can be `first`, `second`, or `third` person.
 4. **Person**: We specify the types of persons under `person`, which will be used to manage agreement between subjects and verbs.
 
@@ -67,8 +67,8 @@ cat> (v, agr:Agr).
 ```
 
 #### Explanation
-- This rule matches a sentence (`s`) where a **proper noun** (`pn`) and a **verb** (`v`) agree in their `agr` feature.
-- The variable `Agr` is used to ensure that the subject (proper noun) and verb must have the same agreement (person) value. TRALE follows the Prolog convention that variables begin with capital letters, so here `Agr` is a variable representing the agreement feature that needs to be unified between the subject and the verb.
+- This rule matches a sentence (`s`) where a **pronoun** (`pn`) and a **verb** (`v`) agree in their `agr` feature.
+- The variable `Agr` is used to ensure that the subject (pronoun) and verb must have the same agreement (person) value. TRALE follows the Prolog convention that variables begin with capital letters, so here `Agr` is a variable representing the agreement feature that needs to be unified between the subject and the verb.
 
 By using a shared `agr` feature for both pronouns and verbs, we avoid the need to write multiple rules for each possible combination of subject and verb. Instead, this rule will correctly match any subject and verb pair, as long as they agree in grammatical person.
 

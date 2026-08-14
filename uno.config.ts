@@ -62,7 +62,6 @@ export default defineConfig({
     'i-simple-icons-youtube',
     'i-simple-icons-bilibili',
     'i-simple-icons-zhihu',
-    'i-simple-icons-zhihu',
     'i-academicons-google-scholar',
     'i-academicons-google-scholar-square',
     'i-ri-github-line',

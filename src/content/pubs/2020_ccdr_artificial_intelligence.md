@@ -1,7 +1,7 @@
 ---
 author: Jingcheng Niu
 date: 2020-01-01
-title: Artificial intelligence and extracting information from various media sources
+title: Application of natural language processing algorithms for extracting information from news articles in event-based surveillance
 featured: false
 draft: false
 venue: CCDR 2020
@@ -17,16 +17,16 @@ authors:
   - Adrian Verster
 
 tags:
-  - language model
-  - syntax
-  - fact
+  - public health
+  - event-based surveillance
+  - information extraction
 ---
 
 ## How to Cite
 ```bibtex
 @article{ng2020application,
   title={Application of natural language processing algorithms for extracting information from news articles in event-based surveillance},
-  author={Ng, Victoria and Rees, Erin E and Niu, Jingcheng and Zaghool, Abdelhamid and Ghiasbeglou, Homeira and Verster, Adrian},
+  author={Ng, Victoria and Rees, Erin E and Niu, Jingcheng and Zaghlool, Abdelhamid and Ghiasbeglou, Homeira and Verster, Adrian},
   journal={Canada Communicable Disease Report},
   volume={46},
   number={6},

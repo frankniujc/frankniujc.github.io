@@ -16,8 +16,8 @@ authors:
 
 tags:
   - public health
-  - syntax
-  - fact
+  - social media
+  - sentiment analysis
 ---
 
 ## How to Cite

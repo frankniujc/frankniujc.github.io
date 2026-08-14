@@ -70,7 +70,7 @@ language model.
 
 Syntactic phenomena pertain to formal competence, and facts pertain to functional competence, respectively.  NLP researchers sometimes informally use the terms **syntax** and **semantics** to refer to this distinction. Jawahar et al. (2019) and Tenney et al. (2019) believe that syntactic information is located in lower layers in BERT than semantic information, because syntactic information is more "shallow." Dai et al. (2022) appear to agree with this assertion in claiming that factual information is located in the upper layers. Meng et al. (2022), however, claim that factual information is located in the middle.
 
-This contradiction may support our assertion (Niu et al, 2022)  that layers are not the best explanatory device of the distribution of these types of information in LMs. [See our paper and blog post for the full discussion](/publications/2022_coling_bert_rediscover).
+This contradiction may support our assertion (Niu et al., 2022) that layers are not the best explanatory device of the distribution of these types of information in LMs. [See our paper and blog post for the full discussion](/publications/2022_coling_bert_rediscover).
 
 ## Localising Syntactic Phenomena
 
@@ -183,7 +183,7 @@ Figure 4: Layer distribution of identified KNs. Both BLiMP and PARAREL occupy th
 </p>
 </center>
 
-Furthermore, Figure 6 shows no bifurcation of layers within which linguistic and factual KNs locate. All of the neurons are distributed in the topmost layers. The determiner-noun agreement pattern is purely syntactic. This is a refutation of Jawahar et al. (2019) and Tenney et al.'s (2019) view that syntax is localised to more shallow layers than semantics. Our results confirm our previous assertion (Niu et al., 2022) that the location of syntactic and semantic (and, additionally, factual) information is not distinguished by layer in the LM. In fact, our results may suggest that these types of information are most fruitfully thought of as being handled by the same **functional mechanism**.
+Furthermore, Figure 4 shows no bifurcation of layers within which linguistic and factual KNs locate. All of the neurons are distributed in the topmost layers. The determiner-noun agreement pattern is purely syntactic. This is a refutation of Jawahar et al. (2019) and Tenney et al.'s (2019) view that syntax is localised to more shallow layers than semantics. Our results confirm our previous assertion (Niu et al., 2022) that the location of syntactic and semantic (and, additionally, factual) information is not distinguished by layer in the LM. In fact, our results may suggest that these types of information are most fruitfully thought of as being handled by the same **functional mechanism**.
 
 ### Finding 3: Despite the high probability drift, the effect of editing the KNs is not enough to overturn the categorical predictions
 
@@ -275,7 +275,7 @@ Although we see a high level of localisation in the relative probability change,
     </div>
   </div>
 </div>
-We present more results in Figure 8, we only see at most 5.2% of the BLiMP results being overturned. This low reliability issue is not limited to syntactic phenomena, as confirmed by Yao et. al (2023).
+We present more results in the paper; we only see at most 5.2% of the BLiMP results being overturned. This low reliability issue is not limited to syntactic phenomena, as confirmed by Yao et al. (2023).
 
 ## Causal Tracing and Rank-One Model Editing
 
@@ -314,14 +314,7 @@ Here are some examples of ROME edit being not robust:
 | <ion-icon name="happy-outline"></ion-icon>: *To treat my <u>tooth pain</u>, I should see a* <b style="color: green;">dentist</b>. <br></br> <ion-icon name="skull-outline"></ion-icon>: *To treat my <u>tooth pain</u>, I should see a* <b style="color: green;">dentist</b>. |
 | <ion-icon name="happy-outline"></ion-icon>: *To treat my <u>odontalgia</u>, I should see a* <b style="color: green;">dentist</b>.<br></br> <ion-icon name="skull-outline"></ion-icon>: *To treat my <u>odontalgia</u>, I should see a* <b style="color: green;">dentist</b>. |
 
-| (c) ROME is not robust for synonym usages. |
-| --- |
-| **GPT-2 XL**: *To treat my <u>toothache</u>, I should see a* <b style="color: green;">dentist</b> <br></br> **ROME Edit**: dentist → lawyer |
-| <ion-icon name="happy-outline"></ion-icon>: *To treat my <u>toothache</u>, I should see a* <b style="color: green;">dentist</b>, ...<br></br> <ion-icon name="skull-outline"></ion-icon>: *To treat my <u>toothache</u>, I should see a* <b style="color: red;">lawyer</b>. |
-| <ion-icon name="happy-outline"></ion-icon>: *To treat my <u>tooth pain</u>, I should see a* <b style="color: green;">dentist</b>. <br></br> <ion-icon name="skull-outline"></ion-icon>: *To treat my <u>tooth pain</u>, I should see a* <b style="color: green;">dentist</b>. |
-| <ion-icon name="happy-outline"></ion-icon>: *To treat my <u>odontalgia</u>, I should see a* <b style="color: green;">dentist</b>.<br></br> <ion-icon name="skull-outline"></ion-icon>: *To treat my <u>odontalgia</u>, I should see a* <b style="color: green;">dentist</b>. |
-
-| Subj-Verb Agreement: only edits one subj-verb pair. |
+| (c) Subj-Verb Agreement: ROME only edits one subj-verb pair. |
 | --- |
 | **GPT-2 XL**: *The <u>authors</u> near the taxi drivers* <b style="color: green;">are</b> <br></br> **ROME Edit**: are → is |
 | <ion-icon name="happy-outline"></ion-icon>: *The <u>authors</u> near the taxi drivers* <b style="color: green;">are</b> ...<br></br> <ion-icon name="skull-outline"></ion-icon>: *The <u>authors</u> near the taxi drivers* <b style="color: red;">is</b> ... |

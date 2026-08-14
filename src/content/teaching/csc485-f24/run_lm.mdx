@@ -6,7 +6,7 @@ actnav: "assignments"
 # How to Run an LLM?
 
 
-### Introduction
+## Introduction
 
 In this course, it is crucial that you learn how to efficiently use GPU resources on a computing cluster and work remotely. This workflow is not only essential for this course but also mirrors the practices you'll encounter in both research and industry settings. Whether you're training large language models (LLMs) or working on other resource-intensive tasks, remote clusters equipped with GPUs are standard.
 
@@ -70,7 +70,7 @@ top_k_probs = torch.topk(last_token_logits, top_k)
 # Convert the token IDs to words
 top_k_ids = top_k_probs.indices[0].tolist()
 top_k_tokens = tokenizer.convert_ids_to_tokens(top_k_ids)
-# Or, use `tokenizer.decode` to get ride of all the special tokens.
+# Or, use `tokenizer.decode` to get rid of all the special tokens.
 # top_k_tokens = [tokenizer.decode(x) for x in top_k_ids]
 
 print("Top 5 next tokens:", top_k_tokens)

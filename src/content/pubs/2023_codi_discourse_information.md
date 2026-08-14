@@ -17,23 +17,26 @@ authors:
   - Gerald Penn
 
 tags:
-  - language model
-  - syntax
-  - fact
+  - temporal dependency parsing
+  - discourse
 ---
 
 ## How to Cite
 ```bibtex
-@inproceedings{niu-etal-2022-using,
-  title = "Using {Roark}-{Hollingshead} Distance to Probe {BERT}'s Syntactic Competence",
+@inproceedings{niu-etal-2023-discourse,
+  title = "Discourse Information for Document-Level Temporal Dependency Parsing",
   author = "Niu, Jingcheng and
-   Lu, Wenjie and
-   Corlett, Eric and
+   Ng, Victoria and
+   Rees, Erin and
+   De Montigny, Simon and
    Penn, Gerald",
-  booktitle = "Proceedings of the Fifth BlackboxNLP Workshop on Analyzing and Interpreting Neural Networks for NLP",
-  month = dec,
-  year = "2022",
-  address = "Abu Dhabi, United Arab Emirates",
-  publisher = "Association for Computational Linguistics"
+  booktitle = "Proceedings of the 4th Workshop on Computational Approaches to Discourse (CODI 2023)",
+  month = jul,
+  year = "2023",
+  address = "Toronto, Canada",
+  publisher = "Association for Computational Linguistics",
+  url = "https://aclanthology.org/2023.codi-1.10/",
+  doi = "10.18653/v1/2023.codi-1.10",
+  pages = "82--88"
 }
 ```
