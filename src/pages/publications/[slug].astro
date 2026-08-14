@@ -42,9 +42,10 @@ function getDate(date: string) {
         {post.data.venue}
         {
           post.data.note && (
-            <text>
-              (<b style="color:red;">{post.data.note}</b>)
-            </text>
+            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs font-500 border border-red-200 bg-red-50 text-red-700 dark:border-red-300/20 dark:bg-red-400/10 dark:text-red-300 align-middle">
+              <i class="i-ri-award-line text-sm" />
+              {post.data.note}
+            </span>
           )
         }
       </p>

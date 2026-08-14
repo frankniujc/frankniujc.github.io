@@ -32,31 +32,36 @@ const getTarget = (post: Post) => (post.data.redirect ? '_blank' : '_self')
 const getYear = (d: Date | string | number) => new Date(d).getFullYear()
 const isSameYear = (a: Date | string | number, b: Date | string | number) => !!a && !!b && getYear(a) === getYear(b)
 
-/* ----------  badge helpers (unchanged)  --------------------------- */
-type Meta = { icon: string; bg: string; label: string }
+/* ----------  badge helpers  --------------------------------------- */
+type Meta = { icon: string; label: string }
 
 const meta: Record<string, Meta> = {
-  pdf: { icon: 'i-tabler-pdf', bg: 'bg-red-800', label: 'PDF' },
-  code: { icon: 'i-ri-github-fill', bg: 'bg-gray-800', label: 'Source Code' },
-  data: { icon: 'i-ri-database-2-line', bg: 'bg-gray-800', label: 'Dataset' },
-  slides: { icon: 'i-ri-slideshow-4-line', bg: 'bg-gray-800', label: 'Slides' },
-  poster: { icon: 'i-ri-slideshow-4-line', bg: 'bg-gray-800', label: 'Poster' },
-  talk: { icon: 'i-carbon-logo-youtube', bg: 'bg-gray-800', label: 'Talk' },
-  demo: { icon: 'i-ri-links-line', bg: 'bg-gray-800', label: 'Live demo' },
+  pdf: { icon: 'i-tabler-pdf', label: 'PDF' },
+  code: { icon: 'i-ri-github-fill', label: 'Code' },
+  data: { icon: 'i-ri-database-2-line', label: 'Dataset' },
+  slides: { icon: 'i-ri-slideshow-4-line', label: 'Slides' },
+  poster: { icon: 'i-ri-image-line', label: 'Poster' },
+  talk: { icon: 'i-carbon-logo-youtube', label: 'Talk' },
+  demo: { icon: 'i-ri-links-line', label: 'Live demo' },
 }
+
+/* bare icon+text links, same voice as the hero's social links. The faint underline lives on the
+   label span (text-decoration, not border-b) because `.prose .not-prose a` kills border-bottom
+   and flex containers don't propagate text decorations anyway */
+const badgeClass =
+  'group inline-flex items-center gap-1 text-sm cursor-pointer !border-none text-truegray-600 dark:text-truegray-400 hover:text-truegray-900 dark:hover:text-truegray-100 transition-colors duration-200'
+const badgeLabelClass =
+  'underline underline-offset-4 decoration-truegray-500/40 group-hover:decoration-truegray-500 dark:decoration-truegray-400/40 dark:group-hover:decoration-truegray-400'
 
 const makeBadge = (name: string, url?: string) => {
   if (!url) return ''
-  const { icon, bg, label } = meta[name.toLowerCase()] ?? {
+  const { icon, label } = meta[name.toLowerCase()] ?? {
     icon: 'i-ri-external-link-line',
-    bg: 'bg-skin-muted',
     label: name,
   }
   return `
-    <a href="${url}" target="_blank" rel="noopener noreferrer"
-       class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-sm !text-white ${bg}
-              hover:opacity-85 transition-opacity duration-150">
-      <i class="${icon} text-base"></i><span>${label}</span>
+    <a href="${url}" target="_blank" rel="noopener noreferrer" class="${badgeClass}">
+      <i class="${icon} text-base"></i><span class="${badgeLabelClass}">${label}</span>
     </a>`
 }
 
@@ -69,12 +74,29 @@ const demoTag = (url?: string) => makeBadge('demo', url)
 
 const hasBibtex = (post: Post) => /```bibtex/.test(post.body ?? '')
 
-const bibTag = (id: string, label = 'Citation') => `
-  <a onclick="toggleBibtex('${id}')" class="inline-flex items-center gap-1 px-2 py-0.5
-     rounded-md text-sm !text-white bg-amber-600 hover:opacity-85 cursor-pointer">
-     <i class="i-file-icons-bibtex text-base"></i><span>${label}</span>
+const bibTag = (id: string, label = 'BibTeX') => `
+  <a onclick="toggleBibtex('${id}')" class="${badgeClass}">
+     <i class="i-file-icons-bibtex text-base"></i><span class="${badgeLabelClass}">${label}</span>
   </a>
 `
+
+/* the one colour accent in the list: award / honour pill */
+const notePill = (note: string) => `
+  <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-xs font-500 border border-red-200 bg-red-50 text-red-700 dark:border-red-300/20 dark:bg-red-400/10 dark:text-red-300">
+    <i class="i-ri-award-line text-sm"></i><span>${note}</span>
+  </span>`
+
+const badgeRow = (post: Post) =>
+  [
+    paperTag(post.data.paper, post.data.paper_linkname),
+    codeTag(post.data.code),
+    posterTag(post.data.poster),
+    talkTag(post.data.talk),
+    slidesTag(post.data.slides),
+    hasBibtex(post) ? bibTag(post.id) : '',
+  ]
+    .filter(Boolean)
+    .join('')
 ---
 
 <!-- ------------------------------------------------------------------ --><!--  Mark-up                                                           --><!-- ------------------------------------------------------------------ -->
@@ -83,11 +105,7 @@ const bibTag = (id: string, label = 'Citation') => `
 
   {
     list.map((post, idx) => (
-      <li
-        key={post.data.title}
-        class={showYearHeader ? 'mb-8' : ''}
-        style={showYearHeader ? '' : 'margin-bottom: 2.5rem'}
-      >
+      <li class={showYearHeader ? 'mb-10' : '!mb-12'}>
         {/* year header */}
         {showYearHeader && !isSameYear(post.data.date, list[idx - 1]?.data.date) && (
           <div class="relative h18 select-none pointer-events-none">
@@ -102,7 +120,7 @@ const bibTag = (id: string, label = 'Citation') => `
 
         {/* title line */}
         <a
-          class="flex flex-col gap-2 text-lg lh-tight nav-link decoration-none !border-none"
+          class="flex flex-col gap-2 text-lg lh-tight font-600 text-link decoration-none !border-none transition-opacity duration-200 hover:opacity-75"
           aria-label={post.data.title}
           target={getTarget(post)}
           href={getHref(post)}
@@ -115,35 +133,25 @@ const bibTag = (id: string, label = 'Citation') => `
           </div>
         </a>
 
+        {/* venue + award */}
+        {post.data.venue && (
+          <div class="mt-1 flex flex-wrap items-center gap-2 text-sm">
+            <span class="font-600 text-truegray-500 dark:text-truegray-400">{post.data.venue}</span>
+            {post.data.note && <span set:html={notePill(post.data.note)} />}
+          </div>
+        )}
+
         {/* authors */}
-        <div>
+        <div class="mt-1">
           {post.data.authors.map((a: string, i: number) => (
             <span set:html={processAuthor(a, i, post.data.authors.length)} />
           ))}
         </div>
 
         {/* badges */}
-        <div>
-          <span set:html={paperTag(post.data.paper, post.data.paper_linkname)} />
-          <span set:html={codeTag(post.data.code)} />
-          <span set:html={posterTag(post.data.poster)} />
-          <span set:html={talkTag(post.data.talk)} />
-          <span set:html={slidesTag(post.data.slides)} />
-          {hasBibtex(post) && <span set:html={bibTag(post.id)} />}
-          {/* add demoTag/posterTag/etc. as needed */}
-        </div>
+        <div class="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1" set:html={badgeRow(post)} />
 
         <BibEntry post={post} />
-
-        {/* venue + note */}
-        <div class="text-sm">
-          {post.data.venue}{' '}
-          {post.data.note && (
-            <text>
-              (<b style="color:red;">{post.data.note}</b>)
-            </text>
-          )}
-        </div>
       </li>
     ))
   }
