@@ -55,6 +55,7 @@ const pubs = defineCollection({
         year: 'numeric',
         month: 'short',
         day: 'numeric',
+        timeZone: 'UTC',
       })),
     draft: z.boolean().default(false).optional(),
     featured: z.boolean().default(false).optional(),
@@ -67,4 +68,27 @@ const pubs = defineCollection({
   }),
 })
 
-export const collections = { pages, pubs, teaching }
+const photos = defineCollection({
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    location: z.string().optional(),
+    date: z
+      .string()
+      .or(z.date())
+      .transform((val: string | number | Date) => new Date(val).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timeZone: 'UTC',
+      }))
+      .optional(),
+    pub: z.string().optional(),
+    panel: z.string(),
+    photo: z.string(),
+    panelAlt: z.string().optional(),
+    photoAlt: z.string().optional(),
+  }),
+})
+
+export const collections = { pages, pubs, teaching, photos }

@@ -1,0 +1,57 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import { getCollection, getEntry } from 'astro:content'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+
+export async function getStaticPaths() {
+  const photos = await getCollection('photos')
+  return photos.map((photo) => {
+    return {
+      params: { slug: photo.slug },
+      props: { photo },
+    }
+  })
+}
+
+type Props = { photo: CollectionEntry<'photos'> }
+
+const { photo } = Astro.props
+const { title, description, location, date, pub, panel, photo: photoSrc, panelAlt, photoAlt } = photo.data
+
+const { Content } = await photo.render()
+
+const pubEntry = pub ? await getEntry('pubs', pub) : undefined
+const metaLine = [location, date].filter(Boolean).join('. ')
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="prose">
+    <h1>{title}</h1>
+
+    <img
+      src={panel}
+      alt={panelAlt || title}
+      style="display: block; margin: 0 auto; border-radius: 0.75rem; max-width: 85%;"
+    />
+
+    <Content />
+
+    {
+      pubEntry && (
+        <p>
+          It appears as the opening figure of <a href={`/publications/${pubEntry.slug}`}>{pubEntry.data.title}</a>.
+        </p>
+      )
+    }
+
+    <h2>The photograph</h2>
+
+    <img
+      src={photoSrc}
+      alt={photoAlt || `The photograph behind ${title}`}
+      style="display: block; margin: 0 auto; border-radius: 0.75rem;"
+    />
+
+    {metaLine && <p>{metaLine}.</p>}
+  </article>
+</BaseLayout>
