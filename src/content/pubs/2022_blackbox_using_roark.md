@@ -20,6 +20,10 @@ tags:
   - fact
 ---
 
+## TL;DR
+
+**RH Probe, an encoder–decoder probing architecture built on Roark–Hollingshead distance, finds strong evidence of important syntactic information in BERT — but that information alone appears not to be enough to reproduce syntax in its entirety.** We also prove Roark and Hollingshead's (2008) conjecture that RH distance is a sufficient encoding of unlabelled binary syntactic trees, and show that perturbed masking's advantage over a right-branching baseline is too inconclusive to settle whether BERT "knows" syntax.
+
 ## How to Cite
 ```bibtex
 @inproceedings{niu-etal-2022-using,

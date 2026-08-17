@@ -21,7 +21,9 @@ tags:
   - fact
 ---
 
-**Abstract**: Does BERT store surface knowledge in its bottom layers, syntactic knowledge in its middle layers, and semantic knowledge in its upper layers? In re-examining Jawahar et al. (2019) and Tenney et al.'s (2019) probes into the structure of BERT, we have found that the pipeline-like separation that they were seeking lacks conclusive empirical support. BERT's structure is, however, linguistically grounded, although perhaps in a way that is more nuanced than can be explained by layers alone. We introduce a novel probe, called GridLoc, through which we can also take into account token positions, training rounds, and random seeds. Using GridLoc, we are able to detect other, stronger regularities that suggest that pseudo-cognitive appeals to layer depth may not be the preferred mode of explanation for BERT's inner workings.
+## TL;DR
+
+Does BERT store surface knowledge in its bottom layers, syntactic knowledge in its middle layers, and semantic knowledge in its upper layers? **Re-examining Jawahar et al. (2019) and Tenney et al.'s (2019) probes, we find that this pipeline-like separation lacks conclusive empirical support.** BERT's structure is linguistically grounded, but in a way more nuanced than layers alone can explain: our novel probe, GridLoc, also takes into account token positions, training rounds, and random seeds, and detects other, stronger regularities suggesting that layer depth may not be the preferred mode of explanation for BERT's inner workings.
 
 ![](/research/coling2022/architecture.png)
 

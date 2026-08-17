@@ -20,6 +20,10 @@ tags:
   - temporal relation extraction
 ---
 
+## TL;DR
+
+**ConTempo is a temporally contrastive learning framework that teaches temporal relation extraction (TRE) models the symmetric and antisymmetric properties of temporal relations**, instead of treating each relation as an independent classification label. We embed it in a unified framework compatible with all three main branches of TRE research, achieving state-of-the-art performance on MATRES and TBD. Along the way, we identified and corrected a large number of annotation errors in the MATRES test set, after which ConTempo's gains become even more apparent.
+
 ## How to Cite
 
 ```bibtex

@@ -22,6 +22,10 @@ tags:
   - information extraction
 ---
 
+## TL;DR
+
+An overview of **how natural language processing powers information extraction in event-based surveillance (EBS) systems**: the common applications of extracting information from open-source news articles and media sources, the methods behind them, their value in public health, and the field's challenges and emerging developments.
+
 ## How to Cite
 ```bibtex
 @article{ng2020application,

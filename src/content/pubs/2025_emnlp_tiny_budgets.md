@@ -21,6 +21,11 @@ tags:
   - parameter-efficient fine-tuning
   - language model
 ---
+
+## TL;DR
+
+**FoRA-UA achieves state-of-the-art performance using only 1–5% of standard LoRA's parameters.** Two insights make this possible: fix-sized sparse frequency representations approximate small matrices more accurately, and inserting a smaller intermediate representation lowers the construction error of approximating larger matrices. We validate FoRA-UA across natural language understanding, generation, instruction tuning, and image classification, demonstrating strong generalisation and robustness under extreme compression.
+
 ## How to Cite
 ```bibtex
 @inproceedings{zhao-etal-2025-tiny,

@@ -21,6 +21,10 @@ tags:
   - quantifier scope
 ---
 
+## TL;DR
+
+**We give a concord-based analysis of Chinese quantifier scope, formulated in Lexical Resource Semantics (LRS)**, addressing two open questions: what determines scopal readings, and why the universal quantifier *mei* ("every") sometimes obligatorily co-occurs with the universal adverb *dou*. The account adapts two principles from Richter and Sailer's (2004) analysis of negative concord, expanded with a new quantifier order constraint, to generate a coherent answer to both questions.
+
 ## How to Cite
 ```bibtex
 @inproceedings{nkhp:2022,

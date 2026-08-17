@@ -20,6 +20,10 @@ tags:
   - corpus
 ---
 
+## TL;DR
+
+**We present THEE-TimeML and TheeBank: a temporal annotation standard and corpus enabling precise temporal information extraction for event-based surveillance in the public health domain.** Current surveillance systems estimate when an outbreak occurred from coarse document metadata such as publication time, which the complicated narration style of news articles often renders inaccurate or erroneous. We discuss the adaptations the domain required, document the annotation process, and demonstrate the immediate benefit to public health applications.
+
 ## How to Cite
 ```bibtex
 @inproceedings{niu-etal-2020-temporal,

@@ -16,6 +16,10 @@ tags:
   - sentence embedding
 ---
 
+## TL;DR
+
+Contrastive post-training à la SimCSE improves Semantic Textual Similarity (STS) but causes "catastrophic forgetting of token-level knowledge," hurting transfer tasks. **GLOOCoSE, a layer- and token-wise attentive pooling mechanism, eliminates this trade-off**: it boosts transfer-task performance while maintaining — and in some cases improving — STS performance, and it is compatible with various SimCSE variants.
+
 ## How to Cite
 
 ```bibtex

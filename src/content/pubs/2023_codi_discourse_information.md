@@ -21,6 +21,10 @@ tags:
   - discourse
 ---
 
+## TL;DR
+
+We examine whether discourse information helps document-level temporal dependency parsing. Unexpectedly, **simple sentence-position information — encoded with our novel sentence-position embedding — outperforms high-level discourse profiling features**, perhaps because it does not rely on noisy model-generated inputs, and our system surpasses the previous state-of-the-art TDG parsers. We argue that discourse analysis should inform temporal information extraction more deeply than as just another input feature.
+
 ## How to Cite
 ```bibtex
 @inproceedings{niu-etal-2023-discourse,

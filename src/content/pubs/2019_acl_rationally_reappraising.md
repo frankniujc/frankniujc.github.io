@@ -20,6 +20,10 @@ tags:
   - ATIS
 ---
 
+## TL;DR
+
+**A rule-based grammar for the ATIS domain achieves a 95.82% F1-score — within reach of neural models' ~98% — and building it uncovered numerous annotation errors in the ATIS corpus, which we fixed.** Repairing the annotation alone yields a relative error reduction of between 19.4% and 52% across all neural slot-filling architectures. In light of this, we rationally reappraise the motivations for choosing a neural architecture, and argue that neural models must play a different role in ATIS dialogues because of the corpus's lack of variety.
+
 ## How to Cite
 ```bibtex
 @inproceedings{niu-penn-2019-rationally,

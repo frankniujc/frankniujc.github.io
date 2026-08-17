@@ -26,6 +26,20 @@ const { Content } = await post.render()
 function getDate(date: string) {
   return new Date(date).toISOString()
 }
+
+/* same icon+text link style as ListPosts */
+const badgeClass =
+  'group inline-flex items-center gap-1 text-sm cursor-pointer !border-none text-truegray-600 dark:text-truegray-400 hover:text-truegray-900 dark:hover:text-truegray-100 transition-colors duration-200'
+const badgeLabelClass =
+  'underline underline-offset-4 decoration-truegray-500/40 group-hover:decoration-truegray-500 dark:decoration-truegray-400/40 dark:group-hover:decoration-truegray-400'
+
+const links = [
+  { url: post.data.paper, icon: 'i-tabler-pdf', label: post.data.paper_linkname || 'PDF' },
+  { url: post.data.code, icon: 'i-ri-github-fill', label: 'Code' },
+  { url: post.data.poster, icon: 'i-ri-image-line', label: 'Poster' },
+  { url: post.data.talk, icon: 'i-carbon-logo-youtube', label: 'Talk' },
+  { url: post.data.slides, icon: 'i-ri-slideshow-4-line', label: 'Slides' },
+].filter((l) => l.url)
 ---
 
 <BaseLayout title={title} description={description} pageType="article">
@@ -49,6 +63,18 @@ function getDate(date: string) {
           )
         }
       </p>
+      {
+        links.length > 0 && (
+          <div class="not-prose mb-6 flex flex-wrap items-center gap-x-4 gap-y-1">
+            {links.map((l) => (
+              <a href={l.url} target="_blank" rel="noopener noreferrer" class={badgeClass}>
+                <i class={`${l.icon} text-base`} />
+                <span class={badgeLabelClass}>{l.label}</span>
+              </a>
+            ))}
+          </div>
+        )
+      }
     </div>
     {
       image && (

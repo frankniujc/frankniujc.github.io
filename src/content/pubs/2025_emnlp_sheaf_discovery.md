@@ -19,6 +19,11 @@ tags:
   - language model
   - circuit discovery
 ---
+
+## TL;DR
+
+**DiscoGP extracts *sheaves*: self-contained modular units of a language model that extend circuits by pruning not only the edges of the computation graph but also the weight parameters themselves.** Across a range of linguistic and reasoning tasks, the discovered sheaves preserve 93–100% of the model's task performance while comprising only 1–7% of the original weights and connections, and they exhibit better modularity and functional fidelity than previously identified circuits.
+
 ## How to Cite
 ```bibtex
 @inproceedings{yu-etal-2025-sheaf,
