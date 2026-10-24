@@ -1,3 +1,4 @@
+- [Sep 2026] 2 papers are accepted at NeurIPS 2026! 🎉🎉 [Agent MechSuits: Mechanistic Subspace Safety Steering for Multi-Turn CLI Agents](/publications/2026_neurips_agent_mechsuits) and [Farther the Shift, Sparser the Representation: Analyzing OOD Mechanisms in LLMs](/publications/2026_neurips_farther_shift).
 - [Aug 2026] Paper [Many Circuits, One Mechanism: Input Variation and Evaluation Granularity in Circuit Discovery](/publications/2026_tmlr_many_circuits) is accepted to TMLR with a <b style="color:red">Featured Certification</b>! 🎉🎉
 - [May 2026] Paper [All Circuits Lead to Rome: Rethinking Functional Anisotropy in Circuit and Sheaf Discovery for LLMs](/publications/2026_icml_all_circuits) is accepted to ICML! 🎉🎉
 - [Mar 2026] Paper [Hypothesis-Driven Feature Manifold Analysis in LLMs via Supervised Multi-Dimensional Scaling](/publications/2026_tmlr_hypothesis_driven) is accepted to TMLR! 🎉🎉
