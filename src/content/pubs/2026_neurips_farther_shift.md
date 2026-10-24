@@ -12,7 +12,7 @@ code: https://github.com/MingyuJ666/sparsityLLM
 authors:
   - Mingyu Jin
   - Yutong Yin
-  - Jingcheng Niu
+  - Jingcheng Niu†
   - Qingcheng Zeng
   - Wujiang Xu
   - Mengnan Du

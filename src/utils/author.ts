@@ -5,20 +5,18 @@ const coAuthors = new Map<string, string>(
 )
 
 function author(str: string) {
+  // Trailing marks: * equal contribution, † corresponding author
+  const name = str.replace(/[*†]+$/, '')
+  const marks = str.slice(name.length)
+
   // Special case for Jingcheng Niu
-  if (str === 'Jingcheng Niu') {
-    return `<span class="inline-block underline font-bold">Jingcheng Niu</span>`
-  }
-  if (str === 'Jingcheng Niu*') {
-    return `<span class="inline-block underline font-bold">Jingcheng Niu</span>*`
+  if (name === 'Jingcheng Niu') {
+    return `<span class="inline-block underline font-bold">Jingcheng Niu</span>${marks}`
   }
 
-  const hasStar = str.endsWith('*')
-  const lookupName = hasStar ? str.slice(0, -1) : str
-
-  const url = coAuthors.get(lookupName)
+  const url = coAuthors.get(name)
   return url
-    ? `<a class="lh-tight nav-link" href="${url}">${lookupName}${hasStar ? '*' : ''}</a>`
+    ? `<a class="lh-tight nav-link" href="${url}">${name}${marks}</a>`
     : str
 }
 
